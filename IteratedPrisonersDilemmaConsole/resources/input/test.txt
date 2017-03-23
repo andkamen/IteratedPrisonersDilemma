@@ -1,0 +1,15 @@
+AlwaysCooperate 10
+AlwaysDefect 10
+FirmButFair 10
+Gradual 10
+Grudger 10
+HardMajority 10
+HardTitForTat 10
+Prober 10
+Random 10
+SoftGrudger 10
+SoftMajority 10
+SuspiciousTitForTat 10
+TitForTat 10
+TitForTwoTats 10
+TwoTitsForTat 10

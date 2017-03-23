@@ -1,0 +1,271 @@
+ALLSTRATS SIMULATION RESULTS 
+   Generation 1:
+GradualStrategy                ( 10) ->    823281
+TitForTwoTatsStrategy          ( 10) ->    814679
+SoftMajorityStrategy           ( 10) ->    802894
+TitForTatStrategy              ( 10) ->    802476
+FirmButFairStrategy            ( 10) ->    777095
+AlwaysCooperateStrategy        ( 10) ->    766554
+SoftGrudgerStrategy            ( 10) ->    763560
+GrudgerStrategy                ( 10) ->    756612
+HardTitForTatStrategy          ( 10) ->    753008
+TwoTitsForTatStrategy          ( 10) ->    749520
+SuspiciousTitForTatStrategy    ( 10) ->    591730
+HardMajorityStrategy           ( 10) ->    580314
+RandomStrategy                 ( 10) ->    577770
+ProberStrategy                 ( 10) ->    518250
+AlwaysDefectStrategy           ( 10) ->    516868
+
+   Generation 2:
+GradualStrategy                ( 12) ->    957219
+TitForTwoTatsStrategy          ( 12) ->    949294
+TitForTatStrategy              ( 11) ->    893522
+FirmButFairStrategy            ( 11) ->    881047
+SoftGrudgerStrategy            ( 11) ->    866528
+SoftMajorityStrategy           ( 11) ->    859586
+AlwaysCooperateStrategy        ( 11) ->    830625
+GrudgerStrategy                ( 11) ->    822259
+HardTitForTatStrategy          ( 10) ->    744635
+TwoTitsForTatStrategy          ( 10) ->    741943
+SuspiciousTitForTatStrategy    (  8) ->    495283
+ProberStrategy                 (  8) ->    487420
+HardMajorityStrategy           (  8) ->    478623
+RandomStrategy                 (  8) ->    452361
+AlwaysDefectStrategy           (  8) ->    399896
+
+   Generation 3:
+TitForTatStrategy              ( 13) ->   1092829
+GradualStrategy                ( 13) ->   1076434
+TitForTwoTatsStrategy          ( 13) ->   1067961
+FirmButFairStrategy            ( 12) ->    998678
+SoftGrudgerStrategy            ( 12) ->    983936
+SoftMajorityStrategy           ( 12) ->    974419
+AlwaysCooperateStrategy        ( 11) ->    872445
+GrudgerStrategy                ( 11) ->    861291
+HardTitForTatStrategy          ( 10) ->    780224
+TwoTitsForTatStrategy          ( 10) ->    778018
+SuspiciousTitForTatStrategy    (  7) ->    451463
+ProberStrategy                 (  7) ->    437420
+HardMajorityStrategy           (  7) ->    436619
+RandomStrategy                 (  7) ->    416430
+AlwaysDefectStrategy           (  5) ->    255514
+
+   Generation 4:
+TitForTatStrategy              ( 14) ->   1145026
+GradualStrategy                ( 14) ->   1136531
+TitForTwoTatsStrategy          ( 14) ->   1128606
+FirmButFairStrategy            ( 13) ->   1054712
+SoftGrudgerStrategy            ( 13) ->   1041340
+SoftMajorityStrategy           ( 13) ->   1036908
+AlwaysCooperateStrategy        ( 11) ->    863577
+GrudgerStrategy                ( 11) ->    851150
+HardTitForTatStrategy          ( 10) ->    771804
+TwoTitsForTatStrategy          ( 10) ->    770045
+SuspiciousTitForTatStrategy    (  6) ->    380060
+HardMajorityStrategy           (  6) ->    367851
+RandomStrategy                 (  6) ->    351704
+ProberStrategy                 (  5) ->    303066
+AlwaysDefectStrategy           (  4) ->    199200
+
+   Generation 5:
+TitForTatStrategy              ( 15) ->   1310523
+GradualStrategy                ( 15) ->   1302336
+FirmButFairStrategy            ( 14) ->   1216655
+SoftGrudgerStrategy            ( 14) ->   1208617
+TitForTwoTatsStrategy          ( 14) ->   1207820
+SoftMajorityStrategy           ( 14) ->   1200238
+AlwaysCooperateStrategy        ( 11) ->    931971
+GrudgerStrategy                ( 11) ->    922603
+HardTitForTatStrategy          ( 11) ->    920529
+TwoTitsForTatStrategy          ( 11) ->    918835
+SuspiciousTitForTatStrategy    (  5) ->    338438
+RandomStrategy                 (  5) ->    307165
+HardMajorityStrategy           (  4) ->    262577
+ProberStrategy                 (  4) ->    254522
+AlwaysDefectStrategy           (  2) ->    105382
+
+   Generation 6:
+GradualStrategy                ( 16) ->   1391717
+TitForTatStrategy              ( 15) ->   1311752
+FirmButFairStrategy            ( 15) ->   1306332
+TitForTwoTatsStrategy          ( 15) ->   1300455
+SoftGrudgerStrategy            ( 15) ->   1299624
+SoftMajorityStrategy           ( 15) ->   1292920
+AlwaysCooperateStrategy        ( 11) ->    940548
+GrudgerStrategy                ( 11) ->    931015
+HardTitForTatStrategy          ( 11) ->    929760
+TwoTitsForTatStrategy          ( 11) ->    928629
+SuspiciousTitForTatStrategy    (  4) ->    272487
+HardMajorityStrategy           (  3) ->    198215
+ProberStrategy                 (  3) ->    188439
+RandomStrategy                 (  3) ->    185832
+AlwaysDefectStrategy           (  2) ->    104956
+
+   Generation 7:
+GradualStrategy                ( 17) ->   1487390
+TitForTatStrategy              ( 16) ->   1402250
+FirmButFairStrategy            ( 16) ->   1398980
+TitForTwoTatsStrategy          ( 15) ->   1309371
+SoftGrudgerStrategy            ( 15) ->   1302083
+SoftMajorityStrategy           ( 15) ->   1301862
+AlwaysCooperateStrategy        ( 12) ->   1038741
+GrudgerStrategy                ( 11) ->    939520
+HardTitForTatStrategy          ( 11) ->    938566
+TwoTitsForTatStrategy          ( 11) ->    937723
+SuspiciousTitForTatStrategy    (  3) ->    206027
+HardMajorityStrategy           (  3) ->    200257
+ProberStrategy                 (  2) ->    126855
+RandomStrategy                 (  2) ->    126206
+AlwaysDefectStrategy           (  1) ->     53235
+
+   Generation 8:
+GradualStrategy                ( 18) ->   1638429
+TitForTatStrategy              ( 17) ->   1536317
+FirmButFairStrategy            ( 17) ->   1534372
+TitForTwoTatsStrategy          ( 15) ->   1354604
+SoftMajorityStrategy           ( 15) ->   1349501
+SoftGrudgerStrategy            ( 15) ->   1342200
+AlwaysCooperateStrategy        ( 12) ->   1079616
+GrudgerStrategy                ( 11) ->    976320
+HardTitForTatStrategy          ( 11) ->    975755
+TwoTitsForTatStrategy          ( 11) ->    974712
+HardMajorityStrategy           (  3) ->    206536
+SuspiciousTitForTatStrategy    (  2) ->    141801
+RandomStrategy                 (  2) ->    127980
+ProberStrategy                 (  1) ->     70406
+
+   Generation 9:
+GradualStrategy                ( 19) ->   1618885
+TitForTatStrategy              ( 17) ->   1438301
+FirmButFairStrategy            ( 17) ->   1436788
+TitForTwoTatsStrategy          ( 15) ->   1273980
+SoftMajorityStrategy           ( 15) ->   1268990
+SoftGrudgerStrategy            ( 15) ->   1256770
+AlwaysCooperateStrategy        ( 12) ->   1017288
+GrudgerStrategy                ( 11) ->    918056
+HardTitForTatStrategy          ( 11) ->    917558
+TwoTitsForTatStrategy          ( 11) ->    916693
+HardMajorityStrategy           (  3) ->    193748
+SuspiciousTitForTatStrategy    (  2) ->    133055
+RandomStrategy                 (  2) ->    121915
+
+   Generation 10:
+GradualStrategy                ( 20) ->   1704370
+TitForTatStrategy              ( 17) ->   1439905
+FirmButFairStrategy            ( 17) ->   1438154
+TitForTwoTatsStrategy          ( 15) ->   1274144
+SoftMajorityStrategy           ( 15) ->   1269924
+SoftGrudgerStrategy            ( 15) ->   1263373
+AlwaysCooperateStrategy        ( 12) ->   1017423
+GrudgerStrategy                ( 11) ->    922375
+HardTitForTatStrategy          ( 11) ->    921576
+TwoTitsForTatStrategy          ( 11) ->    920959
+SuspiciousTitForTatStrategy    (  2) ->    133760
+HardMajorityStrategy           (  2) ->    130165
+RandomStrategy                 (  2) ->    122073
+
+   Generation 11:
+GradualStrategy                ( 20) ->   1695304
+TitForTatStrategy              ( 17) ->   1432562
+FirmButFairStrategy            ( 17) ->   1430982
+TitForTwoTatsStrategy          ( 15) ->   1267272
+SoftMajorityStrategy           ( 15) ->   1264174
+SoftGrudgerStrategy            ( 15) ->   1256992
+AlwaysCooperateStrategy        ( 12) ->   1012203
+GrudgerStrategy                ( 11) ->    917592
+HardTitForTatStrategy          ( 11) ->    916666
+TwoTitsForTatStrategy          ( 11) ->    916060
+SuspiciousTitForTatStrategy    (  2) ->    132853
+HardMajorityStrategy           (  2) ->    129229
+RandomStrategy                 (  2) ->    119734
+
+   Generation 12:
+GradualStrategy                ( 20) ->   1873771
+TitForTatStrategy              ( 17) ->   1583291
+FirmButFairStrategy            ( 17) ->   1581600
+TitForTwoTatsStrategy          ( 15) ->   1400861
+SoftMajorityStrategy           ( 15) ->   1396714
+SoftGrudgerStrategy            ( 15) ->   1389249
+AlwaysCooperateStrategy        ( 12) ->   1118955
+GrudgerStrategy                ( 11) ->   1014252
+HardTitForTatStrategy          ( 11) ->   1013430
+TwoTitsForTatStrategy          ( 11) ->   1012398
+SuspiciousTitForTatStrategy    (  2) ->    146765
+HardMajorityStrategy           (  2) ->    142865
+RandomStrategy                 (  2) ->    133211
+
+   Generation 13:
+GradualStrategy                ( 20) ->   1820149
+TitForTatStrategy              ( 17) ->   1537928
+FirmButFairStrategy            ( 17) ->   1536277
+TitForTwoTatsStrategy          ( 15) ->   1360722
+SoftMajorityStrategy           ( 15) ->   1357026
+SoftGrudgerStrategy            ( 15) ->   1349290
+AlwaysCooperateStrategy        ( 12) ->   1086684
+GrudgerStrategy                ( 11) ->    984900
+HardTitForTatStrategy          ( 11) ->    984295
+TwoTitsForTatStrategy          ( 11) ->    983490
+SuspiciousTitForTatStrategy    (  2) ->    142618
+HardMajorityStrategy           (  2) ->    138565
+RandomStrategy                 (  2) ->    129929
+
+   Generation 14:
+GradualStrategy                ( 20) ->   1775736
+TitForTatStrategy              ( 17) ->   1500096
+FirmButFairStrategy            ( 17) ->   1498531
+TitForTwoTatsStrategy          ( 15) ->   1327356
+SoftMajorityStrategy           ( 15) ->   1323424
+SoftGrudgerStrategy            ( 15) ->   1316108
+AlwaysCooperateStrategy        ( 12) ->   1060131
+GrudgerStrategy                ( 11) ->    961259
+HardTitForTatStrategy          ( 11) ->    960239
+TwoTitsForTatStrategy          ( 11) ->    959439
+SuspiciousTitForTatStrategy    (  2) ->    139339
+HardMajorityStrategy           (  2) ->    135468
+RandomStrategy                 (  2) ->    127115
+
+   Generation 15:
+GradualStrategy                ( 20) ->   1757990
+TitForTatStrategy              ( 17) ->   1485032
+FirmButFairStrategy            ( 17) ->   1483296
+TitForTwoTatsStrategy          ( 15) ->   1314022
+SoftMajorityStrategy           ( 15) ->   1310093
+SoftGrudgerStrategy            ( 15) ->   1303116
+AlwaysCooperateStrategy        ( 12) ->   1049562
+GrudgerStrategy                ( 11) ->    951275
+HardTitForTatStrategy          ( 11) ->    950627
+TwoTitsForTatStrategy          ( 11) ->    949588
+SuspiciousTitForTatStrategy    (  2) ->    137965
+HardMajorityStrategy           (  2) ->    134096
+RandomStrategy                 (  2) ->    125056
+
+   Generation 16:
+GradualStrategy                ( 20) ->   1739873
+TitForTatStrategy              ( 17) ->   1470016
+FirmButFairStrategy            ( 17) ->   1468147
+TitForTwoTatsStrategy          ( 15) ->   1300676
+SoftMajorityStrategy           ( 15) ->   1296625
+SoftGrudgerStrategy            ( 15) ->   1289769
+AlwaysCooperateStrategy        ( 12) ->   1038777
+GrudgerStrategy                ( 11) ->    941963
+HardTitForTatStrategy          ( 11) ->    940847
+TwoTitsForTatStrategy          ( 11) ->    940114
+SuspiciousTitForTatStrategy    (  2) ->    136526
+HardMajorityStrategy           (  2) ->    132823
+RandomStrategy                 (  2) ->    124787
+
+   Generation 17:
+GradualStrategy                ( 20) ->   1740067
+TitForTatStrategy              ( 17) ->   1469921
+FirmButFairStrategy            ( 17) ->   1468291
+TitForTwoTatsStrategy          ( 15) ->   1300667
+SoftMajorityStrategy           ( 15) ->   1296894
+SoftGrudgerStrategy            ( 15) ->   1289825
+AlwaysCooperateStrategy        ( 12) ->   1038729
+GrudgerStrategy                ( 11) ->    941491
+HardTitForTatStrategy          ( 11) ->    940999
+TwoTitsForTatStrategy          ( 11) ->    940032
+SuspiciousTitForTatStrategy    (  2) ->    136569
+HardMajorityStrategy           (  2) ->    132965
+RandomStrategy                 (  2) ->    123583
+
