@@ -1,0 +1,35 @@
+INSERT INTO strategy(id, description, name)
+VALUES (1,'This Strategy will always cooperate.','AlwaysCooperate'),
+  (2,'This Strategy will always be selfish.','AlwaysDefect'),
+  (3,'Cooperates on the first move, and cooperates except after receiving a sucker payoff.','FirmButFair'),
+  (4,'Cooperates on the first move, and cooperates as long as the opponent cooperates. After the first defection of the other player, it defects one time and cooperates two times;\n After the nth defection it reacts with n consecutive defections and then calms down its opponent with two cooperations.','Gradual'),
+  (5,'This Strategy will cooperate until it\'s \'betrayed\'. After that it will always be selfish.','Grudger'),
+  (6,'Defects on the first move, and defects if the number of defections of the opponent is greater than or equal to the number of times it has cooperated, else cooperates.','HardMajority'),
+  (7,'Cooperates on the first move, and defects if the opponent has defects on any of the previous three moves, else cooperates.','HardTitForTat'),
+  (8,'Starts with D,C,C and then defects if the opponent has cooperated in the second and third move; otherwise, it plays Tit For Tat.','Prober'),
+  (9,'This Strategy will be random and unpredictable.','Random'),
+  (10,'Like Grudger except that the opponent is punished with D,D,D,D,C,C.','SoftGrudger'),
+  (11,'Cooperates on the first move, and cooperates as long as the number of times the opponent has cooperated is greater than or equal to the number of times it has defected, else it defects.','SoftMajority'),
+  (12,'Same as Tit for Tat, except that it defects on the first move.','SuspiciousTitForTat'),
+  (13,'Cooperates on the first move, then copies the opponent’s last move.','TitForTat'),
+  (14,'Cooperates on the first move, and defects only when the opponent defects two times.','TitForTwoTats'),
+  (15,'Same as Tit for Tat except that it defects twice when the opponent defects.','TwoTitsForTat');
+
+
+
+INSERT INTO strategy(id, description, name, type)
+VALUES (1,'This Strategy will always cooperate.','AlwaysCooperate','AlwaysCooperateStrategy'),
+  (2,'This Strategy will always be selfish.','AlwaysDefect','AlwaysDefectStrategy'),
+  (3,'Cooperates on the first move, and cooperates except after receiving a sucker payoff.','FirmButFair','FirmButFairStrategy'),
+  (4,'Cooperates on the first move, and cooperates as long as the opponent cooperates. After the first defection of the other player, it defects one time and cooperates two times;\n After the nth defection it reacts with n consecutive defections and then calms down its opponent with two cooperations.','Gradual','GradualStrategy'),
+  (5,'This Strategy will cooperate until it\'s \'betrayed\'. After that it will always be selfish.','Grudger','GrudgerStrategy'),
+  (6,'Defects on the first move, and defects if the number of defections of the opponent is greater than or equal to the number of times it has cooperated, else cooperates.','HardMajority','HardMajorityStrategy'),
+  (7,'Cooperates on the first move, and defects if the opponent has defects on any of the previous three moves, else cooperates.','HardTitForTat','HardTitForTatStrategy'),
+  (8,'Starts with D,C,C and then defects if the opponent has cooperated in the second and third move; otherwise, it plays Tit For Tat.','Prober','ProberStrategy'),
+  (9,'This Strategy will be random and unpredictable.','Random','RandomStrategy'),
+  (10,'Like Grudger except that the opponent is punished with D,D,D,D,C,C.','SoftGrudger','SoftGrudgerStrategy'),
+  (11,'Cooperates on the first move, and cooperates as long as the number of times the opponent has cooperated is greater than or equal to the number of times it has defected, else it defects.','SoftMajority','SoftMajorityStrategy'),
+  (12,'Same as Tit for Tat, except that it defects on the first move.','SuspiciousTitForTat','SuspiciousTitForTatStrategy'),
+  (13,'Cooperates on the first move, then copies the opponent’s last move.','TitForTat','TitForTatStrategy'),
+  (14,'Cooperates on the first move, and defects only when the opponent defects two times.','TitForTwoTats','TitForTwoTatsStrategy'),
+  (15,'Same as Tit for Tat except that it defects twice when the opponent defects.','TwoTitsForTat','TwoTitsForTatStrategy');

@@ -1,11 +1,12 @@
-package com.simulation.models;
+package com.ipdweb.simulation.models;
 
-import com.exceptions.InsufficientRegisteredStrategiesException;
-import com.simulation.contracts.MatchUpResult;
-import com.simulation.contracts.Strategy;
-import com.simulation.contracts.Generation;
-import com.utilities.Constants;
-import com.utilities.Messages;
+
+import com.ipdweb.exceptions.InsufficientRegisteredStrategiesException;
+import com.ipdweb.simulation.interfaces.Generation;
+import com.ipdweb.simulation.interfaces.MatchUpResult;
+import com.ipdweb.entities.strategy.interfaces.Strategy;
+import com.ipdweb.utils.Constants;
+import com.ipdweb.utils.Messages;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class GenerationImpl implements Generation {
     private Random rand;
 
     /**
-     * Creates a generation that can store various strategies and test them vs one another
+     * Creates a generation that can store various strategy and test them vs one another
      */
     public GenerationImpl() {
         this(null);
@@ -81,7 +82,7 @@ public class GenerationImpl implements Generation {
                 strategyToRemove = strategy;
             }
         }
-        //remove strategy from list and decrement counters. If 0 strategies of given type are left, remove them from dictionaries
+        //remove strategy from list and decrement counters. If 0 strategy of given type are left, remove them from dictionaries
         if (foundMatch) {
             this.strategies.remove(strategyToRemove);
             this.strategyCount.put(simpleName, this.strategyCount.get(strategyToRemove.getClass().getSimpleName()) - 1);
@@ -206,6 +207,7 @@ public class GenerationImpl implements Generation {
                 ));
 
         for (Map.Entry<String, Integer> entry : this.strategyScores.entrySet()) {
+            //TODO add constant for alignment length?
             sb.append(String.format("%-30s (%3d) -> %9d", entry.getKey(), this.strategyCount.get(entry.getKey()), entry.getValue()))
                     .append(System.lineSeparator());
         }
