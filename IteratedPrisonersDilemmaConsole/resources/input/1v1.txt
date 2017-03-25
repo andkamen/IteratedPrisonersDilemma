@@ -1,3 +1,2 @@
-AlwaysCooperate 1
-AlwaysCooperate 1
-AlwaysCooperate 1
+TitForTat 3
+AlwaysDefect 10

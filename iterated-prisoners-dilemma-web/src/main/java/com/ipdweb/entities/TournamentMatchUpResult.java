@@ -1,5 +1,6 @@
 package com.ipdweb.entities;
 
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;

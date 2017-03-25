@@ -1,0 +1,21 @@
+TEST SIMULATION RESULTS 
+   Generation 1:
+AlwaysDefectStrategy           ( 10) ->     22920
+TitForTatStrategy              (  3) ->      9090
+
+   Generation 2:
+AlwaysDefectStrategy           (  9) ->     21852
+TitForTatStrategy              (  4) ->     14436
+
+   Generation 3:
+TitForTatStrategy              (  5) ->     19260
+AlwaysDefectStrategy           (  8) ->     18688
+
+   Generation 4:
+TitForTatStrategy              (  7) ->     33054
+AlwaysDefectStrategy           (  6) ->     14352
+
+   Generation 5:
+TitForTatStrategy              (  9) ->     49860
+AlwaysDefectStrategy           (  4) ->      9648
+

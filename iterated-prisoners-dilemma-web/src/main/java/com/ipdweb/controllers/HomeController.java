@@ -1,6 +1,8 @@
 package com.ipdweb.controllers;
 
+import com.ipdweb.entities.Simulation;
 import com.ipdweb.entities.Tournament;
+import com.ipdweb.services.SimulationService;
 import com.ipdweb.services.StrategyService;
 import com.ipdweb.services.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,10 @@ public class HomeController {
     private TournamentService tournamentService;
 
     @Autowired
-    StrategyService strategyService;
+    private SimulationService simulationService;
+
+    @Autowired
+    private StrategyService strategyService;
 
 
     @GetMapping("/")
@@ -31,6 +36,24 @@ public class HomeController {
         tournament.playOut();
 
         this.tournamentService.save(tournament);
+
+        return "home";
+    }
+
+    @GetMapping("/simulation")
+    private String testSim(){
+        Simulation simulation = new Simulation("Sim1");
+        simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+
+        simulation.run(5);
+
+        this.simulationService.save(simulation);
 
         return "home";
     }

@@ -3,7 +3,7 @@ package com.ipdweb.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "simulation_match_up_results")
+@Table(name = "generation_match_up_results")
 public class GenerationMatchUpResult {
 
     @Id

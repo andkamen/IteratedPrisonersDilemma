@@ -26,7 +26,7 @@ public class Constants {
 
 
     //strategy factory
-    public static final String STRATEGY_PACKAGE = "com.ipdweb.simulation.models.strategy.";
+    public static final String STRATEGY_PACKAGE = "com.ipdweb.entities.strategy.strategies.";
     public static final String STRATEGY_SUFFIX = "Strategy";
 
     //TODO enums?

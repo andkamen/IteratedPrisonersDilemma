@@ -3,14 +3,11 @@ package com.ipdweb.entities;
 import com.ipdweb.entities.strategy.StrategyImpl;
 import com.ipdweb.entities.strategy.interfaces.Strategy;
 import com.ipdweb.exceptions.InsufficientRegisteredStrategiesException;
-import com.ipdweb.simulation.interfaces.MatchUpResult;
-import com.ipdweb.simulation.models.MatchUpResultImpl;
 import com.ipdweb.utils.Constants;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 @Entity
 @Table(name = "generations")
@@ -30,7 +27,10 @@ public class Generation {
     private List<StrategyImpl> strategies;
 
     @Transient
-    private List<Integer> strategyScores;
+    private Map<String, Integer> strategyScores;
+
+    @Transient
+    private Map<String, Integer> strategyCount;
 
     @OneToMany(mappedBy = "generation", cascade = CascadeType.ALL)
     private List<GenerationMatchUpResult> generationMatchUpResults;
@@ -45,35 +45,65 @@ public class Generation {
     @Transient
     private Random rand;
 
-    public Generation() {
-        this.strategyScores = new ArrayList<>();
+    public Generation(Simulation simulation, String name) {
+        this.simulation = simulation;
+
+        this.strategyScores = new HashMap<>();
+        this.strategyCount = new HashMap<>();
         this.strategies = new ArrayList<>();
         this.generationMatchUpResults = new ArrayList<>();
         this.rand = new Random();
+        this.name = name;
 
         setNewRoundCount();
     }
 
-    public void addStrategy(StrategyImpl strategy) {
-        this.strategies.add(strategy);
-        this.strategyScores.add(0);
+    public Map<String, Integer> getStrategyScores() {
+        return strategyScores;
     }
 
-    public void removeStrategy(String strategy) {
-        boolean foundMatch = false;
-        int indexToRemove = 0;
+    public int getTotalStrategyCount() {
+        return this.strategies.size();
+    }
 
-        for (int i = 0; i < strategies.size(); i++) {
-            if (strategies.get(i).getName().equals(strategy)) {
+
+    public void addStrategy(StrategyImpl strategy) {
+        //add strategy to list
+//        try {
+//            this.strategies.add(strategy.getClass().getConstructor().newInstance());
+//        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+//            e.printStackTrace();
+//        }
+
+        this.strategies.add(strategy);
+
+        //increment strategy Type counter and strategy Type total score counter
+        if (!strategyCount.containsKey(strategy.getName())) {
+            this.strategyCount.put(strategy.getName(), 0);
+            this.strategyScores.put(strategy.getName(), 0);
+        }
+        this.strategyCount.put(strategy.getName(), this.strategyCount.get(strategy.getName()) + 1);
+    }
+
+    public void removeStrategy(String strategyName) {
+        boolean foundMatch = false;
+        StrategyImpl strategyToRemove = null;
+
+        for (StrategyImpl strategy : this.strategies) {
+            if (strategy.getName().equals(strategyName)) {
                 foundMatch = true;
-                indexToRemove = i;
-                break;
+                strategyToRemove = strategy;
             }
         }
-
+        //remove strategy from list and decrement counters. If 0 strategy of given type are left, remove them from dictionaries
         if (foundMatch) {
-            strategies.remove(indexToRemove);
-            strategyScores.remove(indexToRemove);
+            this.strategies.remove(strategyToRemove);
+            this.strategyCount.put(strategyName, this.strategyCount.get(strategyToRemove.getName()) - 1);
+            int count = this.strategyCount.get(strategyName);
+            if (this.strategyCount.get(strategyName) == 0) {
+                this.strategyCount.remove(strategyName);
+                this.strategyScores.remove(strategyName);
+            }
         }
     }
 
@@ -99,23 +129,28 @@ public class Generation {
                 generationMatchUpResult = matchUp(stratA, stratB);
                 this.generationMatchUpResults.add(generationMatchUpResult);
 
-                strategyScore = this.strategyScores.get(a) + generationMatchUpResult.getStratAScore();
-                this.strategyScores.set(a, strategyScore);
+                strategyScore = this.strategyScores.get(stratA.getName()) + generationMatchUpResult.getStratAScore();
+                this.strategyScores.put(stratA.getName(), strategyScore);
 
-                strategyScore = this.strategyScores.get(b) + generationMatchUpResult.getStratBScore();
-                this.strategyScores.set(b, strategyScore);
+                strategyScore = this.strategyScores.get(stratB.getName()) + generationMatchUpResult.getStratBScore();
+                this.strategyScores.put(stratB.getName(), strategyScore);
             }
         }
     }
 
     private GenerationMatchUpResult matchUp(Strategy stratA, Strategy stratB) {
 
+        try {
+            stratA = stratA.getClass().getConstructor().newInstance();
+            stratB = stratB.getClass().getConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
         GenerationMatchUpResult generationMatchUpResult = new GenerationMatchUpResult(stratA.getName(), stratB.getName(), this);
 
         boolean stratAMove;
         boolean stratBMove;
-        boolean[] allStratAMoves = new boolean[this.roundCount];
-        boolean[] allStratBMoves = new boolean[this.roundCount];
         int[] roundResult; // 0 for stratA , 1 for stratB
         int[] matchUpResult = new int[2];
 
@@ -136,7 +171,6 @@ public class Generation {
 
         generationMatchUpResult.setStratAScore(matchUpResult[0]);
         generationMatchUpResult.setStratBScore(matchUpResult[1]);
-        MatchUpResult result = new MatchUpResultImpl(stratA.getClass().getSimpleName(), stratB.getClass().getSimpleName(), allStratAMoves, allStratBMoves, matchUpResult[0], matchUpResult[1]);
 
         return generationMatchUpResult;
     }
@@ -209,5 +243,25 @@ public class Generation {
 
     public void setRoundCount(int roundCount) {
         this.roundCount = roundCount;
+    }
+
+    public void setStrategyScores(Map<String, Integer> strategyScores) {
+        this.strategyScores = strategyScores;
+    }
+
+    public Map<String, Integer> getStrategyCount() {
+        return strategyCount;
+    }
+
+    public void setStrategyCount(Map<String, Integer> strategyCount) {
+        this.strategyCount = strategyCount;
+    }
+
+    public Simulation getSimulation() {
+        return simulation;
+    }
+
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
     }
 }

@@ -3,8 +3,6 @@ package com.ipdweb.entities;
 import com.ipdweb.entities.strategy.StrategyImpl;
 import com.ipdweb.entities.strategy.interfaces.Strategy;
 import com.ipdweb.exceptions.InsufficientRegisteredStrategiesException;
-import com.ipdweb.simulation.interfaces.MatchUpResult;
-import com.ipdweb.simulation.models.MatchUpResultImpl;
 import com.ipdweb.utils.Constants;
 
 import javax.persistence.*;
@@ -51,12 +49,16 @@ public class Tournament {
         setNewRoundCount();
     }
 
+    //TODO inserting new instances of strategy in the List, causes it to throw TransientObjectException: object references an unsaved transient instance - save the transient instance before flushing: com.ipdweb.entities.strategy.StrategyImpl]
     public void addStrategy(StrategyImpl strategy) {
-        try {
-            this.strategies.add(strategy.getClass().getConstructor().newInstance());
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            this.strategies.add(strategy.getClass().getConstructor().newInstance());
+//        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+//            e.printStackTrace();
+//        }
+
+        this.strategies.add(strategy);
+
         this.strategyScores.add(0);
     }
 
@@ -111,18 +113,17 @@ public class Tournament {
 
     private TournamentMatchUpResult matchUp(Strategy stratA, Strategy stratB) {
 
-//        try {
-//            stratA = stratA.getClass().getConstructor().newInstance();
-//            stratB = stratB.getClass().getConstructor().newInstance();
-//        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            stratA = stratA.getClass().getConstructor().newInstance();
+            stratB = stratB.getClass().getConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
         TournamentMatchUpResult tournamentMatchUpResult = new TournamentMatchUpResult(stratA.getName(), stratB.getName(), this);
 
         boolean stratAMove;
         boolean stratBMove;
-        boolean[] allStratAMoves = new boolean[this.roundCount];
-        boolean[] allStratBMoves = new boolean[this.roundCount];
         int[] roundResult; // 0 for stratA , 1 for stratB
         int[] matchUpResult = new int[2];
 
@@ -147,7 +148,6 @@ public class Tournament {
 
         tournamentMatchUpResult.setStratAScore(matchUpResult[0]);
         tournamentMatchUpResult.setStratBScore(matchUpResult[1]);
-        MatchUpResult result = new MatchUpResultImpl(stratA.getClass().getSimpleName(), stratB.getClass().getSimpleName(), allStratAMoves, allStratBMoves, matchUpResult[0], matchUpResult[1]);
 
         return tournamentMatchUpResult;
     }
