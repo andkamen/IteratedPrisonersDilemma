@@ -5,4 +5,6 @@ import com.ipdweb.entities.Simulation;
 public interface SimulationService {
 
     void save(Simulation simulation);
+
+    Simulation getSimulationById(Long id);
 }

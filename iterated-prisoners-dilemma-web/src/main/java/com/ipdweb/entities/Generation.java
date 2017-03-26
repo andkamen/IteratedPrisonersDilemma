@@ -58,6 +58,12 @@ public class Generation {
         setNewRoundCount();
     }
 
+    public Generation() {
+        this.strategyScores = new HashMap<>();
+        this.strategyCount = new HashMap<>();
+        this.rand = new Random();
+    }
+
     public Map<String, Integer> getStrategyScores() {
         return strategyScores;
     }

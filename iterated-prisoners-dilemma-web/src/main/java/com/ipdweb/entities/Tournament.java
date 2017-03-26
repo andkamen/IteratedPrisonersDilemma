@@ -6,6 +6,7 @@ import com.ipdweb.exceptions.InsufficientRegisteredStrategiesException;
 import com.ipdweb.utils.Constants;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class Tournament {
     @Transient
     private List<Integer> strategyScores;
 
-    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TournamentMatchUpResult> tournamentMatchUpResults;
 
     @Column(name = "round_count")
@@ -47,6 +48,12 @@ public class Tournament {
         this.rand = new Random();
 
         setNewRoundCount();
+    }
+
+    //?
+    @Transactional
+    public void resetMatchUpResults(){
+        this.tournamentMatchUpResults.clear();
     }
 
     //TODO inserting new instances of strategy in the List, causes it to throw TransientObjectException: object references an unsaved transient instance - save the transient instance before flushing: com.ipdweb.entities.strategy.StrategyImpl]

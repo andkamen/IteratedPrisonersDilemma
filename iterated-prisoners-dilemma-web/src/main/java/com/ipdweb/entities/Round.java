@@ -31,6 +31,9 @@ public class Round {
         this.tournamentMatchUpResult = tournamentMatchUpResult;
     }
 
+    public Round() {
+    }
+
     public long getId() {
         return id;
     }

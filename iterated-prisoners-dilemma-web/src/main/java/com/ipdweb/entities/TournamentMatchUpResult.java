@@ -39,6 +39,9 @@ public class TournamentMatchUpResult {
         this.rounds = new LinkedHashSet<>();
     }
 
+    public TournamentMatchUpResult() {
+    }
+
     public long getId() {
         return id;
     }

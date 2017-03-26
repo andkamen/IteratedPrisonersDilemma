@@ -20,7 +20,7 @@ public class Simulation {
     @Basic
     private String name;
 
-    @OneToMany(mappedBy = "simulation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "simulation", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Generation> generations;
 
     @Transient
@@ -29,7 +29,12 @@ public class Simulation {
     public Simulation(String name) {
         this.name = name;
         this.generations = new ArrayList<>();
-        this.generations.add(new Generation(this,name + "_gen_"+generations.size()));
+        this.generations.add(new Generation(this, name + "_gen_" + generations.size()));
+        this.strategyFactory = new StrategyFactoryImpl();
+    }
+
+    public Simulation() {
+        this.generations = new ArrayList<>();
         this.strategyFactory = new StrategyFactoryImpl();
     }
 
@@ -56,7 +61,7 @@ public class Simulation {
     /// http://stackoverflow.com/questions/13483430/how-to-make-rounded-percentages-add-up-to-100
     // the answer by paxdiablo has the algorithm used for rounding up the percentages with least amount of error.
     private Generation setUpNextGeneration(Generation currentGeneration) {
-        Generation nextGeneration = new Generation(this,name + "_gen_"+generations.size());
+        Generation nextGeneration = new Generation(this, name + "_gen_" + generations.size());
 
         //Get the current gen info: Total places, all strats and their scores
         Map<String, Integer> strategyScores = currentGeneration.getStrategyScores();
@@ -86,7 +91,7 @@ public class Simulation {
             String strategyName = strategyRelation[i];
             int strategyCount = (int) strategyDistribution[i];
             for (int j = 0; j < strategyCount; j++) {
-                nextGeneration.addStrategy(this.strategyFactory.hackStrategy(strategyName,this.generations.get(0).getStrategies()));
+                nextGeneration.addStrategy(this.strategyFactory.hackStrategy(strategyName, this.generations.get(0).getStrategies()));
             }
         }
         return nextGeneration;

@@ -32,6 +32,9 @@ public class GenerationMatchUpResult {
         this.generation = generation;
     }
 
+    public GenerationMatchUpResult() {
+    }
+
     public long getId() {
         return id;
     }
