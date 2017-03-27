@@ -31,7 +31,7 @@ public class HomeController {
     public String getHomePage() {
 
         Tournament tournament = new Tournament();
-        tournament.setName("test");
+        tournament.setName("tour");
 
         tournament.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
         tournament.addStrategy(this.strategyService.getStrategyByName("Random"));
@@ -45,16 +45,31 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("/reset")
+    @GetMapping("/tour/reset")
     public String testResetTournament() {
-        this.tournamentService.resetTournament(5l);
+        this.tournamentService.resetTournament(9L);
 
         return "home";
     }
 
-    @GetMapping("/sim_reset")
+    @GetMapping("/sim/reset")
+    public String testResetSim() {
+        this.simulationService.resetSimulation(3L);
+
+        return "home";
+    }
+
+    @GetMapping("/sim_get")
     public String testSimReset() {
-        Simulation sim = this.simulationService.getSimulationById(4l);
+        Simulation sim = this.simulationService.getSimulationById(3L);
+        System.out.println();
+        return "home";
+    }
+
+    @GetMapping("/sim/get")
+    public String testSimBroken() {
+        this.simulationRepository.delete(6l);
+        //Simulation sim = this.simulationService.getSimulationById(4l);
         System.out.println();
         return "home";
     }
@@ -66,12 +81,105 @@ public class HomeController {
         simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
         simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
         simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
+        simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
         simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
         simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
         simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
         simulation.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
 
-        simulation.run(5);
+        simulation.run(10);
 
         this.simulationService.save(simulation);
 

@@ -54,4 +54,17 @@ public class SimulationServiceImpl implements SimulationService {
 
         return simulation;
     }
+
+    @Override
+    public void resetSimulation(Long id) {
+        Simulation simulation = this.simulationRepository.getSimulationById(id);
+
+        Generation generation = simulation.getGenerations().get(0);
+        generation.getGenerationMatchUpResults().clear();
+
+        simulation.getGenerations().clear();
+        simulation.getGenerations().add(generation);
+
+        this.simulationRepository.save(simulation);
+    }
 }

@@ -20,7 +20,7 @@ public class Simulation {
     @Basic
     private String name;
 
-    @OneToMany(mappedBy = "simulation", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "simulation", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Generation> generations;
 
     @Transient

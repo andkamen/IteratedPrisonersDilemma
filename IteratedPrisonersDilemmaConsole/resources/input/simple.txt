@@ -6,7 +6,7 @@ print sim allStrats
 
 create sim test
 fill sim test file 1v1
-run sim test 5
+run sim test 10
 print sim test
 
 create tournament 1v1

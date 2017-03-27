@@ -32,7 +32,7 @@ public class Generation {
     @Transient
     private Map<String, Integer> strategyCount;
 
-    @OneToMany(mappedBy = "generation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "generation", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<GenerationMatchUpResult> generationMatchUpResults;
 
     @ManyToOne()

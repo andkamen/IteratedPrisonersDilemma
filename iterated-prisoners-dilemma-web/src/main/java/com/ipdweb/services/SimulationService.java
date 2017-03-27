@@ -7,4 +7,6 @@ public interface SimulationService {
     void save(Simulation simulation);
 
     Simulation getSimulationById(Long id);
+
+    void resetSimulation(Long id);
 }

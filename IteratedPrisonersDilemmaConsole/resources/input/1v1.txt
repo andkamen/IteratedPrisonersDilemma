@@ -1,2 +1,2 @@
-TitForTat 3
-AlwaysDefect 10
+TitForTat 6
+AlwaysDefect 94
