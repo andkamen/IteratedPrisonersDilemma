@@ -1,11 +1,11 @@
 package com.ipdweb.controllers;
 
-import com.ipdweb.entities.Simulation;
-import com.ipdweb.entities.Tournament;
-import com.ipdweb.repositories.SimulationRepository;
-import com.ipdweb.services.SimulationService;
-import com.ipdweb.services.StrategyService;
-import com.ipdweb.services.TournamentService;
+import com.ipdweb.areas.simulation.entities.Simulation;
+import com.ipdweb.areas.tournament.entities.Tournament;
+import com.ipdweb.areas.simulation.repositories.GenerationRepository;
+import com.ipdweb.areas.simulation.services.SimulationService;
+import com.ipdweb.areas.strategy.services.StrategyService;
+import com.ipdweb.areas.tournament.services.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,19 +19,25 @@ public class HomeController {
     @Autowired
     private SimulationService simulationService;
 
-    //TODO create service
     @Autowired
-    private SimulationRepository simulationRepository;
+    private GenerationRepository generationRepository;
 
     @Autowired
     private StrategyService strategyService;
 
-
     @GetMapping("/")
     public String getHomePage() {
+        System.out.println();
+        return "home";
+    }
+
+
+
+    @GetMapping("/tour/create")
+    public String testCreateTournament() {
 
         Tournament tournament = new Tournament();
-        tournament.setName("tour");
+        tournament.setName("tour10");
 
         tournament.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
         tournament.addStrategy(this.strategyService.getStrategyByName("Random"));
@@ -52,6 +58,14 @@ public class HomeController {
         return "home";
     }
 
+
+    @GetMapping("/tour/delete")
+    public String testDeleteTournament() {
+        this.tournamentService.deleteTournamentById(9L);
+
+        return "home";
+    }
+
     @GetMapping("/sim/reset")
     public String testResetSim() {
         this.simulationService.resetSimulation(3L);
@@ -59,25 +73,32 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("/sim_get")
+    @GetMapping("/sim/get")
     public String testSimReset() {
-        Simulation sim = this.simulationService.getSimulationById(3L);
+        Simulation sim = this.simulationService.getSimulationById(4L);
         System.out.println();
         return "home";
     }
 
-    @GetMapping("/sim/get")
+    @GetMapping("/gen/get")
+    public String testGetGeneration() {
+//        Generation stuff = this.generationRepository.getGenerationResultsByGenerationId(20L);
+        System.out.println();
+        return "home";
+    }
+
+    @GetMapping("/sim/delete")
     public String testSimBroken() {
-        this.simulationRepository.delete(6l);
+        this.simulationService.deleteSimulationById(7L);
         //Simulation sim = this.simulationService.getSimulationById(4l);
         System.out.println();
         return "home";
     }
 
 
-    @GetMapping("/simulation")
+    @GetMapping("/simulation/create")
     private String testSim() {
-        Simulation simulation = new Simulation("Sim3");
+        Simulation simulation = new Simulation("Sim5");
         simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
         simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
         simulation.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
