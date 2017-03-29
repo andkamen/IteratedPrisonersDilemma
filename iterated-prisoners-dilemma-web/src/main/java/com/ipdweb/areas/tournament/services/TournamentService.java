@@ -1,6 +1,6 @@
 package com.ipdweb.areas.tournament.services;
 
-import com.ipdweb.areas.tournament.entities.Tournament;
+import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentPreviewViewModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentResultViewModel;
 
@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface TournamentService {
 
-    void save(Tournament tournament);
+    void save(CreateTournamentBindingModel createTournamentBindingModel);
 
     void resetTournament(Long id);
 

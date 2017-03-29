@@ -1,8 +1,13 @@
 package com.ipdweb.areas.tournament.servicesImpl;
 
 
+import com.ipdweb.areas.strategy.entities.StrategyImpl;
+import com.ipdweb.areas.strategy.factories.StrategyFactory;
+import com.ipdweb.areas.strategy.factories.StrategyFactoryImpl;
+import com.ipdweb.areas.strategy.services.StrategyService;
 import com.ipdweb.areas.tournament.entities.Tournament;
 import com.ipdweb.areas.tournament.entities.TournamentMatchUpResult;
+import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentPreviewViewModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentResultViewModel;
 import com.ipdweb.areas.tournament.repositories.TournamentRepository;
@@ -13,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -22,10 +28,27 @@ public class TournamentServiceImpl implements TournamentService {
     private TournamentRepository tournamentRepository;
 
     @Autowired
+    private StrategyService strategyService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override
-    public void save(Tournament tournament) {
+    public void save(CreateTournamentBindingModel createTournamentBindingModel) {
+        List<StrategyImpl> strategies = this.strategyService.getAllStrategyImpls();
+        StrategyFactory strategyFactory = new StrategyFactoryImpl();
+
+        Tournament tournament = this.modelMapper.map(createTournamentBindingModel, Tournament.class);
+
+        for (Map.Entry<String, Integer> entry : createTournamentBindingModel.getStrategies().entrySet()) {
+            for (int i = 0; i < entry.getValue(); i++) {
+                StrategyImpl strategy = strategyFactory.hackStrategy(entry.getKey(), strategies);
+                tournament.addStrategy(strategy);
+            }
+        }
+
+        tournament.playOut();
+
         this.tournamentRepository.save(tournament);
     }
 
@@ -71,6 +94,11 @@ public class TournamentServiceImpl implements TournamentService {
                 tournament.getStrategyScores().set(b, strategyScore);
             }
         }
+        for (int i = 0; i < tournament.getStrategies().size(); i++) {
+            tournament.getStrategiesMap().put(tournament.getStrategies().get(i).getName(), tournament.getStrategyScores().get(i));
+
+        }
+
 
         return tournament;
     }

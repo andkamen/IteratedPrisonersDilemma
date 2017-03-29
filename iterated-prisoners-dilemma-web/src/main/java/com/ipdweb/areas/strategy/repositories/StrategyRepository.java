@@ -14,5 +14,5 @@ public interface StrategyRepository extends JpaRepository<StrategyImpl, Long> {
     StrategyImpl getByName(String name);
 
     @Query(value = "select s from StrategyImpl as s order by s.id")
-    Set<StrategyImpl> findAllStrategies();
+    Set<StrategyImpl> getAllStrategies();
 }

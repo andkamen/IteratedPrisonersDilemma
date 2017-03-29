@@ -32,16 +32,19 @@
                 <td th:text="*{name}">id</td>
                 <td th:text="*{roundCount}">id</td>
                 <td>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                            Tournament Strategies <span class="caret"></span>
-                        </button>
-                        <!--TODO lists only last element-->
-                        <ul class="dropdown-menu" th:each="strategy : ${tournament.strategies}" th:object="${strategy}">
-                            <li th:text="*{name}"></li>
-                        </ul>
+                    <div class="dropdown show">
+                        <a class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Dropdown link
+                        </a>
 
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <ul class="dropdown-item list-unstyled">
+                                <li th:each="strategy : *{strategies}" th:object="${strategy}"
+                                    th:text="*{name}">
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </td>
                 <td><a class="card-button btn btn-success" name="show"
@@ -49,7 +52,7 @@
                 <td><a class="card-button btn btn-warning" name="edit"
                        href="/">Edit</a></td>
                 <td><a class="card-button btn btn-danger" name="delete"
-                       href="/">Delete</a></td>
+                       th:href="@{/tournaments/delete/{id}(id=${tournament.id})}">Delete</a></td>
             </tr>
             </tbody>
         </table>

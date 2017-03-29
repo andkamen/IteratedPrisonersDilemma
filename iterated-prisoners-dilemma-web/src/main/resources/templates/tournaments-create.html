@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create Tournament</title>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css"
+          th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:replace="fragments/parts::menu">
+</header>
+<main>
+
+    <form method="post" th:object="${createTournamentBindingModel}">
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-danger'">
+            <label for="nameId">Name</label>
+            <input type="text" class="form-control" id="nameId" aria-describedby="nameHelp" name="name"
+                   th:field="*{name}"/>
+            <small id="nameHelp" class="form-control-feedback" th:each="error : ${#fields.errors('name')}"
+                   th:text="${error}">Error Message
+            </small>
+        </div>
+
+
+        <tr>
+            <th>Strategy</th>
+            <th>Count</th>
+        </tr>
+        <div th:each="el :  ${strategyMap.strategies}">
+            <tr>
+                <td><input type="text" name="value" th:value="${el.key}" readonly="true"/></td>
+                <td><input type="text" name="value" value="0" th:field="${strategyMap.strategies[__${el.key}__]}"/></td>
+            </tr>
+        </div>
+
+
+        <button type="submit" class="btn btn-secondary">Create</button>
+    </form>
+</main>
+
+<footer th:replace="fragments/parts::footer">
+</footer>
+
+<script th:src="@{/jquery/jquery.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

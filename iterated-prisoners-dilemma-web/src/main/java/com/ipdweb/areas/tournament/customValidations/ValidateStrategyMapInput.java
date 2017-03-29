@@ -1,4 +1,4 @@
-package com.ipdweb.areas.user.customValidations;
+package com.ipdweb.areas.tournament.customValidations;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Constraint(validatedBy = IsPasswordsMatchingValidator.class)
-public @interface IsPasswordsMatching {
+@Constraint(validatedBy = ValidateStrategyMapInputValidator.class)
+public @interface ValidateStrategyMapInput {
 
-    String message() default "Passwords Are Not Matching";
+    String message() default "No null or negative values allowed. Must have at least 2 strategies total";
 
     Class<?>[] groups() default {};
 

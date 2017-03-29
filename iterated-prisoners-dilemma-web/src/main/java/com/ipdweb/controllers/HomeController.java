@@ -1,7 +1,6 @@
 package com.ipdweb.controllers;
 
 import com.ipdweb.areas.simulation.entities.Simulation;
-import com.ipdweb.areas.tournament.entities.Tournament;
 import com.ipdweb.areas.simulation.repositories.GenerationRepository;
 import com.ipdweb.areas.simulation.services.SimulationService;
 import com.ipdweb.areas.strategy.services.StrategyService;
@@ -33,23 +32,7 @@ public class HomeController {
 
 
 
-    @GetMapping("/tour/create")
-    public String testCreateTournament() {
 
-        Tournament tournament = new Tournament();
-        tournament.setName("tour10");
-
-        tournament.addStrategy(this.strategyService.getStrategyByName("TitForTat"));
-        tournament.addStrategy(this.strategyService.getStrategyByName("Random"));
-        tournament.addStrategy(this.strategyService.getStrategyByName("AlwaysDefect"));
-        tournament.addStrategy(this.strategyService.getStrategyByName("Grudger"));
-
-        tournament.playOut();
-
-        this.tournamentService.save(tournament);
-
-        return "home";
-    }
 
     @GetMapping("/tour/reset")
     public String testResetTournament() {

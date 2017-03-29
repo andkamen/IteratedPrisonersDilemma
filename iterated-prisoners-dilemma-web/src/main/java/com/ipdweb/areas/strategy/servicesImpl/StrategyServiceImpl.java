@@ -2,6 +2,7 @@ package com.ipdweb.areas.strategy.servicesImpl;
 
 
 import com.ipdweb.areas.strategy.entities.StrategyImpl;
+import com.ipdweb.areas.strategy.models.viewModels.StrategyMapViewModel;
 import com.ipdweb.areas.strategy.models.viewModels.StrategyViewModel;
 import com.ipdweb.areas.strategy.repositories.StrategyRepository;
 import com.ipdweb.areas.strategy.services.StrategyService;
@@ -9,7 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -33,7 +36,7 @@ public class StrategyServiceImpl implements StrategyService {
 
     @Override
     public Set<StrategyViewModel> getAllStrategies() {
-        Set<StrategyImpl> strategyImpls = this.strategyRepository.findAllStrategies();
+        Set<StrategyImpl> strategyImpls = this.strategyRepository.getAllStrategies();
         Set<StrategyViewModel> strategies = new LinkedHashSet<>();
 
         for (StrategyImpl strategyImpl : strategyImpls) {
@@ -42,5 +45,24 @@ public class StrategyServiceImpl implements StrategyService {
         }
 
         return strategies;
+    }
+
+    @Override
+    public List<StrategyImpl> getAllStrategyImpls() {
+        List<StrategyImpl> strategies = new ArrayList<>();
+        strategies.addAll(this.strategyRepository.getAllStrategies());
+        return strategies;
+    }
+
+    @Override
+    public StrategyMapViewModel getStrategyMap() {
+        Set<StrategyImpl> strategyImpls = this.strategyRepository.getAllStrategies();
+        StrategyMapViewModel strategyMap = new StrategyMapViewModel();
+
+        for (StrategyImpl strategyImpl : strategyImpls) {
+            strategyMap.getStrategies().put(strategyImpl.getName(), 0);
+        }
+
+        return strategyMap;
     }
 }
