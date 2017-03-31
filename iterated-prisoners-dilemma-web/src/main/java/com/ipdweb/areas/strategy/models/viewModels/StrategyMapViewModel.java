@@ -1,6 +1,6 @@
 package com.ipdweb.areas.strategy.models.viewModels;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class StrategyMapViewModel {
@@ -8,7 +8,7 @@ public class StrategyMapViewModel {
     private Map<String, Integer> strategies;
 
     public StrategyMapViewModel() {
-        this.strategies = new HashMap<>();
+        this.strategies = new LinkedHashMap<>();
     }
 
     public Map<String, Integer> getStrategies() {

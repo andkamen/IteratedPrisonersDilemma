@@ -1,9 +1,12 @@
 package com.ipdweb.areas.user.entities;
 
+import com.ipdweb.areas.tournament.entities.Tournament;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,6 +29,11 @@ public class User implements UserDetails {
 
     private boolean isEnabled;
 
+
+    //TODO orphanRemoval needed?
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Tournament> tournaments;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -35,6 +43,7 @@ public class User implements UserDetails {
 
     public User() {
         this.authorities = new HashSet<>();
+        this.tournaments = new ArrayList<>();
     }
 
     @Override
@@ -106,5 +115,13 @@ public class User implements UserDetails {
 
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
+    }
+
+    public List<Tournament> getTournaments() {
+        return tournaments;
+    }
+
+    public void setTournaments(List<Tournament> tournaments) {
+        this.tournaments = tournaments;
     }
 }

@@ -2,7 +2,6 @@ package com.ipdweb.areas.simulation.entities;
 
 import com.ipdweb.areas.strategy.entities.StrategyImpl;
 import com.ipdweb.areas.strategy.entities.interfaces.Strategy;
-import com.ipdweb.exceptions.InsufficientRegisteredStrategiesException;
 import com.ipdweb.areas.utils.Constants;
 
 import javax.persistence.*;
@@ -32,7 +31,7 @@ public class Generation {
     @Transient
     private Map<String, Integer> strategyCount;
 
-    @OneToMany(mappedBy = "generation", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "generation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GenerationMatchUpResult> generationMatchUpResults;
 
     @ManyToOne()
@@ -114,11 +113,6 @@ public class Generation {
     }
 
     public void playOut() {
-        //TODO remove exception? validate from controller?
-        if (strategies.size() < 2) {
-            throw new InsufficientRegisteredStrategiesException();
-        }
-
         Strategy stratA = null;
         Strategy stratB = null;
         int strategyScore;

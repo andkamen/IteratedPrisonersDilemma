@@ -1,10 +1,9 @@
 package com.ipdweb.servicesImpl;
 
-import com.ipdweb.services.VirusService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VirusServiceImpl implements VirusService {
+public class VirusServiceImpl {
 
 //    @Autowired
 //    private VirusRepository virusRepository;

@@ -8,15 +8,25 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ValidateStrategyMapInput
-public class CreateTournamentBindingModel implements StrategyMapModel {
+public class EditTournamentBindingModel implements StrategyMapModel {
 
-    @Size(min = 4,message = "Tournament name must be at least 4 chars long")
+    private long id;
+
+    @Size(min = 4, message = "Tournament name must be at least 4 chars long")
     private String name;
 
-    private Map<String,Integer> strategies;
+    private Map<String, Integer> strategies;
 
-    public CreateTournamentBindingModel() {
+    public EditTournamentBindingModel() {
         this.strategies = new LinkedHashMap<>();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

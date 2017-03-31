@@ -1,7 +1,7 @@
 package com.ipdweb.areas.tournament.customValidations;
 
 
-import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
+import com.ipdweb.areas.tournament.models.bindingModels.interfaces.StrategyMapModel;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -15,10 +15,10 @@ public class ValidateStrategyMapInputValidator implements ConstraintValidator<Va
     }
 
     @Override
-    public boolean isValid(Object tournamentBindingModel, ConstraintValidatorContext constraintValidatorContext) {
-        if (tournamentBindingModel instanceof CreateTournamentBindingModel) {
+    public boolean isValid(Object strategyMapModel, ConstraintValidatorContext constraintValidatorContext) {
+        if (strategyMapModel instanceof StrategyMapModel) {
             int totalCount = 0;
-            for (Map.Entry<String, Integer> entry : ((CreateTournamentBindingModel) tournamentBindingModel).getStrategies().entrySet()) {
+            for (Map.Entry<String, Integer> entry : ((StrategyMapModel) strategyMapModel).getStrategies().entrySet()) {
 
                 if (entry.getValue() == null || entry.getValue() < 0) {
                     return false;

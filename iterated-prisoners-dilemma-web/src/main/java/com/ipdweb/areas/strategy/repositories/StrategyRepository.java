@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import java.util.List;
 
 @Repository
 public interface StrategyRepository extends JpaRepository<StrategyImpl, Long> {
@@ -14,5 +14,5 @@ public interface StrategyRepository extends JpaRepository<StrategyImpl, Long> {
     StrategyImpl getByName(String name);
 
     @Query(value = "select s from StrategyImpl as s order by s.id")
-    Set<StrategyImpl> getAllStrategies();
+    List<StrategyImpl> getAllStrategies();
 }

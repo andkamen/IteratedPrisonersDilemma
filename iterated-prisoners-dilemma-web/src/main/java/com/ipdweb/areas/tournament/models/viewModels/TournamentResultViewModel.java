@@ -1,5 +1,6 @@
 package com.ipdweb.areas.tournament.models.viewModels;
 
+import com.ipdweb.areas.strategy.models.viewModels.StrategyKeyValueViewModel;
 import com.ipdweb.areas.strategy.models.viewModels.StrategyViewModel;
 
 import java.util.ArrayList;
@@ -9,19 +10,29 @@ import java.util.Map;
 
 public class TournamentResultViewModel {
 
+    private String id;
+
     private String name;
 
     private List<StrategyViewModel> strategies;
 
     private List<Integer> strategyScores;
 
-    private Map<String, Integer> strategiesMap;
+    private List<StrategyKeyValueViewModel> strategyScoreKVPairs;
 
     private int roundCount;
 
     public TournamentResultViewModel() {
         this.strategyScores = new ArrayList<>();
-        this.strategiesMap = new LinkedHashMap<>();
+        this.strategyScoreKVPairs = new ArrayList<>();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -56,11 +67,11 @@ public class TournamentResultViewModel {
         this.strategyScores = strategyScores;
     }
 
-    public Map<String, Integer> getStrategiesMap() {
-        return strategiesMap;
+    public List<StrategyKeyValueViewModel> getStrategyScoreKVPairs() {
+        return strategyScoreKVPairs;
     }
 
-    public void setStrategiesMap(Map<String, Integer> strategiesMap) {
-        this.strategiesMap = strategiesMap;
+    public void setStrategyScoreKVPairs(List<StrategyKeyValueViewModel> strategyScoreKVPairs) {
+        this.strategyScoreKVPairs = strategyScoreKVPairs;
     }
 }

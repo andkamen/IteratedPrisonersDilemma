@@ -2,7 +2,7 @@ package com.ipdweb.areas.tournament.entities;
 
 import com.ipdweb.areas.strategy.entities.StrategyImpl;
 import com.ipdweb.areas.strategy.entities.interfaces.Strategy;
-import com.ipdweb.exceptions.InsufficientRegisteredStrategiesException;
+import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.utils.Constants;
 
 import javax.persistence.*;
@@ -31,9 +31,8 @@ public class Tournament {
     @Transient
     private List<Integer> strategyScores;
 
-
     //TODO read about orphanRemoval
-    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
     private List<TournamentMatchUpResult> tournamentMatchUpResults;
 
     @Column(name = "round_count")
@@ -41,6 +40,10 @@ public class Tournament {
 
     @Transient
     private Random rand;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Tournament() {
         this.strategyScores = new ArrayList<>();
@@ -83,11 +86,6 @@ public class Tournament {
     }
 
     public void playOut() {
-        //TODO remove exception? validate from controller?
-        if (strategies.size() < 2) {
-            throw new InsufficientRegisteredStrategiesException();
-        }
-
         Strategy stratA = null;
         Strategy stratB = null;
         int strategyScore;
@@ -230,5 +228,13 @@ public class Tournament {
 
     public void setStrategyScores(List<Integer> strategyScores) {
         this.strategyScores = strategyScores;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

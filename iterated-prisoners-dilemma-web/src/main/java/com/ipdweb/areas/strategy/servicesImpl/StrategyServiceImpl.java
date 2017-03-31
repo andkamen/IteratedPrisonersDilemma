@@ -10,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +35,7 @@ public class StrategyServiceImpl implements StrategyService {
 
     @Override
     public Set<StrategyViewModel> getAllStrategies() {
-        Set<StrategyImpl> strategyImpls = this.strategyRepository.getAllStrategies();
+        List<StrategyImpl> strategyImpls = this.strategyRepository.getAllStrategies();
         Set<StrategyViewModel> strategies = new LinkedHashSet<>();
 
         for (StrategyImpl strategyImpl : strategyImpls) {
@@ -49,14 +48,12 @@ public class StrategyServiceImpl implements StrategyService {
 
     @Override
     public List<StrategyImpl> getAllStrategyImpls() {
-        List<StrategyImpl> strategies = new ArrayList<>();
-        strategies.addAll(this.strategyRepository.getAllStrategies());
-        return strategies;
+        return this.strategyRepository.getAllStrategies();
     }
 
     @Override
     public StrategyMapViewModel getStrategyMap() {
-        Set<StrategyImpl> strategyImpls = this.strategyRepository.getAllStrategies();
+        List<StrategyImpl> strategyImpls = this.strategyRepository.getAllStrategies();
         StrategyMapViewModel strategyMap = new StrategyMapViewModel();
 
         for (StrategyImpl strategyImpl : strategyImpls) {
