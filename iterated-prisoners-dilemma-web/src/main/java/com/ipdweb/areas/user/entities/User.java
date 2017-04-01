@@ -1,5 +1,6 @@
 package com.ipdweb.areas.user.entities;
 
+import com.ipdweb.areas.simulation.entities.Simulation;
 import com.ipdweb.areas.tournament.entities.Tournament;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -31,8 +32,11 @@ public class User implements UserDetails {
 
 
     //TODO orphanRemoval needed?
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tournament> tournaments;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Simulation> simulations;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -44,6 +48,7 @@ public class User implements UserDetails {
     public User() {
         this.authorities = new HashSet<>();
         this.tournaments = new ArrayList<>();
+        this.simulations = new ArrayList<>();
     }
 
     @Override
@@ -123,5 +128,13 @@ public class User implements UserDetails {
 
     public void setTournaments(List<Tournament> tournaments) {
         this.tournaments = tournaments;
+    }
+
+    public List<Simulation> getSimulations() {
+        return simulations;
+    }
+
+    public void setSimulations(List<Simulation> simulations) {
+        this.simulations = simulations;
     }
 }

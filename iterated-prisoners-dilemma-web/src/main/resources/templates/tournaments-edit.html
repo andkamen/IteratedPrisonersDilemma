@@ -43,7 +43,7 @@
                         <input type="text" class="form-control" name="key" th:value="${el.key}" readonly="true"/>
                     </td>
                     <td class="d-inline-block col-2">
-                        <input type="text" class="form-control" name="value" value="0"
+                        <input type="number" min="0" class="form-control" name="value" value="0"
                                th:field="${editTournamentBindingModel.strategies[__${el.key}__]}"/>
                     </td>
                 </tr>

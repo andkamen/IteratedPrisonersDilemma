@@ -3,6 +3,7 @@ package com.ipdweb.areas.simulation.entities;
 import com.ipdweb.areas.strategy.entities.StrategyImpl;
 import com.ipdweb.areas.strategy.factories.StrategyFactory;
 import com.ipdweb.areas.strategy.factories.StrategyFactoryImpl;
+import com.ipdweb.areas.user.entities.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,8 +21,12 @@ public class Simulation {
     @Basic
     private String name;
 
-    @OneToMany(mappedBy = "simulation", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "simulation", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Generation> generations;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Transient
     private StrategyFactory strategyFactory;
@@ -137,6 +142,14 @@ public class Simulation {
         this.name = name;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public List<Generation> getGenerations() {
         return generations;
     }
@@ -145,7 +158,7 @@ public class Simulation {
         this.generations = generations;
     }
 
-    public int getGenerationSize() {
+    public int getGenerationCount() {
         return this.generations.size();
     }
 }

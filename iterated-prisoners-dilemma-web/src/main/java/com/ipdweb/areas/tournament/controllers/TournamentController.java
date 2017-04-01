@@ -35,6 +35,27 @@ public class TournamentController {
         return "tournaments-preview";
     }
 
+    @GetMapping("/create")
+    public String getCreateTournamentPage(@ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, Model model) {
+
+        model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
+
+        return "tournaments-create";
+    }
+
+    @PostMapping("/create")
+    public String createTournament(@Valid @ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
+            return "tournaments-create";
+        }
+
+        this.tournamentService.save(createTournamentBindingModel, (User) authentication.getPrincipal());
+
+        return "redirect:/tournaments";
+    }
+
     @GetMapping("/show/{tourId}")
     public String getTournamentResultPage(@PathVariable long tourId, Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
@@ -51,26 +72,6 @@ public class TournamentController {
         model.addAttribute("data", data);
 
         return "tournaments-show-result";
-    }
-
-    @GetMapping("/create")
-    public String getCreateTournamentPage(@ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, Model model) {
-
-        model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
-
-        return "tournaments-create";
-    }
-
-    @PostMapping("/create")
-    public String createTournament(@Valid @ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
-            return "tournaments-create";
-        }
-
-        this.tournamentService.save(createTournamentBindingModel, (User) authentication.getPrincipal());
-
-        return "redirect:/tournaments";
     }
 
     @GetMapping("/edit/{id}")

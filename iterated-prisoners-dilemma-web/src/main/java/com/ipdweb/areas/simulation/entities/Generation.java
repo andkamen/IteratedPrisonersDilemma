@@ -31,7 +31,8 @@ public class Generation {
     @Transient
     private Map<String, Integer> strategyCount;
 
-    @OneToMany(mappedBy = "generation", cascade = CascadeType.ALL, orphanRemoval = true)
+    //TODO fetch type lazy?
+    @OneToMany(mappedBy = "generation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<GenerationMatchUpResult> generationMatchUpResults;
 
     @ManyToOne()

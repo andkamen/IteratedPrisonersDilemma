@@ -1,7 +1,7 @@
-package com.ipdweb.areas.tournament.customValidations;
+package com.ipdweb.areas.customValidations;
 
 
-import com.ipdweb.areas.tournament.models.bindingModels.interfaces.StrategyMapModel;
+import com.ipdweb.areas.interfaces.StrategyMapModel;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

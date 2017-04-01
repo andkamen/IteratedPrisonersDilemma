@@ -1,21 +1,25 @@
-package com.ipdweb.areas.tournament.models.bindingModels;
+package com.ipdweb.areas.simulation.models.bindingModels;
 
 import com.ipdweb.areas.customValidations.ValidateStrategyMapInput;
 import com.ipdweb.areas.interfaces.StrategyMapModel;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ValidateStrategyMapInput
-public class CreateTournamentBindingModel implements StrategyMapModel {
+public class CreateSimulationBindingModel implements StrategyMapModel {
 
-    @Size(min = 4,message = "Tournament name must be at least 4 chars long")
+    @Size(min = 4,message = "Simulation name must be at least 4 chars long")
     private String name;
+
+    @Min(value = 0, message = "Generation run count cannot be negative")
+    private Integer generationCount;
 
     private Map<String,Integer> strategies;
 
-    public CreateTournamentBindingModel() {
+    public CreateSimulationBindingModel() {
         this.strategies = new LinkedHashMap<>();
     }
 
@@ -25,6 +29,14 @@ public class CreateTournamentBindingModel implements StrategyMapModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getGenerationCount() {
+        return generationCount;
+    }
+
+    public void setGenerationCount(Integer generationCount) {
+        this.generationCount = generationCount;
     }
 
     public Map<String, Integer> getStrategies() {

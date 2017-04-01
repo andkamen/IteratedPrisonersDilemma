@@ -32,7 +32,7 @@ public class Tournament {
     private List<Integer> strategyScores;
 
     //TODO read about orphanRemoval
-    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TournamentMatchUpResult> tournamentMatchUpResults;
 
     @Column(name = "round_count")

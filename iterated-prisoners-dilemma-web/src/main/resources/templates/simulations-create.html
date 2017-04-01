@@ -15,13 +15,22 @@
         <div class="">
         </div>
     </div>
-    <form method="post" th:object="${createTournamentBindingModel}">
+    <form method="post" th:object="${createSimulationBindingModel}">
 
         <div class="form-group col-4" th:classappend="${#fields.hasErrors('name')}? 'has-danger'">
             <label for="nameId">Name</label>
             <input type="text" class="form-control" id="nameId" aria-describedby="nameHelp" name="name"
                    th:field="*{name}"/>
             <small id="nameHelp" class="form-control-feedback" th:each="error : ${#fields.errors('name')}"
+                   th:text="${error}">Error Message
+            </small>
+        </div>
+
+        <div class="form-group col-4" th:classappend="${#fields.hasErrors('generationCount')}? 'has-danger'">
+            <label for="generationCountId">Generation Count</label>
+            <input type="number" min="0" class="form-control" id="generationCountId" aria-describedby="generationCountHelp"
+                   name="generationCount" th:field="*{generationCount}"/>
+            <small id="generationCountHelp" class="form-control-feedback" th:each="error : ${#fields.errors('generationCount')}"
                    th:text="${error}">Error Message
             </small>
         </div>
@@ -50,7 +59,7 @@
                     </td>
                     <td class="d-inline-block col-2">
                         <input type="number" min="0" class="form-control" name="value" value="0"
-                               th:field="${strategyMap.strategies[__${el.key}__]}"/>
+                               th:field="${el.value}"/>
                     </td>
                 </tr>
             </div>

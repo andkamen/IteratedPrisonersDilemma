@@ -1,4 +1,4 @@
-package com.ipdweb.areas.tournament.models.bindingModels.interfaces;
+package com.ipdweb.areas.interfaces;
 
 import java.util.Map;
 
