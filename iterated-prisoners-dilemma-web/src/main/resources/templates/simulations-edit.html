@@ -11,11 +11,7 @@
 </header>
 <main>
 
-    <div class="container">
-        <div class="">
-        </div>
-    </div>
-    <form method="post" th:object="${createSimulationBindingModel}">
+    <form method="post" th:object="${editSimulationBindingModel}">
 
         <div class="form-group col-4" th:classappend="${#fields.hasErrors('name')}? 'has-danger'">
             <label for="nameId">Name</label>
@@ -37,13 +33,12 @@
 
 
         <div class="form-group col-4" th:classappend="${#fields.hasErrors('global')}? 'has-danger'">
-            <small id="strategiesHelp" class="form-control-feedback"
-                   th:each="error : ${#fields.errors('global')}"
+            <small id="strategiesHelp" class="form-control-feedback" th:each="error : ${#fields.errors('global')}"
                    th:text="${error}">Error Message
             </small>
         </div>
-
         <table class="table">
+
             <thead>
             <tr>
                 <th class="d-inline-block col-2">Strategy</th>
@@ -51,26 +46,24 @@
             </tr>
             </thead>
             <tbody>
-            <div th:each="el :  ${strategyMap.strategies}">
+            <div th:each="el :  ${editSimulationBindingModel.strategies}">
                 <tr>
                     <td class="d-inline-block col-2">
-                        <input type="text" class="form-control" name="key" th:value="${el.key}"
-                               readonly="true"/>
+                        <input type="text" class="form-control" name="key" th:value="${el.key}" readonly="true"/>
                     </td>
                     <td class="d-inline-block col-2">
                         <input type="number" min="0" class="form-control" name="value" value="0"
-                               th:field="${strategyMap.strategies[__${el.key}__]}"/>
+                               th:field="${editSimulationBindingModel.strategies[__${el.key}__]}"/>
                     </td>
                 </tr>
             </div>
             </tbody>
         </table>
 
-        <button type="submit" class="btn btn-success">Create</button>
+        <button type="submit" class="btn btn-success">Edit</button>
         <button type="reset" class="btn btn-warning">Reset</button>
         <a class="btn btn-secondary" th:href="@{/tournaments}">Back</a>
     </form>
-
 </main>
 
 <footer th:replace="fragments/parts::footer">

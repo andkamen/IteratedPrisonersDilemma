@@ -75,14 +75,27 @@ public class TournamentController {
     }
 
     @GetMapping("/edit/{id}")
-    public String getEditTournamentPage(@PathVariable long id, Model model) {
+    public String getEditTournamentPage(@PathVariable long id, Model model, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+
+        //TODO add pop up
+        if (!this.tournamentService.ownsTournament(user, id)) {
+            return "redirect:/tournaments";
+        }
 
         model.addAttribute("editTournamentBindingModel", this.tournamentService.getEditTournamentById(id));
         return "tournaments-edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String editTournament(@PathVariable long id, @Valid @ModelAttribute EditTournamentBindingModel editTournamentBindingModel, BindingResult bindingResult, Model model) {
+    public String editTournament(@PathVariable long id, @Valid @ModelAttribute EditTournamentBindingModel editTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+
+        User user = (User) authentication.getPrincipal();
+
+        //TODO add pop up
+        if (!this.tournamentService.ownsTournament(user, id)) {
+            return "redirect:/tournaments";
+        }
 
         if (bindingResult.hasErrors()) {
             return "tournaments-edit";
@@ -95,7 +108,14 @@ public class TournamentController {
 
 
     @GetMapping("/delete/{id}")
-    public String deleteTournament(@PathVariable long id) {
+    public String deleteTournament(@PathVariable long id, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+
+        //TODO add pop up
+        if (!this.tournamentService.ownsTournament(user, id)) {
+            return "redirect:/tournaments";
+        }
+
         this.tournamentService.deleteTournamentById(id);
 
         return "redirect:/tournaments";

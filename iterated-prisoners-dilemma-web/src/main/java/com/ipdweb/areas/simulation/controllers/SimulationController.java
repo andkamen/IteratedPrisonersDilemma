@@ -1,6 +1,7 @@
 package com.ipdweb.areas.simulation.controllers;
 
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
+import com.ipdweb.areas.simulation.models.bindingModels.EditSimulationBindingModel;
 import com.ipdweb.areas.simulation.services.SimulationService;
 import com.ipdweb.areas.strategy.services.StrategyService;
 import com.ipdweb.areas.user.entities.User;
@@ -53,8 +54,46 @@ public class SimulationController {
         return "redirect:/simulations";
     }
 
+    @GetMapping("/edit/{id}")
+    public String getEditSimulationPage(@PathVariable long id, Model model, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+
+        //TODO add pop up
+        if (!this.simulationService.ownsSimulation(user, id)) {
+            return "redirect:/simulations";
+        }
+        model.addAttribute("editSimulationBindingModel", this.simulationService.getEditSimulationById(id));
+        return "simulations-edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editTournament(@PathVariable long id, @Valid @ModelAttribute EditSimulationBindingModel editSimulationBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+
+        User user = (User) authentication.getPrincipal();
+
+        //TODO add pop up
+        if (!this.simulationService.ownsSimulation(user, id)) {
+            return "redirect:/simulations";
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "simulations-edit";
+        }
+
+        this.simulationService.edit(editSimulationBindingModel);
+
+        return "redirect:/simulations";
+    }
+
     @GetMapping("/delete/{id}")
-    public String deleteTournament(@PathVariable long id) {
+    public String deleteTournament(@PathVariable long id, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+
+        //TODO add pop up
+        if (!this.simulationService.ownsSimulation(user, id)) {
+            return "redirect:/simulations";
+        }
+
         this.simulationService.deleteSimulationById(id);
 
         return "redirect:/simulations";
