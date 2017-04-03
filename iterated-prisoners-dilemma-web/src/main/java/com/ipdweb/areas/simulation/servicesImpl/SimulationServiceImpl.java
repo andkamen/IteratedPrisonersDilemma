@@ -6,6 +6,7 @@ import com.ipdweb.areas.simulation.entities.Simulation;
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.EditSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.viewModels.SimulationPreviewViewModel;
+import com.ipdweb.areas.simulation.models.viewModels.SimulationResultViewModel;
 import com.ipdweb.areas.simulation.repositories.SimulationRepository;
 import com.ipdweb.areas.simulation.services.GenerationService;
 import com.ipdweb.areas.simulation.services.SimulationService;
@@ -86,7 +87,7 @@ public class SimulationServiceImpl implements SimulationService {
     }
 
     @Override
-    public Simulation getSimulationById(Long id) {
+    public SimulationResultViewModel getSimulationById(Long id) {
         Simulation simulation = this.simulationRepository.getSimulationById(id);
 
         //initialize strategy count and scores maps with appropriate key's
@@ -106,7 +107,18 @@ public class SimulationServiceImpl implements SimulationService {
             simulation.getGenerations().get(i).setStrategyScores(strategyScores);
         }
 
-        return simulation;
+
+        SimulationResultViewModel simulationResultViewModel = this.modelMapper.map(simulation, SimulationResultViewModel.class);
+        simulationResultViewModel.setGenerationCount(simulation.getGenerationCount() - 1);
+
+        for (int i = 0; i < simulation.getGenerationCount() - 1; i++) {
+            for (Map.Entry<String, Integer> entry : simulation.getGenerations().get(i).getStrategyScores().entrySet()) {
+            //TODO finish filling score matrix
+            }
+        }
+
+
+        return simulationResultViewModel;
     }
 
     @Override

@@ -125,7 +125,9 @@ public class TournamentServiceImpl implements TournamentService {
         List<StrategyKeyValueViewModel> sortedScores = new ArrayList<>();
         //fill scores
         for (int i = 0; i < tournament.getStrategies().size(); i++) {
-            sortedScores.add(new StrategyKeyValueViewModel(tournament.getStrategies().get(i).getName(), tournament.getStrategyScores().get(i)));
+            sortedScores.add(new StrategyKeyValueViewModel(
+                    tournament.getStrategies().get(i).getName(),
+                    tournament.getStrategyScores().get(i)));
         }
         //sort by score value
         sortedScores = sortedScores.stream().sorted((s1, s2) -> s2.getScore().compareTo(s1.getScore())).collect(Collectors.toList());
