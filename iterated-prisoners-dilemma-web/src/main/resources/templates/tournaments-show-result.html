@@ -7,63 +7,32 @@
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script th:inline="javascript">
-        google.charts.load('current', {'packages': ['bar']});
-        google.charts.setOnLoadCallback(drawStuff);
+    <script th:src="@{/js/tournamentResult.js}">
 
-        function drawStuff() {
-            var dataGson = [[${data}]];
-            let strats = JSON.parse(dataGson);
-            var matrix = [];
-            matrix.unshift(["Strategy", "Score"]);
-
-            strats.forEach(function (element) {
-                var result = [];
-                result[0] = (element.name);
-                result[1] = (element.score);
-                matrix.push(result);
-            });
-
-            var data = new google.visualization.arrayToDataTable(matrix);
-
-            var options = {
-                title: 'Strategy Scores',
-                legend: {position: 'none'},
-                axes: {
-                    x: {
-                        0: {side: 'bottom', label: 'Strategies'} // Top x-axis.
-                    }
-                },
-                bar: {groupWidth: "80%"},
-                hAxis: {slantedText: true, slantedTextAngle: 90}
-            };
-
-            var chart = new google.charts.Bar(document.getElementById('top_x_div'));
-            // Convert the Classic options to Material options.
-            chart.draw(data, google.charts.Bar.convertOptions(options));
-        };
     </script>
 
 </head>
-
 <body>
+<p hidden="hidden" id="data" th:attr="data-str=${data}"></p>
+
 <header th:replace="fragments/parts::menu">
 </header>
 <main>
 
-    <div class="container">
+    <div class="container text-center">
         <div class="col-10 offset-1">
             <div id="top_x_div" style="width: 100%; height: 400px;"></div>
         </div>
+        <br/>
+        <br/>
+        <br/>
+        <a class="btn btn-secondary" th:href="@{/tournaments}">Back</a>
     </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
 </main>
 
 <footer th:replace="fragments/parts::footer"></footer>

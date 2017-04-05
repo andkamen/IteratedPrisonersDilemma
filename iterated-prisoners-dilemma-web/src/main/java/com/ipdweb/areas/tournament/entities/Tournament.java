@@ -177,7 +177,7 @@ public class Tournament {
 
     private void setNewRoundCount() {
         //Random number between A and B = rand((B-A)+1) + A
-        int newRoundCount = this.rand.nextInt((Constants.MAX_GENERATION_ROUND_COUNT - Constants.MIN_GENERATION_ROUND_COUNT) + 1) + Constants.MIN_GENERATION_ROUND_COUNT;
+        int newRoundCount = this.rand.nextInt((Constants.MAX_TOURNAMENT_ROUND_COUNT - Constants.MIN_TOURNAMENT_ROUND_COUNT) + 1) + Constants.MIN_TOURNAMENT_ROUND_COUNT;
         this.setRoundCount(newRoundCount);
     }
 

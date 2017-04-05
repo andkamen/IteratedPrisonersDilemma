@@ -7,59 +7,28 @@
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script th:inline="javascript">
-        google.charts.load('current', {'packages': ['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var dataGson = [[${matrix}]];
-            var stratGson = [[${strats}]];
-
-            let strats = JSON.parse(stratGson);
-            let scores = JSON.parse(dataGson);
-
-            var data = new google.visualization.DataTable();
-
-            strats.forEach(function (element) {
-                data.addColumn('number', element)
-            });
-            data.addRows(scores);
-
-            var options = {
-                title: 'Population Distribution Over Generations',
-                curveType: 'function',
-                vAxis: {viewWindowMode: "explicit", viewWindow:{ min: 0 }},
-                hAxis: {
-                    format: '0',
-                    gridlines: {
-                        color: 'transparent'
-                    }
-                }
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-            chart.draw(data, options);
-        }
+    <script th:src="@{/js/simulationResult.js}">
     </script>
-
-
 </head>
 
 <body>
+<p hidden="hidden" id="genCount" th:attr="genCount-str=${genCount}"></p>
+<p hidden="hidden" id="matrix" th:attr="matrix-str=${matrix}"></p>
+<p hidden="hidden" id="strats" th:attr="strats-str=${strats}"></p>
+
 <header th:replace="fragments/parts::menu">
 </header>
 <main>
 
-    <div class="container">
+    <div class="container text-center">
         <div class="col-10 offset-1">
-            <div id="curve_chart" style="width: 100%; height: 400px;"></div>
+            <div id="curve_chart" style="width: 100%; height: 500px;"></div>
         </div>
+        <br/>
+        <br/>
+        <br/>
+        <a class="btn btn-secondary " th:href="@{/simulations}">Back</a>
     </div>
-
-    <br/>
-    <br/>
-    <br/>
     <br/>
     <br/>
     <br/>

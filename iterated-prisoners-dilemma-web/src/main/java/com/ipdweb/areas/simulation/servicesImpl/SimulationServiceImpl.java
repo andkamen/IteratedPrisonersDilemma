@@ -90,12 +90,12 @@ public class SimulationServiceImpl implements SimulationService {
     public SimulationResultViewModel getSimulationById(Long id) {
         Simulation simulation = this.simulationRepository.getSimulationById(id);
 
+        //TODO split in 2+ methods
         //initialize strategy count and scores maps with appropriate key's
         for (Generation generation : simulation.getGenerations()) {
             for (StrategyImpl strategy : generation.getStrategies()) {
                 if (!generation.getStrategyCount().containsKey(strategy.getName())) {
                     generation.getStrategyCount().put(strategy.getName(), 0);
-                    // generation.getStrategyScores().put(strategy.getName(), 0);
                 }
                 generation.getStrategyCount().put(strategy.getName(), generation.getStrategyCount().get(strategy.getName()) + 1);
             }
@@ -111,12 +111,27 @@ public class SimulationServiceImpl implements SimulationService {
         SimulationResultViewModel simulationResultViewModel = this.modelMapper.map(simulation, SimulationResultViewModel.class);
         simulationResultViewModel.setGenerationCount(simulation.getGenerationCount() - 1);
 
+        List<String> strategyNames = new ArrayList<>();
+        Map<String, Integer> strategyIndex = new HashMap<>();
+
+        strategyNames.add("Generation");
+        for (String strategyName : simulation.getGenerations().get(0).getStrategyScores().keySet()) {
+            strategyIndex.put(strategyName, strategyNames.size());
+            strategyNames.add(strategyName);
+        }
+
+        int[][] countMatrix = new int[simulation.getGenerationCount() - 1][strategyNames.size()];
+
         for (int i = 0; i < simulation.getGenerationCount() - 1; i++) {
-            for (Map.Entry<String, Integer> entry : simulation.getGenerations().get(i).getStrategyScores().entrySet()) {
-            //TODO finish filling score matrix
+            countMatrix[i][0] = i;
+            for (Map.Entry<String, Integer> entry : simulation.getGenerations().get(i).getStrategyCount().entrySet()) {
+                int index = strategyIndex.get(entry.getKey());
+                countMatrix[i][index] = entry.getValue();
             }
         }
 
+        simulationResultViewModel.setStrategyNames(strategyNames);
+        simulationResultViewModel.setStrategyCounts(countMatrix);
 
         return simulationResultViewModel;
     }

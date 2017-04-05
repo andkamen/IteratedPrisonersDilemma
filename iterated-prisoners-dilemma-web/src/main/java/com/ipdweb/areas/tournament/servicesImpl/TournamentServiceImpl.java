@@ -68,6 +68,7 @@ public class TournamentServiceImpl implements TournamentService {
         tournament.getTournamentMatchUpResults().clear();
         tournament.setName(editTournamentBindingModel.getName());
 
+
         for (Map.Entry<String, Integer> entry : editTournamentBindingModel.getStrategies().entrySet()) {
             for (int i = 0; i < entry.getValue(); i++) {
                 StrategyImpl strategy = strategyFactory.hackStrategy(entry.getKey(), strategies);

@@ -9,10 +9,9 @@ public class SimulationResultViewModel {
 
     private String name;
 
-    private int[][] strategyScores;
+    private int[][] strategyCounts;
 
     private List<String> strategyNames;
-
 
     private int generationCount;
 
@@ -36,6 +35,21 @@ public class SimulationResultViewModel {
         this.name = name;
     }
 
+    public int[][] getStrategyCounts() {
+        return strategyCounts;
+    }
+
+    public void setStrategyCounts(int[][] strategyCounts) {
+        this.strategyCounts = strategyCounts;
+    }
+
+    public List<String> getStrategyNames() {
+        return strategyNames;
+    }
+
+    public void setStrategyNames(List<String> strategyNames) {
+        this.strategyNames = strategyNames;
+    }
 
     public int getGenerationCount() {
         return generationCount;

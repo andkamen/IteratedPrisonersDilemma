@@ -14,7 +14,7 @@ import java.util.Queue;
 @Entity
 @DiscriminatorValue(value="HardTitForTatStrategy")
 public class HardTitForTatStrategy extends StrategyImpl {
-    private static final String NAME = " HardTitForTat";
+    private static final String NAME = "HardTitForTat";
     private static final String DESCRIPTION = "Cooperates on the first move, and defects if the opponent has defects on any of the previous three moves, else cooperates.";
 
     @Transient

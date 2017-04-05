@@ -2,8 +2,11 @@ package com.ipdweb.areas.utils;
 
 public class Constants {
 
-    public static final int MAX_GENERATION_ROUND_COUNT = 100;
-    public static final int MIN_GENERATION_ROUND_COUNT = 95;
+    public static final int MAX_GENERATION_ROUND_COUNT = 60;
+    public static final int MIN_GENERATION_ROUND_COUNT = 50;
+
+    public static final int MAX_TOURNAMENT_ROUND_COUNT = 100;
+    public static final int MIN_TOURNAMENT_ROUND_COUNT = 90;
 
     //Round Points depending on outcome. From A's perspective. A vs B . points awarded to A
     public static final int COOPERATE_COOPERATE_SCORE = 3;

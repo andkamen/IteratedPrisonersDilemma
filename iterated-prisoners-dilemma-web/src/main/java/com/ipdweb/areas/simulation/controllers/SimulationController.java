@@ -3,6 +3,7 @@ package com.ipdweb.areas.simulation.controllers;
 import com.google.gson.Gson;
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.EditSimulationBindingModel;
+import com.ipdweb.areas.simulation.models.viewModels.SimulationResultViewModel;
 import com.ipdweb.areas.simulation.services.SimulationService;
 import com.ipdweb.areas.strategy.services.StrategyService;
 import com.ipdweb.areas.user.entities.User;
@@ -14,8 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/simulations")
@@ -67,27 +66,29 @@ public class SimulationController {
             return "redirect:/tournaments";
         }
 
-        List<String> firstGenStrats = new ArrayList<>();
-        firstGenStrats.add("Generation");
-        firstGenStrats.add("Strat 1");
-        firstGenStrats.add("Strat 2");
-        firstGenStrats.add("Strat 3");
+//        List<String> firstGenStrats = new ArrayList<>();
+//        firstGenStrats.add("Generation");
+//        firstGenStrats.add("Strat 1");
+//        firstGenStrats.add("Strat 2");
+//        firstGenStrats.add("Strat 3");
+//
+//
+//        int[][] matrix = new int[5][4];
+//        matrix[0] = new int[]{0,10,5,10};
+//        matrix[1] = new int[]{1,3,16,15};
+//        matrix[2] = new int[]{2,8,2,7};
+//        matrix[3] = new int[]{3,8,2,7};
+//        matrix[4] = new int[]{4,8,2,7};
 
 
-        int[][] matrix = new int[5][4];
-        matrix[0] = new int[]{0,10,5,10};
-        matrix[1] = new int[]{1,3,16,15};
-        matrix[2] = new int[]{2,8,2,7};
-        matrix[3] = new int[]{3,8,2,7};
-        matrix[4] = new int[]{4,8,2,7};
+        SimulationResultViewModel simulationResultViewModel = this.simulationService.getSimulationById(simId);
 
+        String strats = new Gson().toJson(simulationResultViewModel.getStrategyNames());
+        String matrix = new Gson().toJson(simulationResultViewModel.getStrategyCounts());
+        String genCount = new Gson().toJson(simulationResultViewModel.getGenerationCount());
 
-//        TournamentResultViewModel tournamentResultViewModel = this.tournamentService.getTournamentById(simId);
-
-        String strats = new Gson().toJson(firstGenStrats);
-        String matrix1 = new Gson().toJson(matrix);
-
-        model.addAttribute("matrix", matrix1);
+        model.addAttribute("genCount", genCount);
+        model.addAttribute("matrix", matrix);
         model.addAttribute("strats", strats);
 
         return "simulations-show-result";
