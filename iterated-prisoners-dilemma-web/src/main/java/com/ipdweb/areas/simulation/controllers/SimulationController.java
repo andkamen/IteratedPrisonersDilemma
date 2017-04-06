@@ -1,6 +1,8 @@
 package com.ipdweb.areas.simulation.controllers;
 
 import com.google.gson.Gson;
+import com.ipdweb.areas.simulation.exceptions.SimulationNotFoundException;
+import com.ipdweb.areas.simulation.exceptions.UnauthorizedSimulationAccessException;
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.EditSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.viewModels.SimulationResultViewModel;
@@ -61,27 +63,10 @@ public class SimulationController {
     public String getSimulationResultPage(@PathVariable long simId, Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
-        //TODO add pop up
-        if (!this.simulationService.ownsSimulation(user, simId)) {
-            return "redirect:/tournaments";
-        }
+        ///Throws exception if doesn't own. Exception redirects to error page
+        this.simulationService.ownsSimulation(user, simId);
 
-//        List<String> firstGenStrats = new ArrayList<>();
-//        firstGenStrats.add("Generation");
-//        firstGenStrats.add("Strat 1");
-//        firstGenStrats.add("Strat 2");
-//        firstGenStrats.add("Strat 3");
-//
-//
-//        int[][] matrix = new int[5][4];
-//        matrix[0] = new int[]{0,10,5,10};
-//        matrix[1] = new int[]{1,3,16,15};
-//        matrix[2] = new int[]{2,8,2,7};
-//        matrix[3] = new int[]{3,8,2,7};
-//        matrix[4] = new int[]{4,8,2,7};
-
-
-        SimulationResultViewModel simulationResultViewModel = this.simulationService.getSimulationById(simId);
+        SimulationResultViewModel simulationResultViewModel = this.simulationService.getSimulationResultViewById(simId);
 
         String strats = new Gson().toJson(simulationResultViewModel.getStrategyNames());
         String matrix = new Gson().toJson(simulationResultViewModel.getStrategyCounts());
@@ -98,10 +83,9 @@ public class SimulationController {
     public String getEditSimulationPage(@PathVariable long id, Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
-        //TODO add pop up
-        if (!this.simulationService.ownsSimulation(user, id)) {
-            return "redirect:/simulations";
-        }
+        ///Throws exception if doesn't own. Exception redirects to error page
+        this.simulationService.ownsSimulation(user, id);
+
         model.addAttribute("editSimulationBindingModel", this.simulationService.getEditSimulationById(id));
         return "simulations-edit";
     }
@@ -111,10 +95,8 @@ public class SimulationController {
 
         User user = (User) authentication.getPrincipal();
 
-        //TODO add pop up
-        if (!this.simulationService.ownsSimulation(user, id)) {
-            return "redirect:/simulations";
-        }
+        ///Throws exception if doesn't own. Exception redirects to error page
+        this.simulationService.ownsSimulation(user, id);
 
         if (bindingResult.hasErrors()) {
             return "simulations-edit";
@@ -129,14 +111,25 @@ public class SimulationController {
     public String deleteTournament(@PathVariable long id, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
-        //TODO add pop up
-        if (!this.simulationService.ownsSimulation(user, id)) {
-            return "redirect:/simulations";
-        }
+        ///Throws exception if doesn't own. Exception redirects to error page
+        this.simulationService.ownsSimulation(user, id);
+
 
         this.simulationService.deleteSimulationById(id);
 
         return "redirect:/simulations";
+    }
+
+    @ExceptionHandler(SimulationNotFoundException.class)
+    public String catchSimulationNotFoundException() {
+
+        return "exceptions/simulation-not-found";
+    }
+
+    @ExceptionHandler(UnauthorizedSimulationAccessException.class)
+    public String catchUnauthorizedSimulationAccessException() {
+
+        return "exceptions/unauthorized-simulation-access";
     }
 
 

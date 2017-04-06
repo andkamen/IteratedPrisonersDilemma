@@ -14,17 +14,15 @@ public interface TournamentService {
 
     void edit(EditTournamentBindingModel editTournamentBindingModel);
 
-    void resetTournament(Long id);
-
-    void deleteTournamentById(Long id);
-
-    TournamentResultViewModel getTournamentById(Long id);
-
     EditTournamentBindingModel getEditTournamentById(Long id);
+
+    TournamentResultViewModel getTournamentResultViewById(Long id);
 
     Set<TournamentPreviewViewModel> getAllTournaments(User user);
 
+    void deleteTournamentById(Long id);
+
     boolean ownsTournament(User user, Long tourId);
 
-    // tournament getTournamentById(Long id);
+    void resetTournament(Long id);
 }

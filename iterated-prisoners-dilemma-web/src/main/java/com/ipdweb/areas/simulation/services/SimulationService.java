@@ -14,15 +14,15 @@ public interface SimulationService {
 
     void edit(EditSimulationBindingModel editSimulationBindingModel);
 
-    SimulationResultViewModel getSimulationById(Long id);
-
     EditSimulationBindingModel getEditSimulationById(Long id);
 
-    void resetSimulation(Long id);
+    SimulationResultViewModel getSimulationResultViewById(Long id);
+
+    Set<SimulationPreviewViewModel> getAllSimulations(User user);
 
     void deleteSimulationById(Long id);
 
-    Set<SimulationPreviewViewModel> getAllSimulations(User user);
+    void resetSimulation(Long id);
 
     boolean ownsSimulation(User user, Long simId);
 }

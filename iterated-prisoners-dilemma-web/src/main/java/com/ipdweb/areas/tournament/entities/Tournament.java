@@ -59,7 +59,7 @@ public class Tournament {
     public void addStrategy(StrategyImpl strategy) {
 //        try {
 //            this.strategies.add(strategy.getClass().getConstructor().newInstance());
-//        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+//        } catch (InstantiationException | UnauthorizedTournamentAccessException | InvocationTargetException | NoSuchMethodException e) {
 //            e.printStackTrace();
 //        }
         this.strategies.add(strategy);

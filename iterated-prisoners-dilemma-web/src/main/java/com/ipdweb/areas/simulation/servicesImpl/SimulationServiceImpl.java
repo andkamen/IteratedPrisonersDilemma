@@ -3,6 +3,8 @@ package com.ipdweb.areas.simulation.servicesImpl;
 
 import com.ipdweb.areas.simulation.entities.Generation;
 import com.ipdweb.areas.simulation.entities.Simulation;
+import com.ipdweb.areas.simulation.exceptions.SimulationNotFoundException;
+import com.ipdweb.areas.simulation.exceptions.UnauthorizedSimulationAccessException;
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.EditSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.viewModels.SimulationPreviewViewModel;
@@ -15,6 +17,7 @@ import com.ipdweb.areas.strategy.factories.StrategyFactory;
 import com.ipdweb.areas.strategy.factories.StrategyFactoryImpl;
 import com.ipdweb.areas.strategy.models.viewModels.StrategyMapViewModel;
 import com.ipdweb.areas.strategy.services.StrategyService;
+import com.ipdweb.areas.user.entities.Role;
 import com.ipdweb.areas.user.entities.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,26 +90,37 @@ public class SimulationServiceImpl implements SimulationService {
     }
 
     @Override
-    public SimulationResultViewModel getSimulationById(Long id) {
-        Simulation simulation = this.simulationRepository.getSimulationById(id);
+    public EditSimulationBindingModel getEditSimulationById(Long id) {
+        //get currently registered strategies + other info
+        Simulation simulationDB = this.simulationRepository.getSimulationById(id);
+        if (simulationDB == null) {
+            throw new SimulationNotFoundException();
+        }
 
-        //TODO split in 2+ methods
-        //initialize strategy count and scores maps with appropriate key's
-        for (Generation generation : simulation.getGenerations()) {
-            for (StrategyImpl strategy : generation.getStrategies()) {
-                if (!generation.getStrategyCount().containsKey(strategy.getName())) {
-                    generation.getStrategyCount().put(strategy.getName(), 0);
-                }
-                generation.getStrategyCount().put(strategy.getName(), generation.getStrategyCount().get(strategy.getName()) + 1);
+        //get a map with all basic strategies and a count of 0
+        StrategyMapViewModel strategyMap = this.strategyService.getStrategyMap();
+        EditSimulationBindingModel editSimulation = this.modelMapper.map(simulationDB, EditSimulationBindingModel.class);
+
+        Map<String, Integer> strategies = strategyMap.getStrategies();
+
+        //make the strategy map represent total number of strats registered in the tournament
+        for (StrategyImpl strategy : simulationDB.getGenerations().get(0).getStrategies()) {
+            if (strategies.containsKey(strategy.getName())) {
+                int count = strategies.get(strategy.getName()) + 1;
+                strategies.put(strategy.getName(), count);
             }
         }
 
-        for (int i = 0; i < simulation.getGenerationCount(); i++) {
-            Map<String, Integer> strategyScores = this.generationService.getGenerationScoreMapByGenerationId(
-                    simulation.getGenerations().get(i).getId());
-            simulation.getGenerations().get(i).setStrategyScores(strategyScores);
-        }
+        editSimulation.setStrategies(strategies);
+        editSimulation.setGenerationCount(simulationDB.getGenerationCount() - 1);
 
+
+        return editSimulation;
+    }
+
+    @Override
+    public SimulationResultViewModel getSimulationResultViewById(Long id) {
+        Simulation simulation = getFullSimulationById(id);
 
         SimulationResultViewModel simulationResultViewModel = this.modelMapper.map(simulation, SimulationResultViewModel.class);
         simulationResultViewModel.setGenerationCount(simulation.getGenerationCount() - 1);
@@ -137,60 +151,15 @@ public class SimulationServiceImpl implements SimulationService {
     }
 
     @Override
-    public EditSimulationBindingModel getEditSimulationById(Long id) {
-        //get currently registered strategies + other info
-        Simulation simulationDB = this.simulationRepository.getSimulationById(id);
-
-        //get a map with all basic strategies and a count of 0
-        StrategyMapViewModel strategyMap = this.strategyService.getStrategyMap();
-        EditSimulationBindingModel editSimulation = this.modelMapper.map(simulationDB, EditSimulationBindingModel.class);
-
-        Map<String, Integer> strategies = strategyMap.getStrategies();
-
-        //make the strategy map represent total number of strats registered in the tournament
-        for (StrategyImpl strategy : simulationDB.getGenerations().get(0).getStrategies()) {
-            if (strategies.containsKey(strategy.getName())) {
-                int count = strategies.get(strategy.getName()) + 1;
-                strategies.put(strategy.getName(), count);
-            }
-        }
-
-        editSimulation.setStrategies(strategies);
-        editSimulation.setGenerationCount(simulationDB.getGenerationCount() - 1);
-
-
-        return editSimulation;
-    }
-
-    @Override
-    public void resetSimulation(Long id) {
-        Simulation simulation = this.simulationRepository.getSimulationById(id);
-
-        Generation generation = simulation.getGenerations().get(0);
-        generation.getGenerationMatchUpResults().clear();
-
-        simulation.getGenerations().clear();
-        simulation.getGenerations().add(generation);
-
-        this.simulationRepository.save(simulation);
-    }
-
-    @Override
-    public void deleteSimulationById(Long id) {
-        this.simulationRepository.delete(id);
-    }
-
-    @Override
     public Set<SimulationPreviewViewModel> getAllSimulations(User user) {
 
         Set<Simulation> allSimulations = this.simulationRepository.getAllSimulations(user);
         Set<SimulationPreviewViewModel> simulations = new LinkedHashSet<>();
 
-
+        //reconstruct strategy Count map. (Its transient so cannot be retrieved from DB)
         for (Simulation sim : allSimulations) {
             SimulationPreviewViewModel simulationPreviewModel = this.modelMapper.map(sim, SimulationPreviewViewModel.class);
 
-            //Create Map with count of each strategy
             Map<String, Integer> strategyCount = new LinkedHashMap<>();
             for (StrategyImpl strategy : sim.getGenerations().get(0).getStrategies()) {
                 if (!strategyCount.containsKey(strategy.getName())) {
@@ -207,12 +176,69 @@ public class SimulationServiceImpl implements SimulationService {
         return simulations;
     }
 
+    //TODO validate delete?
+    @Override
+    public void deleteSimulationById(Long id) {
+        this.simulationRepository.delete(id);
+    }
+
+    @Override
+    public void resetSimulation(Long id) {
+        Simulation simulation = this.simulationRepository.getSimulationById(id);
+
+        Generation generation = simulation.getGenerations().get(0);
+        generation.getGenerationMatchUpResults().clear();
+
+        simulation.getGenerations().clear();
+        simulation.getGenerations().add(generation);
+
+        this.simulationRepository.save(simulation);
+    }
+
     @Override
     public boolean ownsSimulation(User user, Long simId) {
         Simulation simulation = this.simulationRepository.getSimulationById(simId);
+        if (simulation == null) {
+            throw new SimulationNotFoundException();
+        }
 
-        return simulation.getUser().getId() == user.getId();
+        for (Role role : user.getAuthorities()) {
+            if (role.getAuthority().equals("ROLE_ADMIN")) {
+                return true;
+            }
+        }
+
+        if (simulation.getUser().getId() != user.getId()) {
+            throw new UnauthorizedSimulationAccessException();
+        }
+
+        return true;
     }
 
+    private Simulation getFullSimulationById(Long id) {
+        Simulation simulation = this.simulationRepository.getSimulationById(id);
+        if (simulation == null) {
+            throw new SimulationNotFoundException();
+        }
+
+        //initialize strategy count and scores maps with appropriate key's
+        for (Generation generation : simulation.getGenerations()) {
+            for (StrategyImpl strategy : generation.getStrategies()) {
+                if (!generation.getStrategyCount().containsKey(strategy.getName())) {
+                    generation.getStrategyCount().put(strategy.getName(), 0);
+                }
+                generation.getStrategyCount().put(strategy.getName(), generation.getStrategyCount().get(strategy.getName()) + 1);
+            }
+        }
+
+        for (int i = 0; i < simulation.getGenerationCount(); i++) {
+            Map<String, Integer> strategyScores = this.generationService.getGenerationScoreMapByGenerationId(
+                    simulation.getGenerations().get(i).getId());
+            simulation.getGenerations().get(i).setStrategyScores(strategyScores);
+        }
+
+
+        return simulation;
+    }
 
 }

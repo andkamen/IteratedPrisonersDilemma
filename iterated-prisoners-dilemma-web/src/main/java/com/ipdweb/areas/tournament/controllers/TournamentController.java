@@ -2,11 +2,13 @@ package com.ipdweb.areas.tournament.controllers;
 
 import com.google.gson.Gson;
 import com.ipdweb.areas.strategy.services.StrategyService;
+import com.ipdweb.areas.tournament.exceptions.TournamentNotFoundException;
 import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.bindingModels.EditTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentResultViewModel;
 import com.ipdweb.areas.tournament.services.TournamentService;
 import com.ipdweb.areas.user.entities.User;
+import com.ipdweb.areas.tournament.exceptions.UnauthorizedTournamentAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,6 @@ public class TournamentController {
     @Autowired
     private StrategyService strategyService;
 
-    //@PreFilter(value = "Tournament.user = user")
     @GetMapping("")
     public String getTournamentsPage(Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
@@ -60,12 +61,11 @@ public class TournamentController {
     public String getTournamentResultPage(@PathVariable long tourId, Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
-        //TODO add pop up
-        if (!this.tournamentService.ownsTournament(user, tourId)) {
-            return "redirect:/tournaments";
-        }
 
-        TournamentResultViewModel tournamentResultViewModel = this.tournamentService.getTournamentById(tourId);
+        //Throws exception if doesn't own. Exception redirects to error page
+        this.tournamentService.ownsTournament(user, tourId);
+
+        TournamentResultViewModel tournamentResultViewModel = this.tournamentService.getTournamentResultViewById(tourId);
 
         String data = new Gson().toJson(tournamentResultViewModel.getStrategyScoreKVPairs());
 
@@ -78,10 +78,8 @@ public class TournamentController {
     public String getEditTournamentPage(@PathVariable long id, Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
-        //TODO add pop up
-        if (!this.tournamentService.ownsTournament(user, id)) {
-            return "redirect:/tournaments";
-        }
+        //Throws exception if doesn't own. Exception redirects to error page
+        this.tournamentService.ownsTournament(user, id);
 
         model.addAttribute("editTournamentBindingModel", this.tournamentService.getEditTournamentById(id));
         return "tournaments-edit";
@@ -92,10 +90,8 @@ public class TournamentController {
 
         User user = (User) authentication.getPrincipal();
 
-        //TODO add pop up
-        if (!this.tournamentService.ownsTournament(user, id)) {
-            return "redirect:/tournaments";
-        }
+        //Throws exception if doesn't own. Exception redirects to error page
+        this.tournamentService.ownsTournament(user, id);
 
         if (bindingResult.hasErrors()) {
             return "tournaments-edit";
@@ -111,15 +107,25 @@ public class TournamentController {
     public String deleteTournament(@PathVariable long id, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
-        //TODO add pop up
-        if (!this.tournamentService.ownsTournament(user, id)) {
-            return "redirect:/tournaments";
-        }
+        ///Throws exception if doesn't own. Exception redirects to error page
+        this.tournamentService.ownsTournament(user, id);
 
         this.tournamentService.deleteTournamentById(id);
 
         return "redirect:/tournaments";
     }
 
+
+    @ExceptionHandler(TournamentNotFoundException.class)
+    public String catchTournamentNotFoundException() {
+
+        return "exceptions/tournament-not-found";
+    }
+
+    @ExceptionHandler(UnauthorizedTournamentAccessException.class)
+    public String catchUnauthorizedTournamentAccessException() {
+
+        return "exceptions/unauthorized-tournament-access";
+    }
 
 }
