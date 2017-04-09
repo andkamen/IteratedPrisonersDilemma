@@ -2,7 +2,7 @@ package com.ipdweb.areas.simulation.entities;
 
 import com.ipdweb.areas.strategy.entities.StrategyImpl;
 import com.ipdweb.areas.strategy.entities.interfaces.Strategy;
-import com.ipdweb.areas.utils.Constants;
+import com.ipdweb.areas.common.utils.Constants;
 
 import javax.persistence.*;
 import java.lang.reflect.InvocationTargetException;

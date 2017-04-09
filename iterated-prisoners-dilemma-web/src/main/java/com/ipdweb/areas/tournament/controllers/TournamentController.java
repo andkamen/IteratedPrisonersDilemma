@@ -5,6 +5,7 @@ import com.ipdweb.areas.strategy.services.StrategyService;
 import com.ipdweb.areas.tournament.exceptions.TournamentNotFoundException;
 import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.bindingModels.EditTournamentBindingModel;
+import com.ipdweb.areas.tournament.models.bindingModels.SelectMatchUpResultsBindingModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentResultViewModel;
 import com.ipdweb.areas.tournament.services.TournamentService;
 import com.ipdweb.areas.user.entities.User;
@@ -58,9 +59,8 @@ public class TournamentController {
     }
 
     @GetMapping("/show/{tourId}")
-    public String getTournamentResultPage(@PathVariable long tourId, Model model, Authentication authentication) {
+    public String getTournamentResultPage(@PathVariable long tourId, @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, Model model, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-
 
         //Throws exception if doesn't own. Exception redirects to error page
         this.tournamentService.ownsTournament(user, tourId);
@@ -70,6 +70,31 @@ public class TournamentController {
         String data = new Gson().toJson(tournamentResultViewModel.getStrategyScoreKVPairs());
 
         model.addAttribute("data", data);
+        model.addAttribute("strategies", tournamentResultViewModel.getStrategies());
+
+        return "tournaments-show-result";
+    }
+
+    @PostMapping("/show/{tourId}")
+    public String enhanceTournamentResultsPage(@PathVariable long tourId, @Valid @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+
+        User user = (User) authentication.getPrincipal();
+
+        //Throws exception if doesn't own. Exception redirects to error page
+        this.tournamentService.ownsTournament(user, tourId);
+
+        TournamentResultViewModel tournamentResultViewModel = this.tournamentService.getTournamentResultViewById(tourId);
+
+        String data = new Gson().toJson(tournamentResultViewModel.getStrategyScoreKVPairs());
+
+        model.addAttribute("data", data);
+        model.addAttribute("strategies", tournamentResultViewModel.getStrategies());
+
+        if (bindingResult.hasErrors()) {
+            return "tournaments-show-result";
+        }
+
+        //TODO add table with match up results now
 
         return "tournaments-show-result";
     }

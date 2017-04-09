@@ -1,4 +1,4 @@
-package com.ipdweb.areas.interfaces;
+package com.ipdweb.areas.common.interfaces;
 
 import java.util.Map;
 

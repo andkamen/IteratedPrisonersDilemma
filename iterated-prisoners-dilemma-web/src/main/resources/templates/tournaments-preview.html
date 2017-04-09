@@ -14,48 +14,55 @@
         <br/>
         <div class="h1">Your Tournaments</div>
         <br/>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Rounds #</th>
-                <th>Strategies</th>
-                <th style="width:8%">Show</th>
-                <th style="width:8%">Edit</th>
-                <th style="width:8%">Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="tournament,iter : ${tournaments}" th:object="${tournament}">
-                <td th:text="${iter.index}+1"></td>
-                <td th:text="*{name}">id</td>
-                <td th:text="*{roundCount}">id</td>
-                <td>
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            Dropdown link
-                        </a>
+        <div class="text-center" th:if="${tournaments.size() == 0}">
+            <h3>You have no registered tournaments right now.</h3>
+            <a class="card-button btn btn-primary" name="create"
+               th:href="@{/tournaments/create}">Create</a>
+        </div>
+        <div th:unless="${tournaments.size() == 0}">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Rounds #</th>
+                    <th>Strategies</th>
+                    <th style="width:8%">Show</th>
+                    <th style="width:8%">Edit</th>
+                    <th style="width:8%">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="tournament,iter : ${tournaments}" th:object="${tournament}">
+                    <td th:text="${iter.index}+1"></td>
+                    <td th:text="*{name}">id</td>
+                    <td th:text="*{roundCount}">id</td>
+                    <td>
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                Dropdown link
+                            </a>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <ul class="dropdown-item list-unstyled">
-                                <li th:each="strategy : *{strategies}" th:object="${strategy}"
-                                    th:text="*{name}">
-                                </li>
-                            </ul>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <ul class="dropdown-item list-unstyled">
+                                    <li th:each="strategy : *{strategies}" th:object="${strategy}"
+                                        th:text="*{name}">
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td><a class="card-button btn btn-success" name="show"
-                       th:href="@{/tournaments/show/{id}(id=${tournament.id})}">Show</a></td>
-                <td><a class="card-button btn btn-warning" name="edit"
-                       th:href="@{/tournaments/edit/{id}(id=${tournament.id})}">Edit</a></td>
-                <td><a class="card-button btn btn-danger" name="delete"
-                       th:href="@{/tournaments/delete/{id}(id=${tournament.id})}">Delete</a></td>
-            </tr>
-            </tbody>
-        </table>
+                    </td>
+                    <td><a class="card-button btn btn-success" name="show"
+                           th:href="@{/tournaments/show/{id}(id=${tournament.id})}">Show</a></td>
+                    <td><a class="card-button btn btn-warning" name="edit"
+                           th:href="@{/tournaments/edit/{id}(id=${tournament.id})}">Edit</a></td>
+                    <td><a class="card-button btn btn-danger" name="delete"
+                           th:href="@{/tournaments/delete/{id}(id=${tournament.id})}">Delete</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </main>
 

@@ -1,4 +1,4 @@
-package com.ipdweb.areas.customValidations;
+package com.ipdweb.areas.common.customValidations;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

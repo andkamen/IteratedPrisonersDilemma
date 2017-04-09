@@ -40,6 +40,7 @@ public class TournamentMatchUpResult {
     }
 
     public TournamentMatchUpResult() {
+        this.rounds = new LinkedHashSet<>();
     }
 
     public long getId() {

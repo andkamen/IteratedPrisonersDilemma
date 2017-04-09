@@ -1,7 +1,7 @@
 package com.ipdweb.areas.tournament.models.bindingModels;
 
-import com.ipdweb.areas.customValidations.ValidateStrategyMapInput;
-import com.ipdweb.areas.interfaces.StrategyMapModel;
+import com.ipdweb.areas.common.customValidations.ValidateStrategyMapInput;
+import com.ipdweb.areas.common.interfaces.StrategyMapModel;
 
 import javax.validation.constraints.Size;
 import java.util.LinkedHashMap;

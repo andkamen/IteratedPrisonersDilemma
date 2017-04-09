@@ -26,7 +26,31 @@
         <br/>
         <br/>
         <br/>
-        <a class="btn btn-secondary" th:href="@{/tournaments}">Back</a>
+
+        <form method="post" th:object="${selectMatchUpResultsBindingModel}">
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('strategyMatchUps')}? 'has-danger'">
+                <label for="selectStrategies">Match Up Result Select</label>
+                <select multiple="true" class="form-control col-4 offset-4" id="selectStrategies" name="strategyMatchUps" th:field="*{strategyMatchUps}">
+                    <div th:each="el :  ${strategies}">
+                        <option th:text="${el.name}"></option>
+                    </div>
+                </select>
+                <small id="selectHelp" class="form-control-feedback" th:each="error : ${#fields.errors('strategyMatchUps')}" th:text="${error}">Error Message</small>
+            </div>
+
+            <button type="submit" class="btn btn-success">Show Match Ups</button>
+        </form>
+
+        <br/>
+        <br/>
+        <br/>
+
+        <a class="btn btn-primary" th:href="@{/tournaments}">Back</a>
+        <a class="card-button btn btn-warning" name="edit"
+           th:href="@{/tournaments/edit/{id}(id=${id})}">Edit</a>
+        <a class="card-button btn btn-danger" name="delete"
+           th:href="@{/tournaments/delete/{id}(id=${id})}">Delete</a>
     </div>
     <br/>
     <br/>

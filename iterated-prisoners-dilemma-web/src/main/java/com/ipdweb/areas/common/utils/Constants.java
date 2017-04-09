@@ -1,4 +1,4 @@
-package com.ipdweb.areas.utils;
+package com.ipdweb.areas.common.utils;
 
 public class Constants {
 

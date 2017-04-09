@@ -22,15 +22,13 @@ window.onload = function () {
         var options = {
             title: 'Population Distribution Over Generations',
             curveType: 'function',
-            axes: {
-                x: {side: 'bottom', label: 'Generation #'},
-                y: {label: 'Strategy Count'},
-            },
             vAxis: {
+                title: "Strategy Count",
                 viewWindowMode: "explicit",
                 viewWindow: {min: 0}
             },
             hAxis: {
+                title: "Generation #",
                 viewWindowMode: "explicit",
                 viewWindow: {min: 0},
                 format: '0',
