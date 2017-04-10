@@ -2,7 +2,9 @@ package com.ipdweb.areas.tournament.entities;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,17 +32,17 @@ public class TournamentMatchUpResult {
     private Tournament tournament;
 
     @OneToMany(mappedBy = "tournamentMatchUpResult", cascade = CascadeType.ALL)
-    private Set<Round> rounds;
+    private List<Round> rounds;
 
     public TournamentMatchUpResult(String stratAName, String stratBName, Tournament tournament) {
         this.stratAName = stratAName;
         this.stratBName = stratBName;
         this.tournament = tournament;
-        this.rounds = new LinkedHashSet<>();
+        this.rounds = new ArrayList<>();
     }
 
     public TournamentMatchUpResult() {
-        this.rounds = new LinkedHashSet<>();
+        this.rounds = new ArrayList<>();
     }
 
     public long getId() {
@@ -91,11 +93,11 @@ public class TournamentMatchUpResult {
         this.tournament = tournament;
     }
 
-    public Set<Round> getRounds() {
+    public List<Round> getRounds() {
         return rounds;
     }
 
-    public void setRounds(Set<Round> rounds) {
+    public void setRounds(List<Round> rounds) {
         this.rounds = rounds;
     }
 

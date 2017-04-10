@@ -13,6 +13,9 @@ import com.ipdweb.areas.tournament.exceptions.TournamentNotFoundException;
 import com.ipdweb.areas.tournament.exceptions.UnauthorizedTournamentAccessException;
 import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.bindingModels.EditTournamentBindingModel;
+import com.ipdweb.areas.tournament.models.bindingModels.SelectMatchUpResultsBindingModel;
+import com.ipdweb.areas.tournament.models.viewModels.MatchUpResultViewModel;
+import com.ipdweb.areas.tournament.models.viewModels.TournamentMatchUpResultViewModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentPreviewViewModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentResultViewModel;
 import com.ipdweb.areas.tournament.repositories.TournamentRepository;
@@ -143,6 +146,34 @@ public class TournamentServiceImpl implements TournamentService {
 
         return tournaments;
     }
+
+    @Override
+    public TournamentMatchUpResultViewModel getTournamentMatchUpResults(SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel) {
+       Tournament tournament = this.tournamentRepository.getTournamentById(selectMatchUpResultsBindingModel.getId());
+
+       //remove tournament match up results that are not needed
+       Iterator iter = tournament.getTournamentMatchUpResults().iterator();
+       while(iter.hasNext()){
+           TournamentMatchUpResult tournamentMatchUpResult = (TournamentMatchUpResult)iter.next();
+
+           boolean foundMatch = false;
+           for (String strategy : selectMatchUpResultsBindingModel.getStrategyMatchUps()) {
+               if(tournamentMatchUpResult.getStratAName().equals(strategy) || tournamentMatchUpResult.getStratBName().equals(strategy)){
+                   foundMatch=true;
+               }
+           }
+           if(!foundMatch){
+               iter.remove();
+           }
+       }
+
+       TournamentMatchUpResultViewModel tournamentMatchUpResultViewModel = this.modelMapper.map(tournament,TournamentMatchUpResultViewModel.class);
+
+
+
+        return tournamentMatchUpResultViewModel;
+    }
+
 
     @Override
     public void deleteTournamentById(Long id) {

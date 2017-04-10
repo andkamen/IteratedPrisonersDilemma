@@ -1,6 +1,8 @@
 package com.ipdweb.areas.tournament.models.viewModels;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class TournamentMatchUpResultViewModel {
@@ -11,10 +13,10 @@ public class TournamentMatchUpResultViewModel {
 
     private int roundCount;
 
-    private Set<MatchUpResultViewModel> matchUpResults;
+    private List<MatchUpResultViewModel> matchUpResults;
 
     public TournamentMatchUpResultViewModel() {
-        this.matchUpResults = new LinkedHashSet<>();
+        this.matchUpResults = new ArrayList<>();
     }
 
     public String getId() {
@@ -41,11 +43,11 @@ public class TournamentMatchUpResultViewModel {
         this.roundCount = roundCount;
     }
 
-    public Set<MatchUpResultViewModel> getMatchUpResults() {
+    public List<MatchUpResultViewModel> getMatchUpResults() {
         return matchUpResults;
     }
 
-    public void setMatchUpResults(Set<MatchUpResultViewModel> matchUpResults) {
+    public void setMatchUpResults(List<MatchUpResultViewModel> matchUpResults) {
         this.matchUpResults = matchUpResults;
     }
 }

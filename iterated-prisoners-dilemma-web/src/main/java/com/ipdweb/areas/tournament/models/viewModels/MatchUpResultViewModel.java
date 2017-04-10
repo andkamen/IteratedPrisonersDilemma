@@ -1,6 +1,8 @@
 package com.ipdweb.areas.tournament.models.viewModels;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class MatchUpResultViewModel {
@@ -13,10 +15,10 @@ public class MatchUpResultViewModel {
 
     private int stratBScore;
 
-    private Set<RoundViewModel> rounds;
+    private List<RoundViewModel> rounds;
 
     public MatchUpResultViewModel() {
-        this.rounds = new LinkedHashSet<>();
+        this.rounds = new ArrayList<>();
     }
 
     public String getStratAName() {
@@ -51,11 +53,11 @@ public class MatchUpResultViewModel {
         this.stratBScore = stratBScore;
     }
 
-    public Set<RoundViewModel> getRounds() {
+    public List<RoundViewModel> getRounds() {
         return rounds;
     }
 
-    public void setRounds(Set<RoundViewModel> rounds) {
+    public void setRounds(List<RoundViewModel> rounds) {
         this.rounds = rounds;
     }
 }

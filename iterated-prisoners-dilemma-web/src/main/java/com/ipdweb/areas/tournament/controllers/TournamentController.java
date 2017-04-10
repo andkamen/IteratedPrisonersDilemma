@@ -6,6 +6,7 @@ import com.ipdweb.areas.tournament.exceptions.TournamentNotFoundException;
 import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.bindingModels.EditTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.bindingModels.SelectMatchUpResultsBindingModel;
+import com.ipdweb.areas.tournament.models.viewModels.TournamentMatchUpResultViewModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentResultViewModel;
 import com.ipdweb.areas.tournament.services.TournamentService;
 import com.ipdweb.areas.user.entities.User;
@@ -69,12 +70,14 @@ public class TournamentController {
 
         String data = new Gson().toJson(tournamentResultViewModel.getStrategyScoreKVPairs());
 
+        model.addAttribute("id",tournamentResultViewModel.getId());
         model.addAttribute("data", data);
         model.addAttribute("strategies", tournamentResultViewModel.getStrategies());
 
         return "tournaments-show-result";
     }
 
+    //TODO code repetition? check if redirect is possible
     @PostMapping("/show/{tourId}")
     public String enhanceTournamentResultsPage(@PathVariable long tourId, @Valid @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
 
@@ -87,6 +90,7 @@ public class TournamentController {
 
         String data = new Gson().toJson(tournamentResultViewModel.getStrategyScoreKVPairs());
 
+        model.addAttribute("id",tournamentResultViewModel.getId());
         model.addAttribute("data", data);
         model.addAttribute("strategies", tournamentResultViewModel.getStrategies());
 
@@ -94,7 +98,11 @@ public class TournamentController {
             return "tournaments-show-result";
         }
 
+        selectMatchUpResultsBindingModel.setId(tourId);
+        TournamentMatchUpResultViewModel tournamentMatchUpResultViewModel = this.tournamentService.getTournamentMatchUpResults(selectMatchUpResultsBindingModel);
+
         //TODO add table with match up results now
+
 
         return "tournaments-show-result";
     }
