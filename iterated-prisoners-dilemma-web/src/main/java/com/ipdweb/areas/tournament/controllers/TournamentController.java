@@ -101,8 +101,7 @@ public class TournamentController {
         selectMatchUpResultsBindingModel.setId(tourId);
         TournamentMatchUpResultViewModel tournamentMatchUpResultViewModel = this.tournamentService.getTournamentMatchUpResults(selectMatchUpResultsBindingModel);
 
-        //TODO add table with match up results now
-
+        model.addAttribute("tournamentMatchUpResultViewModel",tournamentMatchUpResultViewModel);
 
         return "tournaments-show-result";
     }

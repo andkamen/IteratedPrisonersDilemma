@@ -31,18 +31,67 @@
 
             <div class="form-group" th:classappend="${#fields.hasErrors('strategyMatchUps')}? 'has-danger'">
                 <label for="selectStrategies">Match Up Result Select</label>
-                <select multiple="true" class="form-control col-4 offset-4" id="selectStrategies" name="strategyMatchUps" th:field="*{strategyMatchUps}">
+                <select multiple="true" class="form-control col-4 offset-4" id="selectStrategies"
+                        name="strategyMatchUps" th:field="*{strategyMatchUps}">
                     <div th:each="el :  ${strategies}">
                         <option th:text="${el.name}"></option>
                     </div>
                 </select>
-                <small id="selectHelp" class="form-control-feedback" th:each="error : ${#fields.errors('strategyMatchUps')}" th:text="${error}">Error Message</small>
+                <small id="selectHelp" class="form-control-feedback"
+                       th:each="error : ${#fields.errors('strategyMatchUps')}" th:text="${error}">Error Message
+                </small>
             </div>
 
             <button type="submit" class="btn btn-success">Show Match Ups</button>
         </form>
 
         <br/>
+        <br/>
+        <br/>
+
+        <div th:if="${tournamentMatchUpResultViewModel != null}">
+            <div style="overflow-y: scroll; height: 500px ">
+                <div th:each="matchUpResult : ${tournamentMatchUpResultViewModel.matchUpResults}"
+                     th:object="${matchUpResult}">
+                    <div class="text-left" th:text="${matchUpResult.stratAName + ' -> ' + matchUpResult.stratAScore +
+                ' || ' + matchUpResult.stratBName + ' -> ' + matchUpResult.stratBScore} "></div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th style="border: solid 1px lightgray">#</th>
+                                <th style="border: solid 1px lightgray"
+                                    th:each="el, iter:${matchUpResult.rounds}"
+                                    th:text="${iter.index}+1">#
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td style="border: solid 1px lightgray" th:text="*{stratAName}">1</td>
+                                <td style="border: solid 1px lightgray"
+                                    th:each="el:${matchUpResult.rounds}"
+                                    th:text="${el.stratAMove}?'C':'D'">C
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: solid 1px lightgray" th:text="*{stratBName}">1</td>
+                                <td style="border: solid 1px lightgray"
+                                    th:each="el:${matchUpResult.rounds}"
+                                    th:text="${el.stratBMove}?'C':'D'">C
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+        </div>
+
+
         <br/>
         <br/>
 
