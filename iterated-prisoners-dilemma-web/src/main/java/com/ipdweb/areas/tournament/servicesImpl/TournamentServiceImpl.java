@@ -14,7 +14,6 @@ import com.ipdweb.areas.tournament.exceptions.UnauthorizedTournamentAccessExcept
 import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.bindingModels.EditTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.bindingModels.SelectMatchUpResultsBindingModel;
-import com.ipdweb.areas.tournament.models.viewModels.MatchUpResultViewModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentMatchUpResultViewModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentPreviewViewModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentResultViewModel;
@@ -73,7 +72,6 @@ public class TournamentServiceImpl implements TournamentService {
         tournament.getTournamentMatchUpResults().clear();
         tournament.setName(editTournamentBindingModel.getName());
 
-
         for (Map.Entry<String, Integer> entry : editTournamentBindingModel.getStrategies().entrySet()) {
             for (int i = 0; i < entry.getValue(); i++) {
                 StrategyImpl strategy = strategyFactory.hackStrategy(entry.getKey(), strategies);
@@ -126,7 +124,6 @@ public class TournamentServiceImpl implements TournamentService {
         }
         //sort by score value
         sortedScores = sortedScores.stream().sorted((s1, s2) -> s2.getScore().compareTo(s1.getScore())).collect(Collectors.toList());
-
         tournament.setStrategyScoreKVPairs(sortedScores);
 
         return tournament;
@@ -139,7 +136,6 @@ public class TournamentServiceImpl implements TournamentService {
         Set<TournamentPreviewViewModel> tournaments = new LinkedHashSet<>();
 
         for (Tournament tour : allTournaments) {
-
             TournamentPreviewViewModel tournament = this.modelMapper.map(tour, TournamentPreviewViewModel.class);
             tournaments.add(tournament);
         }
@@ -151,42 +147,10 @@ public class TournamentServiceImpl implements TournamentService {
     public TournamentMatchUpResultViewModel getTournamentMatchUpResults(SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel) {
         Tournament tournament = this.tournamentRepository.getTournamentById(selectMatchUpResultsBindingModel.getId());
 
-        //remove tournament match up results that do not match filter criteria
-        Iterator iter = tournament.getTournamentMatchUpResults().iterator();
-        while (iter.hasNext()) {
-            TournamentMatchUpResult tournamentMatchUpResult = (TournamentMatchUpResult) iter.next();
-            boolean foundMatch = false;
-            //Single strategy match filter criteria:
-            if (!selectMatchUpResultsBindingModel.isFilterOnlySelected()) {
-                for (String strategy : selectMatchUpResultsBindingModel.getStrategyMatchUps()) {
-                    if (tournamentMatchUpResult.getStratAName().equals(strategy) || tournamentMatchUpResult.getStratBName().equals(strategy)) {
-                        foundMatch = true;
-                        break;
-                    }
-                }
-            } else {
-                //double strategy match filter criteria
-                String[] strategies = selectMatchUpResultsBindingModel.getStrategyMatchUps();
-                for (int i = 0; i < strategies.length; i++) {
-                    if (foundMatch) {
-                        break;
-                    }
-                    for (int j = i + 1; j < strategies.length; j++) {
-                        boolean stratAMatch = (tournamentMatchUpResult.getStratAName().equals(strategies[i]) ||
-                                tournamentMatchUpResult.getStratAName().equals(strategies[j]));
-                        boolean stratBMatch = (tournamentMatchUpResult.getStratBName().equals(strategies[i]) ||
-                                tournamentMatchUpResult.getStratBName().equals(strategies[j]));
-
-                        if (stratAMatch && stratBMatch) {
-                            foundMatch = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (!foundMatch) {
-                iter.remove();
-            }
+        if (selectMatchUpResultsBindingModel.isFilterOnlySelected()) {
+            tournament = this.getDoubleFilteredTournament(tournament, selectMatchUpResultsBindingModel.getStrategyMatchUps());
+        } else {
+            tournament = this.getSingleFilteredTournament(tournament, selectMatchUpResultsBindingModel.getStrategyMatchUps());
         }
 
         TournamentMatchUpResultViewModel tournamentMatchUpResultViewModel = this.modelMapper.map(tournament, TournamentMatchUpResultViewModel.class);
@@ -259,6 +223,57 @@ public class TournamentServiceImpl implements TournamentService {
 
                 strategyScore = tournament.getStrategyScores().get(b) + tournamentMatchUpResult.getStratBScore();
                 tournament.getStrategyScores().set(b, strategyScore);
+            }
+        }
+
+        return tournament;
+    }
+
+    private Tournament getDoubleFilteredTournament(Tournament tournament, String[] strategies) {
+        Iterator iter = tournament.getTournamentMatchUpResults().iterator();
+        while (iter.hasNext()) {
+            TournamentMatchUpResult tournamentMatchUpResult = (TournamentMatchUpResult) iter.next();
+            boolean foundMatch = false;
+
+            for (int i = 0; i < strategies.length; i++) {
+                if (foundMatch) {
+                    break;
+                }
+                for (int j = i + 1; j < strategies.length; j++) {
+                    boolean stratAMatch = (tournamentMatchUpResult.getStratAName().equals(strategies[i]) ||
+                            tournamentMatchUpResult.getStratAName().equals(strategies[j]));
+                    boolean stratBMatch = (tournamentMatchUpResult.getStratBName().equals(strategies[i]) ||
+                            tournamentMatchUpResult.getStratBName().equals(strategies[j]));
+
+                    if (stratAMatch && stratBMatch) {
+                        foundMatch = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!foundMatch) {
+                iter.remove();
+            }
+        }
+        return tournament;
+    }
+
+    private Tournament getSingleFilteredTournament(Tournament tournament, String[] strategies) {
+        Iterator iter = tournament.getTournamentMatchUpResults().iterator();
+        while (iter.hasNext()) {
+            TournamentMatchUpResult tournamentMatchUpResult = (TournamentMatchUpResult) iter.next();
+            boolean foundMatch = false;
+
+            for (String strategy : strategies) {
+                if (tournamentMatchUpResult.getStratAName().equals(strategy) || tournamentMatchUpResult.getStratBName().equals(strategy)) {
+                    foundMatch = true;
+                    break;
+                }
+            }
+
+            if (!foundMatch) {
+                iter.remove();
             }
         }
 
