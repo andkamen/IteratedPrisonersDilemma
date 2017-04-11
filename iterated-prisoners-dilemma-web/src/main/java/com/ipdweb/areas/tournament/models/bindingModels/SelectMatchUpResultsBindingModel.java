@@ -1,12 +1,16 @@
 package com.ipdweb.areas.tournament.models.bindingModels;
 
+import com.ipdweb.areas.tournament.customValidations.FilterOnlySelected;
+
 import javax.validation.constraints.Size;
 
+@FilterOnlySelected
 public class SelectMatchUpResultsBindingModel {
 
     private long id;
 
-    @Size(min = 1, message = "You must select at least 1 strategy to see detailed match up results")
+    private boolean filterOnlySelected;
+
     private String[] strategyMatchUps;
 
     public SelectMatchUpResultsBindingModel() {
@@ -26,5 +30,13 @@ public class SelectMatchUpResultsBindingModel {
 
     public void setStrategyMatchUps(String[] strategyMatchUps) {
         this.strategyMatchUps = strategyMatchUps;
+    }
+
+    public boolean isFilterOnlySelected() {
+        return filterOnlySelected;
+    }
+
+    public void setFilterOnlySelected(boolean filterOnlySelected) {
+        this.filterOnlySelected = filterOnlySelected;
     }
 }

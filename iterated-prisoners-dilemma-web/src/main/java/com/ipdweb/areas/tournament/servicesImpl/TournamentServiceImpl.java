@@ -149,27 +149,47 @@ public class TournamentServiceImpl implements TournamentService {
 
     @Override
     public TournamentMatchUpResultViewModel getTournamentMatchUpResults(SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel) {
-       Tournament tournament = this.tournamentRepository.getTournamentById(selectMatchUpResultsBindingModel.getId());
+        Tournament tournament = this.tournamentRepository.getTournamentById(selectMatchUpResultsBindingModel.getId());
 
-       //remove tournament match up results that are not needed
-       Iterator iter = tournament.getTournamentMatchUpResults().iterator();
-       while(iter.hasNext()){
-           TournamentMatchUpResult tournamentMatchUpResult = (TournamentMatchUpResult)iter.next();
+        //remove tournament match up results that do not match filter criteria
+        Iterator iter = tournament.getTournamentMatchUpResults().iterator();
+        while (iter.hasNext()) {
+            TournamentMatchUpResult tournamentMatchUpResult = (TournamentMatchUpResult) iter.next();
+            boolean foundMatch = false;
+            //Single strategy match filter criteria:
+            if (!selectMatchUpResultsBindingModel.isFilterOnlySelected()) {
+                for (String strategy : selectMatchUpResultsBindingModel.getStrategyMatchUps()) {
+                    if (tournamentMatchUpResult.getStratAName().equals(strategy) || tournamentMatchUpResult.getStratBName().equals(strategy)) {
+                        foundMatch = true;
+                        break;
+                    }
+                }
+            } else {
+                //double strategy match filter criteria
+                String[] strategies = selectMatchUpResultsBindingModel.getStrategyMatchUps();
+                for (int i = 0; i < strategies.length; i++) {
+                    if (foundMatch) {
+                        break;
+                    }
+                    for (int j = i + 1; j < strategies.length; j++) {
+                        boolean stratAMatch = (tournamentMatchUpResult.getStratAName().equals(strategies[i]) ||
+                                tournamentMatchUpResult.getStratAName().equals(strategies[j]));
+                        boolean stratBMatch = (tournamentMatchUpResult.getStratBName().equals(strategies[i]) ||
+                                tournamentMatchUpResult.getStratBName().equals(strategies[j]));
 
-           boolean foundMatch = false;
-           for (String strategy : selectMatchUpResultsBindingModel.getStrategyMatchUps()) {
-               if(tournamentMatchUpResult.getStratAName().equals(strategy) || tournamentMatchUpResult.getStratBName().equals(strategy)){
-                   foundMatch=true;
-               }
-           }
-           if(!foundMatch){
-               iter.remove();
-           }
-       }
+                        if (stratAMatch && stratBMatch) {
+                            foundMatch = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!foundMatch) {
+                iter.remove();
+            }
+        }
 
-       TournamentMatchUpResultViewModel tournamentMatchUpResultViewModel = this.modelMapper.map(tournament,TournamentMatchUpResultViewModel.class);
-
-
+        TournamentMatchUpResultViewModel tournamentMatchUpResultViewModel = this.modelMapper.map(tournament, TournamentMatchUpResultViewModel.class);
 
         return tournamentMatchUpResultViewModel;
     }

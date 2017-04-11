@@ -6,10 +6,6 @@
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css"
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script th:src="@{/js/tournamentResult.js}">
-
-    </script>
 
 </head>
 <body>
@@ -27,9 +23,9 @@
         <br/>
         <br/>
 
-        <form method="post" th:object="${selectMatchUpResultsBindingModel}">
 
-            <div class="form-group" th:classappend="${#fields.hasErrors('strategyMatchUps')}? 'has-danger'">
+        <form method="post" th:object="${selectMatchUpResultsBindingModel}">
+            <div class="form-group" th:classappend="${#fields.hasErrors('global')}? 'has-danger'">
                 <label for="selectStrategies">Match Up Result Select</label>
                 <select multiple="true" class="form-control col-4 offset-4" id="selectStrategies"
                         name="strategyMatchUps" th:field="*{strategyMatchUps}">
@@ -38,11 +34,24 @@
                     </div>
                 </select>
                 <small id="selectHelp" class="form-control-feedback"
-                       th:each="error : ${#fields.errors('strategyMatchUps')}" th:text="${error}">Error Message
+                       th:each="error : ${#fields.errors('global')}" th:text="${error}">Error Message
                 </small>
+
             </div>
 
+            <!--TODO align buttons-->
+            <label class="btn btn-primary">
+                <input type="checkbox" name="Filter Only Selected" checked="checked"
+                       th:field="*{filterOnlySelected}"/>
+                Filter Only Selected
+            </label>
             <button type="submit" class="btn btn-success">Show Match Ups</button>
+
+            <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="right"
+                    title="Right boot"
+                    style="margin:30px;">
+                Help
+            </button>
         </form>
 
         <br/>
@@ -50,11 +59,13 @@
         <br/>
 
         <div th:if="${tournamentMatchUpResultViewModel != null}">
+            <!--TODO variable size (250px) if only 1 match up result-->
             <div style="overflow-y: scroll; height: 500px ">
                 <div th:each="matchUpResult : ${tournamentMatchUpResultViewModel.matchUpResults}"
                      th:object="${matchUpResult}">
-                    <div class="text-left" th:text="${matchUpResult.stratAName + ' -> ' + matchUpResult.stratAScore +
-                ' || ' + matchUpResult.stratBName + ' -> ' + matchUpResult.stratBScore} "></div>
+                    <div class="text-left"
+                         th:text="${matchUpResult.stratAName + ' -> ' + matchUpResult.stratAScore +' || ' +
+                          matchUpResult.stratBName + ' -> ' + matchUpResult.stratBScore} "></div>
 
                     <div class="table-responsive">
                         <table class="table">
@@ -107,11 +118,17 @@
     <br/>
 
 </main>
-
 <footer th:replace="fragments/parts::footer"></footer>
 
 <script th:src="@{/jquery/jquery.min.js}"></script>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip({'placement': 'right'});
+    });
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script th:src="@{/js/tournamentResult.js}"></script>
 
 </body>
 </html>
