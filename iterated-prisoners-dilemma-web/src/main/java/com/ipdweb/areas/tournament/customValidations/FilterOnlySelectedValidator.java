@@ -13,7 +13,7 @@ public class FilterOnlySelectedValidator implements ConstraintValidator<FilterOn
     @Override
     public boolean isValid(Object selectMatchUpResults, ConstraintValidatorContext context) {
         if (selectMatchUpResults instanceof SelectMatchUpResultsBindingModel) {
-            if (((SelectMatchUpResultsBindingModel) selectMatchUpResults).isFilterOnlySelected()) {
+            if (((SelectMatchUpResultsBindingModel) selectMatchUpResults).isDualFilter()) {
                 if (((SelectMatchUpResultsBindingModel) selectMatchUpResults).getStrategyMatchUps().length < 2) {
                     return false;
                 }

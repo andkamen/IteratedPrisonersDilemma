@@ -36,19 +36,15 @@
                 <small id="selectHelp" class="form-control-feedback"
                        th:each="error : ${#fields.errors('global')}" th:text="${error}">Error Message
                 </small>
-
             </div>
 
-            <!--TODO align buttons-->
-            <label class="btn btn-primary">
-                <input type="checkbox" name="Filter Only Selected" checked="checked"
-                       th:field="*{filterOnlySelected}"/>
+            <button type="submit" class="btn btn-success">Show Match Ups</button>
+            <label class="btn btn-primary" style="margin-bottom: 0">
+                <input type="checkbox" name="dualFilter" checked="checked" th:field="*{dualFilter}"/>
                 Filter Only Selected
             </label>
-            <button type="submit" class="btn btn-success">Show Match Ups</button>
-
             <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="right"
-                    title="Right boot"
+                    title="Broken tooltip"
                     style="margin:30px;">
                 Help
             </button>
@@ -102,7 +98,6 @@
             </div>
         </div>
 
-
         <br/>
         <br/>
 
@@ -121,7 +116,9 @@
 <footer th:replace="fragments/parts::footer"></footer>
 
 <script th:src="@{/jquery/jquery.min.js}"></script>
+<script th:src="@{/tether/js/tether.min.js}"></script>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip({'placement': 'right'});

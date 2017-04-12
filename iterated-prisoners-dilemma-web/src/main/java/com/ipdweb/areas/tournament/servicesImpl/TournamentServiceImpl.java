@@ -147,7 +147,7 @@ public class TournamentServiceImpl implements TournamentService {
     public TournamentMatchUpResultViewModel getTournamentMatchUpResults(SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel) {
         Tournament tournament = this.tournamentRepository.getTournamentById(selectMatchUpResultsBindingModel.getId());
 
-        if (selectMatchUpResultsBindingModel.isFilterOnlySelected()) {
+        if (selectMatchUpResultsBindingModel.isDualFilter()) {
             tournament = this.getDoubleFilteredTournament(tournament, selectMatchUpResultsBindingModel.getStrategyMatchUps());
         } else {
             tournament = this.getSingleFilteredTournament(tournament, selectMatchUpResultsBindingModel.getStrategyMatchUps());
@@ -235,10 +235,8 @@ public class TournamentServiceImpl implements TournamentService {
             TournamentMatchUpResult tournamentMatchUpResult = (TournamentMatchUpResult) iter.next();
             boolean foundMatch = false;
 
+            OUTER_LOOP:
             for (int i = 0; i < strategies.length; i++) {
-                if (foundMatch) {
-                    break;
-                }
                 for (int j = i + 1; j < strategies.length; j++) {
                     boolean stratAMatch = (tournamentMatchUpResult.getStratAName().equals(strategies[i]) ||
                             tournamentMatchUpResult.getStratAName().equals(strategies[j]));
@@ -247,7 +245,7 @@ public class TournamentServiceImpl implements TournamentService {
 
                     if (stratAMatch && stratBMatch) {
                         foundMatch = true;
-                        break;
+                        break OUTER_LOOP;
                     }
                 }
             }

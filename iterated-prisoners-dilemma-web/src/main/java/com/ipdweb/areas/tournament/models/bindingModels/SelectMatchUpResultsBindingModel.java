@@ -2,14 +2,12 @@ package com.ipdweb.areas.tournament.models.bindingModels;
 
 import com.ipdweb.areas.tournament.customValidations.FilterOnlySelected;
 
-import javax.validation.constraints.Size;
-
 @FilterOnlySelected
 public class SelectMatchUpResultsBindingModel {
 
     private long id;
 
-    private boolean filterOnlySelected;
+    private boolean dualFilter;
 
     private String[] strategyMatchUps;
 
@@ -32,11 +30,11 @@ public class SelectMatchUpResultsBindingModel {
         this.strategyMatchUps = strategyMatchUps;
     }
 
-    public boolean isFilterOnlySelected() {
-        return filterOnlySelected;
+    public boolean isDualFilter() {
+        return dualFilter;
     }
 
-    public void setFilterOnlySelected(boolean filterOnlySelected) {
-        this.filterOnlySelected = filterOnlySelected;
+    public void setDualFilter(boolean dualFilter) {
+        this.dualFilter = dualFilter;
     }
 }
