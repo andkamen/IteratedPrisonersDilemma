@@ -21,7 +21,7 @@ public class Simulation {
     @Basic
     private String name;
 
-    @OneToMany(mappedBy = "simulation", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "simulation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Generation> generations;
 
     @ManyToOne()

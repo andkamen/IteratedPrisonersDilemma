@@ -6,9 +6,7 @@
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css"
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script th:src="@{/js/simulationResult.js}">
-    </script>
+
 </head>
 
 <body>
@@ -23,6 +21,28 @@
         <div class="col-10 offset-1">
             <div id="curve_chart" style="width: 100%; height: 500px;"></div>
         </div>
+
+        <form class="form-check-inline" method="post" th:object="${runMoreGenerationsBindingModel}">
+            <div class="form-group" th:classappend="${#fields.hasErrors('generationCount')}? 'has-danger'">
+                <label for="runExtraGenerations"> </label>
+                <input type="number" min="1" class="form-control" id="runExtraGenerations"
+                       aria-describedby="generationCount"
+                       name="generationCount" th:field="*{generationCount}"/>
+                <small id="error" class="form-control-feedback"
+                       th:each="error : ${#fields.errors('generationCount')}" th:text="${error}">Error Message
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-success">Run Extra Generations</button>
+            <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="right"
+                    title="Run current simulation for # more generations">
+                Help
+            </button>
+
+
+        </form>
+
+
         <br/>
         <br/>
         <br/>
@@ -41,7 +61,15 @@
 <footer th:replace="fragments/parts::footer"></footer>
 
 <script th:src="@{/jquery/jquery.min.js}"></script>
+<script th:src="@{/tether/js/tether.min.js}"></script>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip({'placement': 'right'});
+    });
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script th:src="@{/js/simulationResult.js}"></script>
 
 </body>
 </html>

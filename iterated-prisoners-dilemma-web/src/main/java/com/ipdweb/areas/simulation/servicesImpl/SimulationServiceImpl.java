@@ -7,6 +7,7 @@ import com.ipdweb.areas.simulation.exceptions.SimulationNotFoundException;
 import com.ipdweb.areas.simulation.exceptions.UnauthorizedSimulationAccessException;
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.EditSimulationBindingModel;
+import com.ipdweb.areas.simulation.models.bindingModels.RunMoreGenerationsBindingModel;
 import com.ipdweb.areas.simulation.models.viewModels.SimulationPreviewViewModel;
 import com.ipdweb.areas.simulation.models.viewModels.SimulationResultViewModel;
 import com.ipdweb.areas.simulation.repositories.SimulationRepository;
@@ -176,7 +177,15 @@ public class SimulationServiceImpl implements SimulationService {
         return simulations;
     }
 
-    //TODO validate delete?
+    @Override
+    public void runExtraGenerations(RunMoreGenerationsBindingModel runMoreGenerationsBindingModel) {
+        Simulation simulation = this.getFullSimulationById(runMoreGenerationsBindingModel.getId());
+
+        simulation.run(runMoreGenerationsBindingModel.getGenerationCount());
+
+        this.simulationRepository.save(simulation);
+    }
+
     @Override
     public void deleteSimulationById(Long id) {
         this.simulationRepository.delete(id);
@@ -226,17 +235,19 @@ public class SimulationServiceImpl implements SimulationService {
             for (StrategyImpl strategy : generation.getStrategies()) {
                 if (!generation.getStrategyCount().containsKey(strategy.getName())) {
                     generation.getStrategyCount().put(strategy.getName(), 0);
+                    generation.getStrategyScores().put(strategy.getName(), 0);
                 }
                 generation.getStrategyCount().put(strategy.getName(), generation.getStrategyCount().get(strategy.getName()) + 1);
             }
         }
 
-        for (int i = 0; i < simulation.getGenerationCount(); i++) {
+        //do not initialize the last generation because it will write an empty map to it because there are
+        //no scores saved in the DB yet that can be retrieved
+        for (int i = 0; i < simulation.getGenerationCount() - 1; i++) {
             Map<String, Integer> strategyScores = this.generationService.getGenerationScoreMapByGenerationId(
                     simulation.getGenerations().get(i).getId());
             simulation.getGenerations().get(i).setStrategyScores(strategyScores);
         }
-
 
         return simulation;
     }

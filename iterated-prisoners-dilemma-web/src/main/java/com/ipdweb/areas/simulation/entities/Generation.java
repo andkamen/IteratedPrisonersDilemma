@@ -72,15 +72,7 @@ public class Generation {
         return this.strategies.size();
     }
 
-
     public void addStrategy(StrategyImpl strategy) {
-        //add strategy to list
-//        try {
-//            this.strategies.add(strategy.getClass().getConstructor().newInstance());
-//        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-//            e.printStackTrace();
-//        }
-
         this.strategies.add(strategy);
 
         //increment strategy Type counter and strategy Type total score counter
@@ -204,7 +196,6 @@ public class Generation {
         int newRoundCount = this.rand.nextInt((Constants.MAX_GENERATION_ROUND_COUNT - Constants.MIN_GENERATION_ROUND_COUNT) + 1) + Constants.MIN_GENERATION_ROUND_COUNT;
         this.setRoundCount(newRoundCount);
     }
-
 
     public long getId() {
         return id;

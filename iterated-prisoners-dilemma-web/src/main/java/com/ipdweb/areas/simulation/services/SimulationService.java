@@ -2,6 +2,7 @@ package com.ipdweb.areas.simulation.services;
 
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.EditSimulationBindingModel;
+import com.ipdweb.areas.simulation.models.bindingModels.RunMoreGenerationsBindingModel;
 import com.ipdweb.areas.simulation.models.viewModels.SimulationPreviewViewModel;
 import com.ipdweb.areas.simulation.models.viewModels.SimulationResultViewModel;
 import com.ipdweb.areas.user.entities.User;
@@ -19,6 +20,8 @@ public interface SimulationService {
     SimulationResultViewModel getSimulationResultViewById(Long id);
 
     Set<SimulationPreviewViewModel> getAllSimulations(User user);
+
+    void runExtraGenerations(RunMoreGenerationsBindingModel runMoreGenerationsBindingModel);
 
     void deleteSimulationById(Long id);
 
