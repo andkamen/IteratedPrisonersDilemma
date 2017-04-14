@@ -12,7 +12,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type")
+public abstract class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -136,5 +138,9 @@ public class User implements UserDetails {
 
     public void setSimulations(List<Simulation> simulations) {
         this.simulations = simulations;
+    }
+
+    public void addRole(Role role){
+        this.getAuthorities().add(role);
     }
 }

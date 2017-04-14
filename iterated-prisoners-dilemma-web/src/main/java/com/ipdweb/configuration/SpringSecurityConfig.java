@@ -1,6 +1,6 @@
 package com.ipdweb.configuration;
 
-import com.ipdweb.areas.user.services.UserService;
+import com.ipdweb.areas.user.services.BasicUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,18 +17,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserService userService;
+    private BasicUserService basicUserService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(this.userService).passwordEncoder(getBCryptPasswordEncoder());
+        auth.userDetailsService(this.basicUserService).passwordEncoder(getBCryptPasswordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/register", "/strategies/**", "/bootstrap/**", "/jquery/**").permitAll()
+                    .antMatchers("/", "/register/**", "/strategies/**", "/bootstrap/**", "/jquery/**", "/connect/**").permitAll()
                     .antMatchers("/users").hasRole("ADMIN")
                     .anyRequest().authenticated()
                 .and()

@@ -67,6 +67,13 @@
             <version>0.7.7</version>
         </dependency>
 
+        <!--facebook login-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-social-facebook</artifactId>
+        </dependency>
+
+        <!--google charts api-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

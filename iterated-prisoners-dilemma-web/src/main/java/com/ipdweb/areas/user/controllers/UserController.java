@@ -3,7 +3,7 @@ package com.ipdweb.areas.user.controllers;
 import com.ipdweb.areas.user.errors.Errors;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
-import com.ipdweb.areas.user.services.UserService;
+import com.ipdweb.areas.user.services.BasicUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +20,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private BasicUserService userService;
 
     @GetMapping("/register")
     public String getRegisterPage(@ModelAttribute RegistrationModel registrationModel){

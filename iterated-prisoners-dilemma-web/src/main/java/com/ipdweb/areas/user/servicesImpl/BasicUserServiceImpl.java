@@ -1,12 +1,13 @@
 package com.ipdweb.areas.user.servicesImpl;
 
+import com.ipdweb.areas.user.entities.BasicUser;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.errors.Errors;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
-import com.ipdweb.areas.user.repositories.UserRepository;
+import com.ipdweb.areas.user.repositories.BasicUserRepository;
+import com.ipdweb.areas.user.services.BasicUserService;
 import com.ipdweb.areas.user.services.RoleService;
-import com.ipdweb.areas.user.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class BasicUserServiceImpl implements BasicUserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private UserRepository userRepository;
+    private BasicUserRepository userRepository;
 
     @Autowired
     private RoleService roleService;
@@ -34,14 +35,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(RegistrationModel registrationModel) {
-        User user = this.modelMapper.map(registrationModel, User.class);
+        BasicUser user = this.modelMapper.map(registrationModel, BasicUser.class);
         String encryptedPassword = this.bCryptPasswordEncoder.encode(registrationModel.getPassword());
         user.setPassword(encryptedPassword);
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
         user.setEnabled(true);
         user.setCredentialsNonExpired(true);
-        user.getAuthorities().add(this.roleService.getRoleByAuthority("ROLE_USER"));
+        user.addRole(this.roleService.getDefaultRole());
 
         this.userRepository.save(user);
     }
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserViewModel> findAll() {
         List<UserViewModel> userViewModels = new ArrayList<>();
-        List<User> users = this.userRepository.findAll();
+        List<BasicUser> users = this.userRepository.findAll();
         for (User user : users) {
             UserViewModel userViewModel = this.modelMapper.map(user, UserViewModel.class);
             userViewModels.add(userViewModel);

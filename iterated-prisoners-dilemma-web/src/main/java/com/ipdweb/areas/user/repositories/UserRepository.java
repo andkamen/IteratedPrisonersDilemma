@@ -3,15 +3,15 @@ package com.ipdweb.areas.user.repositories;
 import com.ipdweb.areas.user.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+@NoRepositoryBean
+public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
 
-    User findOneByUsername(String username);
+    T findOneByUsername(String username);
 
     @Query(value = "SELECT u FROM User AS u")
-    List<User> findAll();
+    List<T> findAll();
 }

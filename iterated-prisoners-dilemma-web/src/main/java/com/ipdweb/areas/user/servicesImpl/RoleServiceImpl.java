@@ -12,8 +12,15 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
+    public static final String DEFAULT_ROLE = "ROLE_USER";
+
     @Override
     public  Role getRoleByAuthority(String authority){
         return this.roleRepository.getRoleByAuthority(authority);
+    }
+
+    @Override
+    public Role getDefaultRole() {
+        return this.roleRepository.getRoleByAuthority(DEFAULT_ROLE);
     }
 }
