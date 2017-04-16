@@ -7,8 +7,8 @@
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:replace="fragments/parts::menu">
-</header>
+<header th:replace="fragments/parts::menu(loggedUserId = ${loggedUserId})"></header>
+
 <main>
     <div class="container">
         <br/>
@@ -17,8 +17,15 @@
         <div class="text-center" th:if="${tournaments.size() == 0}">
             <h3>You have no registered tournaments right now.</h3>
             <a class="card-button btn btn-primary" name="create"
-               th:href="@{/tournaments/create}">Create</a>
+               th:href="@{/tournaments/{userId}/create(userId = ${userId})}">Create</a>
         </div>
+        <div class="text-center" th:unless="${tournaments.size() == 0}">
+            <a class="card-button btn btn-primary" name="create"
+               th:href="@{/tournaments/{userId}/create(userId = ${userId})}">Create</a>
+        </div>
+
+        <br/>
+
         <div th:unless="${tournaments.size() == 0}">
             <table class="table">
                 <thead>
@@ -54,11 +61,14 @@
                         </div>
                     </td>
                     <td><a class="card-button btn btn-success" name="show"
-                           th:href="@{/tournaments/show/{id}(id=${tournament.id})}">Show</a></td>
+                           th:href="@{/tournaments/{userId}/show/{id}(userId=${userId},id=${tournament.id})}">Show</a>
+                    </td>
                     <td><a class="card-button btn btn-warning" name="edit"
-                           th:href="@{/tournaments/edit/{id}(id=${tournament.id})}">Edit</a></td>
+                           th:href="@{/tournaments/{userId}/edit/{id}(userId=${userId},id=${tournament.id})}">Edit</a>
+                    </td>
                     <td><a class="card-button btn btn-danger" name="delete"
-                           th:href="@{/tournaments/delete/{id}(id=${tournament.id})}">Delete</a></td>
+                           th:href="@{/tournaments/{userId}/delete/{id}(userId=${userId},id=${tournament.id})}">Delete</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

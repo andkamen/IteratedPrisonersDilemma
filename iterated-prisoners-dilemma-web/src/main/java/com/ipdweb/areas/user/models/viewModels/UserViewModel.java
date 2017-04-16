@@ -1,6 +1,5 @@
 package com.ipdweb.areas.user.models.viewModels;
 
-
 public class UserViewModel {
 
     private long id;
@@ -8,6 +7,8 @@ public class UserViewModel {
     private String username;
 
     private boolean isEnabled;
+
+    private boolean isAdmin;
 
     public long getId() {
         return id;
@@ -31,5 +32,13 @@ public class UserViewModel {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

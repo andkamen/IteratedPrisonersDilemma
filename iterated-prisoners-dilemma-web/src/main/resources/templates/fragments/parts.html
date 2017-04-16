@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 
-<nav class="navbar navbar-toggleable-md navbar-inverse" style="background-color: #513e46;" th:fragment="menu">
+<nav class="navbar navbar-toggleable-md navbar-inverse" style="background-color: #513e46;" th:fragment="menu (loggedUserId)">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -25,8 +25,8 @@
                         Tournaments
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarTournamentsDropdownMenu">
-                        <a class="dropdown-item" href="/tournaments">Show</a>
-                        <a class="dropdown-item" href="/tournaments/create">Create</a>
+                        <a class="dropdown-item" th:href="@{/tournaments/{loggedUserId}(loggedUserId=${loggedUserId})}">Show</a>
+                        <a class="dropdown-item" th:href="@{/tournaments/{loggedUserId}/create(loggedUserId=${loggedUserId})}">Create</a>
                     </div>
                 </li>
             </div>
@@ -38,8 +38,8 @@
                         Simulations
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarSimulationDropdownMenu">
-                        <a class="dropdown-item" href="/simulations">Show</a>
-                        <a class="dropdown-item" href="/simulations/create">Create</a>
+                        <a class="dropdown-item" th:href="@{/simulations/{loggedUserId}(loggedUserId=${loggedUserId})}">Show</a>
+                        <a class="dropdown-item" th:href="@{/simulations/{loggedUserId}/create(loggedUserId=${loggedUserId})}">Create</a>
                     </div>
                 </li>
             </div>

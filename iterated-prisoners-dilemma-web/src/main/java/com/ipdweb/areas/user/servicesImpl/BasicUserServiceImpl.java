@@ -1,6 +1,7 @@
 package com.ipdweb.areas.user.servicesImpl;
 
 import com.ipdweb.areas.user.entities.BasicUser;
+import com.ipdweb.areas.user.entities.Role;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.errors.Errors;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
@@ -53,6 +54,11 @@ public class BasicUserServiceImpl implements BasicUserService {
         List<BasicUser> users = this.userRepository.findAll();
         for (User user : users) {
             UserViewModel userViewModel = this.modelMapper.map(user, UserViewModel.class);
+            for (Role role : user.getAuthorities()) {
+                if (role.getAuthority().equals("ROLE_ADMIN")) {
+                    userViewModel.setAdmin(true);
+                }
+            }
             userViewModels.add(userViewModel);
         }
 
@@ -60,9 +66,47 @@ public class BasicUserServiceImpl implements BasicUserService {
     }
 
     @Override
+    public void disableUser(BasicUser user) {
+        if (user != null) {
+            for (Role role : user.getAuthorities()) {
+                if (role.getAuthority().equals("ROLE_ADMIN")) {
+                    return;
+                }
+            }
+            user.setEnabled(false);
+            this.userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void enableUser(BasicUser user) {
+        if (user != null) {
+            for (Role role : user.getAuthorities()) {
+                if (role.getAuthority().equals("ROLE_ADMIN")) {
+                    return;
+                }
+            }
+            user.setEnabled(true);
+            this.userRepository.save(user);
+        }
+    }
+
+    @Override
+    public BasicUser getUserById(Long id) {
+        BasicUser user = this.userRepository.findById(id);
+
+        return user;
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        this.userRepository.delete(id);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.userRepository.findOneByUsername(username);
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException(Errors.INVALID_CREDENTIALS);
         }
 

@@ -7,8 +7,8 @@
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:replace="fragments/parts::menu">
-</header>
+<header th:replace="fragments/parts::menu(userId = ${userId})" ></header>
+
 <main>
     <div class="container text-center">
         <h1 class="h1">The tournament you tried to access doesn't exist</h1>
@@ -19,7 +19,7 @@
         <br/>
         <br/>
         <br/>
-        <a class="btn btn-secondary" href="/tournaments">Tournaments</a>
+        <button class="btn btn-primary" onclick="goBack()">Go Back</button>
     </div>
 </main>
 
@@ -28,5 +28,10 @@
 
 <script th:src="@{/jquery/jquery.min.js}"></script>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 </body>
 </html>

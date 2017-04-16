@@ -14,8 +14,8 @@
 <p hidden="hidden" id="matrix" th:attr="matrix-str=${matrix}"></p>
 <p hidden="hidden" id="strats" th:attr="strats-str=${strats}"></p>
 
-<header th:replace="fragments/parts::menu">
-</header>
+<header th:replace="fragments/parts::menu(loggedUserId = ${loggedUserId})"></header>
+
 <main>
     <div class="container text-center">
         <div class="col-10 offset-1">
@@ -38,19 +38,16 @@
                     title="Run current simulation for # more generations">
                 Help
             </button>
-
-
         </form>
 
-
         <br/>
         <br/>
         <br/>
-        <a class="btn btn-primary " th:href="@{/simulations}">Back</a>
+        <a class="btn btn-secondary" th:href="@{/simulations/{userId}(userId=${userId})}">Back</a>
         <a class="card-button btn btn-warning" name="edit"
-           th:href="@{/simulations/edit/{id}(id=${id})}">Edit</a>
+           th:href="@{/simulations/{userId}/edit/{id}(userId = ${userId}, id = ${id})}">Edit</a>
         <a class="card-button btn btn-danger" name="delete"
-           th:href="@{/simulations/delete/{id}(id=${id})}">Delete</a>
+           th:href="@{/simulations/{userId}/delete/{id}(userId = ${userId},id=${id})}">Delete</a>
     </div>
     <br/>
     <br/>

@@ -4,7 +4,7 @@ package com.ipdweb.areas.simulation.servicesImpl;
 import com.ipdweb.areas.simulation.entities.Generation;
 import com.ipdweb.areas.simulation.entities.Simulation;
 import com.ipdweb.areas.simulation.exceptions.SimulationNotFoundException;
-import com.ipdweb.areas.simulation.exceptions.UnauthorizedSimulationAccessException;
+import com.ipdweb.areas.common.exceptions.UnauthorizedAccessException;
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.EditSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.RunMoreGenerationsBindingModel;
@@ -218,7 +218,7 @@ public class SimulationServiceImpl implements SimulationService {
         }
 
         if (simulation.getUser().getId() != user.getId()) {
-            throw new UnauthorizedSimulationAccessException();
+            throw new UnauthorizedAccessException();
         }
 
         return true;

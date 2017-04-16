@@ -7,8 +7,8 @@
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:replace="fragments/parts::menu">
-</header>
+<header th:replace="fragments/parts::menu(loggedUserId = ${loggedUserId})" ></header>
+
 <main>
     <div class="container text-center">
         <form method="post" th:object="${editSimulationBindingModel}">
@@ -65,7 +65,7 @@
 
             <button type="submit" class="btn btn-success">Save Changes</button>
             <button type="reset" class="btn btn-warning">Reset</button>
-            <a class="btn btn-secondary" th:href="@{/simulations}">Back</a>
+            <a class="btn btn-secondary" th:href="@{/simulations/{id}(id=${userId})}">Back</a>
         </form>
     </div>
 </main>

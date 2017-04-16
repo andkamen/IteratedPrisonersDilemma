@@ -7,8 +7,8 @@
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:replace="fragments/parts::menu">
-</header>
+<header th:replace="fragments/parts::menu(loggedUserId = ${loggedUserId})"></header>
+
 <main>
     <div class="container">
         <br/>
@@ -18,8 +18,15 @@
         <div class="text-center" th:if="${simulations.size() == 0}">
             <h3>You have no registered simulations right now.</h3>
             <a class="card-button btn btn-primary" name="create"
-               th:href="@{/simulations/create}">Create</a>
+               th:href="@{/simulations/{userId}/create(userId = ${userId})}">Create</a>
         </div>
+        <div class="text-center" th:unless="${simulations.size() == 0}">
+            <a class="card-button btn btn-primary" name="create"
+               th:href="@{/simulations/{userId}/create(userId = ${userId})}">Create</a>
+        </div>
+
+        <br/>
+
         <div th:unless="${simulations.size() == 0}">
             <table class="table">
                 <thead>
@@ -56,11 +63,14 @@
                         </div>
                     </td>
                     <td><a class="card-button btn btn-success" name="show"
-                           th:href="@{/simulations/show/{id}(id=${simulation.id})}">Show</a></td>
+                           th:href="@{/simulations/{userId}/show/{id}(userId=${userId},id=${simulation.id})}">Show</a>
+                    </td>
                     <td><a class="card-button btn btn-warning" name="edit"
-                           th:href="@{/simulations/edit/{id}(id=${simulation.id})}">Edit</a></td>
+                           th:href="@{/simulations/{userId}/edit/{id}(userId=${userId},id=${simulation.id})}">Edit</a>
+                    </td>
                     <td><a class="card-button btn btn-danger" name="delete"
-                           th:href="@{/simulations/delete/{id}(id=${simulation.id})}">Delete</a></td>
+                           th:href="@{/simulations/{userId}/delete/{id}(userId=${userId},id=${simulation.id})}">Delete</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

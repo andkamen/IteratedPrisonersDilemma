@@ -1,6 +1,7 @@
 package com.ipdweb.areas.tournament.controllers;
 
 import com.google.gson.Gson;
+import com.ipdweb.areas.common.exceptions.UnauthorizedAccessException;
 import com.ipdweb.areas.strategy.services.StrategyService;
 import com.ipdweb.areas.tournament.exceptions.TournamentNotFoundException;
 import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
@@ -9,8 +10,11 @@ import com.ipdweb.areas.tournament.models.bindingModels.SelectMatchUpResultsBind
 import com.ipdweb.areas.tournament.models.viewModels.TournamentMatchUpResultViewModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentResultViewModel;
 import com.ipdweb.areas.tournament.services.TournamentService;
+import com.ipdweb.areas.user.entities.Role;
 import com.ipdweb.areas.user.entities.User;
-import com.ipdweb.areas.tournament.exceptions.UnauthorizedTournamentAccessException;
+import com.ipdweb.areas.user.exceptions.UserNotFoundException;
+import com.ipdweb.areas.user.services.BasicUserService;
+import com.ipdweb.areas.user.services.FacebookUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -30,47 +34,70 @@ public class TournamentController {
     @Autowired
     private StrategyService strategyService;
 
-    @GetMapping("")
-    public String getTournamentsPage(Model model, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+    @Autowired
+    private BasicUserService basicUserService;
+
+    @Autowired
+    private FacebookUserService facebookUserService;
+
+    @GetMapping("/{userId}")
+    public String getTournamentsPage(@PathVariable long userId, Model model, Authentication authentication) {
+        User loggedUser = (User) authentication.getPrincipal();
+        User user = getUser(userId, loggedUser);
+
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("userId", userId);
         model.addAttribute("tournaments", this.tournamentService.getAllTournaments(user));
 
         return "tournaments-preview";
     }
 
-    @GetMapping("/create")
-    public String getCreateTournamentPage(@ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, Model model) {
+
+    @GetMapping("/{userId}/create")
+    public String getCreateTournamentPage(@PathVariable long userId,@ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, Model model, Authentication authentication) {
+
+        User loggedUser = (User) authentication.getPrincipal();
+
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("userId", userId);
 
         model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
 
         return "tournaments-create";
     }
 
-    @PostMapping("/create")
-    public String createTournament(@Valid @ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+    @PostMapping("/{userId}/create")
+    public String createTournament(@PathVariable long userId,@Valid @ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+        User loggedUser = (User) authentication.getPrincipal();
+
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("userId", userId);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
             return "tournaments-create";
         }
 
-        this.tournamentService.save(createTournamentBindingModel, (User) authentication.getPrincipal());
+        this.tournamentService.save(createTournamentBindingModel, getUser(userId,loggedUser));
 
-        return "redirect:/tournaments";
+        return "redirect:/tournaments/"+ userId;
     }
 
-    @GetMapping("/show/{tourId}")
-    public String getTournamentResultPage(@PathVariable long tourId, @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, Model model, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+    @GetMapping("/{userId}/show/{tourId}")
+    public String getTournamentResultPage(@PathVariable long userId,@PathVariable long tourId, @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, Model model, Authentication authentication) {
+        User loggedUser = (User) authentication.getPrincipal();
+
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("userId", userId);
 
         //Throws exception if doesn't own. Exception redirects to error page
-        this.tournamentService.ownsTournament(user, tourId);
+        this.tournamentService.ownsTournament(loggedUser, tourId);
 
         TournamentResultViewModel tournamentResultViewModel = this.tournamentService.getTournamentResultViewById(tourId);
 
         String data = new Gson().toJson(tournamentResultViewModel.getStrategyScoreKVPairs());
 
-        model.addAttribute("id",tournamentResultViewModel.getId());
+        model.addAttribute("id", tournamentResultViewModel.getId());
         model.addAttribute("data", data);
         model.addAttribute("strategies", tournamentResultViewModel.getStrategies());
 
@@ -78,19 +105,23 @@ public class TournamentController {
     }
 
     //TODO code repetition? check if redirect is possible
-    @PostMapping("/show/{tourId}")
-    public String enhanceTournamentResultsPage(@PathVariable long tourId, @Valid @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+    @PostMapping("/{userId}/show/{tourId}")
+    public String enhanceTournamentResultsPage(@PathVariable long userId,@PathVariable long tourId, @Valid @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
 
-        User user = (User) authentication.getPrincipal();
+        User loggedUser = (User) authentication.getPrincipal();
+
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("userId", userId);
 
         //Throws exception if doesn't own. Exception redirects to error page
-        this.tournamentService.ownsTournament(user, tourId);
+        this.tournamentService.ownsTournament(loggedUser, tourId);
 
         TournamentResultViewModel tournamentResultViewModel = this.tournamentService.getTournamentResultViewById(tourId);
 
         String data = new Gson().toJson(tournamentResultViewModel.getStrategyScoreKVPairs());
 
-        model.addAttribute("id",tournamentResultViewModel.getId());
+        model.addAttribute("id", tournamentResultViewModel.getId());
         model.addAttribute("data", data);
         model.addAttribute("strategies", tournamentResultViewModel.getStrategies());
 
@@ -101,29 +132,36 @@ public class TournamentController {
         selectMatchUpResultsBindingModel.setId(tourId);
         TournamentMatchUpResultViewModel tournamentMatchUpResultViewModel = this.tournamentService.getTournamentMatchUpResults(selectMatchUpResultsBindingModel);
 
-        model.addAttribute("tournamentMatchUpResultViewModel",tournamentMatchUpResultViewModel);
+        model.addAttribute("tournamentMatchUpResultViewModel", tournamentMatchUpResultViewModel);
 
         return "tournaments-show-result";
     }
 
-    @GetMapping("/edit/{id}")
-    public String getEditTournamentPage(@PathVariable long id, Model model, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+    @GetMapping("/{userId}/edit/{tourId}")
+    public String getEditTournamentPage(@PathVariable long userId,@PathVariable long tourId, Model model, Authentication authentication) {
+        User loggedUser = (User) authentication.getPrincipal();
+
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("userId", userId);
 
         //Throws exception if doesn't own. Exception redirects to error page
-        this.tournamentService.ownsTournament(user, id);
+        this.tournamentService.ownsTournament(loggedUser, tourId);
 
-        model.addAttribute("editTournamentBindingModel", this.tournamentService.getEditTournamentById(id));
+        model.addAttribute("editTournamentBindingModel", this.tournamentService.getEditTournamentById(tourId));
         return "tournaments-edit";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editTournament(@PathVariable long id, @Valid @ModelAttribute EditTournamentBindingModel editTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+    @PostMapping("/{userId}/edit/{tourId}")
+    public String editTournament(@PathVariable long userId,@PathVariable long tourId, @Valid @ModelAttribute EditTournamentBindingModel editTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
 
-        User user = (User) authentication.getPrincipal();
+        User loggedUser = (User) authentication.getPrincipal();
+
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("userId", userId);
 
         //Throws exception if doesn't own. Exception redirects to error page
-        this.tournamentService.ownsTournament(user, id);
+        this.tournamentService.ownsTournament(loggedUser, tourId);
+        editTournamentBindingModel.setId(tourId);
 
         if (bindingResult.hasErrors()) {
             return "tournaments-edit";
@@ -131,33 +169,69 @@ public class TournamentController {
 
         this.tournamentService.edit(editTournamentBindingModel);
 
-        return "redirect:/tournaments";
+        return "redirect:/tournaments/" + userId;
     }
 
 
-    @GetMapping("/delete/{id}")
-    public String deleteTournament(@PathVariable long id, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+    @GetMapping("/{userId}/delete/{tourId}")
+    public String deleteTournament(@PathVariable long userId,@PathVariable long tourId, Model model, Authentication authentication) {
+        User loggedUser = (User) authentication.getPrincipal();
+
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("userId", userId);
 
         ///Throws exception if doesn't own. Exception redirects to error page
-        this.tournamentService.ownsTournament(user, id);
+        this.tournamentService.ownsTournament(loggedUser, tourId);
 
-        this.tournamentService.deleteTournamentById(id);
+        this.tournamentService.deleteTournamentById(tourId);
 
-        return "redirect:/tournaments";
+        return "redirect:/tournaments/" + userId;
     }
 
 
     @ExceptionHandler(TournamentNotFoundException.class)
-    public String catchTournamentNotFoundException() {
+    public String catchTournamentNotFoundException(Model model, Authentication authentication) {
+        User loggedUser = (User) authentication.getPrincipal();
+
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("userId", loggedUser.getId());
 
         return "exceptions/tournament-not-found";
     }
 
-    @ExceptionHandler(UnauthorizedTournamentAccessException.class)
-    public String catchUnauthorizedTournamentAccessException() {
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public String catchUnauthorizedAccessException(Model model, Authentication authentication) {
+        User loggedUser = (User) authentication.getPrincipal();
 
-        return "exceptions/unauthorized-tournament-access";
+        model.addAttribute("loggedUserId", loggedUser.getId());
+        model.addAttribute("userId", loggedUser.getId());
+
+        return "exceptions/unauthorized-access";
     }
 
+    private User getUser(long id, User loggedUser) {
+        User user = this.basicUserService.getUserById(id);
+
+        if (user == null) {
+            user = this.facebookUserService.getUserById(id);
+            if (user == null) {
+                throw new UserNotFoundException();
+            }
+        }
+
+        boolean isAdmin = false;
+
+        for (Role role : loggedUser.getAuthorities()) {
+            if (role.getAuthority().equals("ROLE_ADMIN")) {
+                isAdmin = true;
+                break;
+            }
+        }
+
+        if ((user.getId() != loggedUser.getId()) && !isAdmin) {
+            throw new UnauthorizedAccessException();
+        }
+
+        return user;
+    }
 }

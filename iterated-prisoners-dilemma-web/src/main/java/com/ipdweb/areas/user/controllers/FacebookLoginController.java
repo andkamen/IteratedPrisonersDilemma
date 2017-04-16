@@ -25,6 +25,7 @@ public class FacebookLoginController {
         this.connectionRepository = connectionRepository;
     }
 
+    //TODO logs in despite being disabled. How do you handle error message for a pop up with said info.
     @GetMapping("/facebook")
     public String registerOrLogin(){
         if(connectionRepository.findPrimaryConnection(Facebook.class) == null){

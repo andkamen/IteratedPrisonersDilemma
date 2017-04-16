@@ -1,6 +1,7 @@
 package com.ipdweb.areas.user.servicesImpl;
 
 import com.ipdweb.areas.user.entities.FacebookUser;
+import com.ipdweb.areas.user.entities.Role;
 import com.ipdweb.areas.user.repositories.FacebookUserRepository;
 import com.ipdweb.areas.user.services.FacebookUserService;
 import com.ipdweb.areas.user.services.RoleService;
@@ -31,6 +32,44 @@ public class FacebookUserServiceImpl implements FacebookUserService {
         loginUser(facebookUser);
     }
 
+    @Override
+    public void disableUser(FacebookUser user) {
+        if (user != null) {
+            for (Role role : user.getAuthorities()) {
+                if (role.getAuthority().equals("ROLE_ADMIN")) {
+                    return;
+                }
+            }
+            user.setEnabled(false);
+            this.userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void enableUser(FacebookUser user) {
+        if (user != null) {
+            for (Role role : user.getAuthorities()) {
+                if (role.getAuthority().equals("ROLE_ADMIN")) {
+                    return;
+                }
+            }
+            user.setEnabled(true);
+            this.userRepository.save(user);
+        }
+    }
+
+    @Override
+    public FacebookUser getUserById(Long id) {
+        FacebookUser user = this.userRepository.findById(id);
+
+        return user;
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        this.userRepository.delete(id);
+    }
+
     private FacebookUser registerUser(String email) {
         FacebookUser user = new FacebookUser();
         user.setUsername(email);
@@ -48,4 +87,6 @@ public class FacebookUserServiceImpl implements FacebookUserService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(facebookUser, null, facebookUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
+
 }

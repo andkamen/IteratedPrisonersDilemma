@@ -1,6 +1,7 @@
 package com.ipdweb.areas.tournament.servicesImpl;
 
 
+import com.ipdweb.areas.common.exceptions.UnauthorizedAccessException;
 import com.ipdweb.areas.strategy.entities.StrategyImpl;
 import com.ipdweb.areas.strategy.factories.StrategyFactory;
 import com.ipdweb.areas.strategy.factories.StrategyFactoryImpl;
@@ -10,7 +11,6 @@ import com.ipdweb.areas.strategy.services.StrategyService;
 import com.ipdweb.areas.tournament.entities.Tournament;
 import com.ipdweb.areas.tournament.entities.TournamentMatchUpResult;
 import com.ipdweb.areas.tournament.exceptions.TournamentNotFoundException;
-import com.ipdweb.areas.tournament.exceptions.UnauthorizedTournamentAccessException;
 import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.bindingModels.EditTournamentBindingModel;
 import com.ipdweb.areas.tournament.models.bindingModels.SelectMatchUpResultsBindingModel;
@@ -178,7 +178,7 @@ public class TournamentServiceImpl implements TournamentService {
         }
 
         if (tournament.getUser().getId() != user.getId()) {
-            throw new UnauthorizedTournamentAccessException();
+            throw new UnauthorizedAccessException();
         }
 
         return true;

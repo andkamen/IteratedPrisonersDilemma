@@ -12,6 +12,8 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
 
     T findOneByUsername(String username);
 
+    T findById(Long id);
+
     @Query(value = "SELECT u FROM User AS u")
     List<T> findAll();
 }

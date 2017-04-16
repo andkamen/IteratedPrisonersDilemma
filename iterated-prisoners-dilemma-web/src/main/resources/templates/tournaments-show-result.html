@@ -11,8 +11,8 @@
 <body>
 <p hidden="hidden" id="data" th:attr="data-str=${data}"></p>
 
-<header th:replace="fragments/parts::menu">
-</header>
+<header th:replace="fragments/parts::menu(loggedUserId = ${loggedUserId})"></header>
+
 <main>
 
     <div class="container text-center">
@@ -101,11 +101,11 @@
         <br/>
         <br/>
 
-        <a class="btn btn-primary" th:href="@{/tournaments}">Back</a>
+        <a class="btn btn-secondary" th:href="@{/tournaments/{userId}(userId=${userId})}">Back</a>
         <a class="card-button btn btn-warning" name="edit"
-           th:href="@{/tournaments/edit/{id}(id=${id})}">Edit</a>
+           th:href="@{/tournaments/{userId}/edit/{id}(userId = ${userId},id=${id})}">Edit</a>
         <a class="card-button btn btn-danger" name="delete"
-           th:href="@{/tournaments/delete/{id}(id=${id})}">Delete</a>
+           th:href="@{/tournaments/{userId}/delete/{id}(userId = ${userId},id=${id})}">Delete</a>
     </div>
     <br/>
     <br/>
