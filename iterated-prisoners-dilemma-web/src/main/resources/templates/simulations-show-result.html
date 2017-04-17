@@ -14,7 +14,7 @@
 <p hidden="hidden" id="matrix" th:attr="matrix-str=${matrix}"></p>
 <p hidden="hidden" id="strats" th:attr="strats-str=${strats}"></p>
 
-<header th:replace="fragments/parts::menu(loggedUserId = ${loggedUserId})"></header>
+<header th:replace="fragments/parts::menu"></header>
 
 <main>
     <div class="container text-center">
@@ -45,9 +45,9 @@
         <br/>
         <a class="btn btn-secondary" th:href="@{/simulations/{userId}(userId=${userId})}">Back</a>
         <a class="card-button btn btn-warning" name="edit"
-           th:href="@{/simulations/{userId}/edit/{id}(userId = ${userId}, id = ${id})}">Edit</a>
+           th:href="@{/simulations/{userId}/edit/{simId}(userId = ${userId}, simId = ${simId})}">Edit</a>
         <a class="card-button btn btn-danger" name="delete"
-           th:href="@{/simulations/{userId}/delete/{id}(userId = ${userId},id=${id})}">Delete</a>
+           th:href="@{/simulations/{userId}/delete/{simId}(userId = ${userId},simId = ${simId})}">Delete</a>
     </div>
     <br/>
     <br/>

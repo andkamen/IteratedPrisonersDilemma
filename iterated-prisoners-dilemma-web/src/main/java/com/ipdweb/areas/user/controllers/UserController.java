@@ -11,6 +11,7 @@ import com.ipdweb.areas.user.models.viewModels.UserViewModel;
 import com.ipdweb.areas.user.services.BasicUserService;
 import com.ipdweb.areas.user.services.FacebookUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -117,5 +118,14 @@ public class UserController {
     public String catchUserNotFoundException() {
 
         return "exceptions/user-not-found";
+    }
+
+
+    //TODO this error is not even caught when thrown
+    @ExceptionHandler(DisabledException.class)
+    public String catchDisabledException(Model model) {
+        model.addAttribute("error", Errors.ACCOUNT_DISABLED);
+
+        return "login";
     }
 }

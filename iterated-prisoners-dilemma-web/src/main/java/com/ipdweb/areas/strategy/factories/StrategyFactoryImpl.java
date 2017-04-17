@@ -27,8 +27,6 @@ public class StrategyFactoryImpl implements StrategyFactory {
         return newStrategy;
     }
 
-
-    //TODO wtf hacks
     @Override
     public StrategyImpl hackStrategy(String strategyType, List<StrategyImpl> strategies) {
         StrategyImpl strategy = null;

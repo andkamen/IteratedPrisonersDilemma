@@ -1,30 +1,21 @@
 package com.ipdweb.controllers;
 
-import com.ipdweb.areas.user.entities.User;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
 
     @GetMapping("/")
-    public String getHomePage(Authentication authentication, Model model) {
-        if (authentication != null) {
-            User loggedUser = (User) authentication.getPrincipal();
-            model.addAttribute("loggedUserId", loggedUser.getId());
-        }
+    public String getHomePage() {
+
         return "home";
     }
 
+    //TODO not entered when generic /error is called. Where can I fill this form from then.
     @GetMapping("/error")
-    public String getErrorPage(Authentication authentication, Model model) {
-        if (authentication != null) {
-            User loggedUser = (User) authentication.getPrincipal();
-            model.addAttribute("loggedUserId", loggedUser.getId());
-        }
+    public String getErrorPage() {
 
-        return "error";
+        return "error/error";
     }
 }

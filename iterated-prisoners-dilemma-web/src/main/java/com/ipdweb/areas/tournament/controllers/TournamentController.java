@@ -40,25 +40,37 @@ public class TournamentController {
     @Autowired
     private FacebookUserService facebookUserService;
 
+    @GetMapping("")
+    public String redirectToTournamentsPage(Model model, Authentication authentication) {
+        User loggedUser = (User) authentication.getPrincipal();
+
+        return "redirect:/tournaments/" + loggedUser.getId();
+    }
+
+
     @GetMapping("/{userId}")
     public String getTournamentsPage(@PathVariable long userId, Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
         User user = getUser(userId, loggedUser);
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
         model.addAttribute("tournaments", this.tournamentService.getAllTournaments(user));
 
         return "tournaments-preview";
     }
 
-
-    @GetMapping("/{userId}/create")
-    public String getCreateTournamentPage(@PathVariable long userId,@ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, Model model, Authentication authentication) {
+    @GetMapping("/create")
+    public String redirectToCreatePage(Model model, Authentication authentication) {
 
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
+        return "redirect:/tournaments/" + loggedUser.getId() + "/create";
+    }
+
+
+    @GetMapping("/{userId}/create")
+    public String getCreateTournamentPage(@PathVariable long userId, @ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, Model model) {
+
         model.addAttribute("userId", userId);
 
         model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
@@ -67,10 +79,9 @@ public class TournamentController {
     }
 
     @PostMapping("/{userId}/create")
-    public String createTournament(@PathVariable long userId,@Valid @ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+    public String createTournament(@PathVariable long userId, @Valid @ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         if (bindingResult.hasErrors()) {
@@ -78,16 +89,15 @@ public class TournamentController {
             return "tournaments-create";
         }
 
-        this.tournamentService.save(createTournamentBindingModel, getUser(userId,loggedUser));
+        this.tournamentService.save(createTournamentBindingModel, getUser(userId, loggedUser));
 
-        return "redirect:/tournaments/"+ userId;
+        return "redirect:/tournaments/" + userId;
     }
 
     @GetMapping("/{userId}/show/{tourId}")
-    public String getTournamentResultPage(@PathVariable long userId,@PathVariable long tourId, @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, Model model, Authentication authentication) {
+    public String getTournamentResultPage(@PathVariable long userId, @PathVariable long tourId, @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         //Throws exception if doesn't own. Exception redirects to error page
@@ -106,12 +116,10 @@ public class TournamentController {
 
     //TODO code repetition? check if redirect is possible
     @PostMapping("/{userId}/show/{tourId}")
-    public String enhanceTournamentResultsPage(@PathVariable long userId,@PathVariable long tourId, @Valid @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+    public String enhanceTournamentResultsPage(@PathVariable long userId, @PathVariable long tourId, @Valid @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
 
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         //Throws exception if doesn't own. Exception redirects to error page
@@ -138,10 +146,9 @@ public class TournamentController {
     }
 
     @GetMapping("/{userId}/edit/{tourId}")
-    public String getEditTournamentPage(@PathVariable long userId,@PathVariable long tourId, Model model, Authentication authentication) {
+    public String getEditTournamentPage(@PathVariable long userId, @PathVariable long tourId, Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         //Throws exception if doesn't own. Exception redirects to error page
@@ -152,11 +159,10 @@ public class TournamentController {
     }
 
     @PostMapping("/{userId}/edit/{tourId}")
-    public String editTournament(@PathVariable long userId,@PathVariable long tourId, @Valid @ModelAttribute EditTournamentBindingModel editTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
+    public String editTournament(@PathVariable long userId, @PathVariable long tourId, @Valid @ModelAttribute EditTournamentBindingModel editTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
 
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         //Throws exception if doesn't own. Exception redirects to error page
@@ -174,10 +180,9 @@ public class TournamentController {
 
 
     @GetMapping("/{userId}/delete/{tourId}")
-    public String deleteTournament(@PathVariable long userId,@PathVariable long tourId, Model model, Authentication authentication) {
+    public String deleteTournament(@PathVariable long userId, @PathVariable long tourId, Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         ///Throws exception if doesn't own. Exception redirects to error page
@@ -188,23 +193,20 @@ public class TournamentController {
         return "redirect:/tournaments/" + userId;
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public String catchUserNotFoundException() {
+
+        return "exceptions/user-not-found";
+    }
 
     @ExceptionHandler(TournamentNotFoundException.class)
-    public String catchTournamentNotFoundException(Model model, Authentication authentication) {
-        User loggedUser = (User) authentication.getPrincipal();
-
-        model.addAttribute("loggedUserId", loggedUser.getId());
-        model.addAttribute("userId", loggedUser.getId());
+    public String catchTournamentNotFoundException() {
 
         return "exceptions/tournament-not-found";
     }
 
     @ExceptionHandler(UnauthorizedAccessException.class)
-    public String catchUnauthorizedAccessException(Model model, Authentication authentication) {
-        User loggedUser = (User) authentication.getPrincipal();
-
-        model.addAttribute("loggedUserId", loggedUser.getId());
-        model.addAttribute("userId", loggedUser.getId());
+    public String catchUnauthorizedAccessException() {
 
         return "exceptions/unauthorized-access";
     }

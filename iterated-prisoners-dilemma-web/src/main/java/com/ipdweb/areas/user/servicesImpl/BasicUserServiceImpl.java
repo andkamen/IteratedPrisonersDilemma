@@ -11,6 +11,7 @@ import com.ipdweb.areas.user.services.BasicUserService;
 import com.ipdweb.areas.user.services.RoleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -106,9 +107,15 @@ public class BasicUserServiceImpl implements BasicUserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.userRepository.findOneByUsername(username);
+
         if (user == null) {
             throw new UsernameNotFoundException(Errors.INVALID_CREDENTIALS);
         }
+
+        if (!user.isEnabled()) {
+            throw new DisabledException(Errors.ACCOUNT_DISABLED);
+        }
+
 
         return user;
     }

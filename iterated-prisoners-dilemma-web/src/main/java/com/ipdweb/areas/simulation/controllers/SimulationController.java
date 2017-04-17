@@ -39,25 +39,37 @@ public class SimulationController {
     @Autowired
     private FacebookUserService facebookUserService;
 
+
+    @GetMapping("")
+    public String redirectToSimulationsPage(Authentication authentication) {
+        User loggedUser = (User) authentication.getPrincipal();
+
+        return "redirect:/simulations/" + loggedUser.getId();
+    }
+
     @GetMapping("{userId}")
     public String getSimulationsPage(@PathVariable long userId, Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
         User user = getUser(userId, loggedUser);
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
         model.addAttribute("simulations", this.simulationService.getAllSimulations(user));
 
         return "simulations-preview";
     }
 
-    @GetMapping("/{userId}/create")
-    public String getCreateSimulationPage(@PathVariable long userId, @ModelAttribute CreateSimulationBindingModel createSimulationBindingModel, Model model, Authentication authentication) {
+    @GetMapping("/create")
+    public String redirectToCreateSimulationPage(Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
-        model.addAttribute("userId", userId);
+        return "redirect:/simulations/" + loggedUser.getId() + "/create";
+    }
 
+
+    @GetMapping("/{userId}/create")
+    public String getCreateSimulationPage(@PathVariable long userId, @ModelAttribute CreateSimulationBindingModel createSimulationBindingModel, Model model) {
+
+        model.addAttribute("userId", userId);
         model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
 
         return "simulations-create";
@@ -67,7 +79,6 @@ public class SimulationController {
     public String createSimulation(@PathVariable long userId, @Valid @ModelAttribute CreateSimulationBindingModel createSimulationBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         if (bindingResult.hasErrors()) {
@@ -84,7 +95,6 @@ public class SimulationController {
     public String getSimulationResultPage(@PathVariable long userId, @PathVariable long simId, @ModelAttribute RunMoreGenerationsBindingModel runMoreGenerationsBindingModel, Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         ///Throws exception if doesn't own. Exception redirects to error page
@@ -101,7 +111,7 @@ public class SimulationController {
         model.addAttribute("genCount", genCount);
         model.addAttribute("matrix", matrix);
         model.addAttribute("strats", strats);
-        model.addAttribute("id", simulationResultViewModel.getId());
+        model.addAttribute("simId", simulationResultViewModel.getId());
         model.addAttribute("name", simulationResultViewModel.getName());
 
         return "simulations-show-result";
@@ -127,7 +137,7 @@ public class SimulationController {
         model.addAttribute("genCount", genCount);
         model.addAttribute("matrix", matrix);
         model.addAttribute("strats", strats);
-        model.addAttribute("id", simulationResultViewModel.getId());
+        model.addAttribute("simId", simulationResultViewModel.getId());
         model.addAttribute("name", simulationResultViewModel.getName());
 
         if (bindingResult.hasErrors()) {
@@ -144,7 +154,6 @@ public class SimulationController {
     public String getEditSimulationPage(@PathVariable long userId, @PathVariable long simId, Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         ///Throws exception if doesn't own. Exception redirects to error page
@@ -159,7 +168,6 @@ public class SimulationController {
 
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         ///Throws exception if doesn't own. Exception redirects to error page
@@ -179,7 +187,6 @@ public class SimulationController {
     public String deleteTournament(@PathVariable long userId, @PathVariable long simId, Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
 
-        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("userId", userId);
 
         ///Throws exception if doesn't own. Exception redirects to error page
@@ -187,25 +194,23 @@ public class SimulationController {
 
         this.simulationService.deleteSimulationById(simId);
 
-        return "redirect:/simulations/" + loggedUser.getId();
+        return "redirect:/simulations/" + userId;
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public String catchUserNotFoundException() {
+
+        return "exceptions/user-not-found";
     }
 
     @ExceptionHandler(SimulationNotFoundException.class)
-    public String catchSimulationNotFoundException(Model model, Authentication authentication) {
-        User loggedUser = (User) authentication.getPrincipal();
-
-        model.addAttribute("loggedUserId", loggedUser.getId());
-        model.addAttribute("userId", loggedUser.getId());
+    public String catchSimulationNotFoundException() {
 
         return "exceptions/simulation-not-found";
     }
 
     @ExceptionHandler(UnauthorizedAccessException.class)
-    public String catchUnauthorizedAccessException(Model model, Authentication authentication) {
-        User loggedUser = (User) authentication.getPrincipal();
-
-        model.addAttribute("loggedUserId", loggedUser.getId());
-        model.addAttribute("userId", loggedUser.getId());
+    public String catchUnauthorizedAccessException() {
 
         return "exceptions/unauthorized-access";
     }
