@@ -5,6 +5,7 @@ import com.ipdweb.areas.user.entities.BasicUser;
 import com.ipdweb.areas.user.entities.FacebookUser;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.errors.Errors;
+import com.ipdweb.areas.user.exceptions.AccountDisabledException;
 import com.ipdweb.areas.user.exceptions.UserNotFoundException;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
@@ -85,6 +86,7 @@ public class UserController {
         return "redirect:/users";
     }
 
+    //TODO code repetition. 2x for each service, and basically the same in two post methods. (enable, disable)
     @PostMapping("/users/disable/{userId}")
     public String disableUser(@PathVariable long userId, Model model) {
         BasicUser basicUser = this.basicUserService.getUserById(userId);
@@ -120,9 +122,9 @@ public class UserController {
         return "exceptions/user-not-found";
     }
 
-
     //TODO this error is not even caught when thrown
-    @ExceptionHandler(DisabledException.class)
+    //Doesnt work with Disabled access exception either
+    @ExceptionHandler(AccountDisabledException.class)
     public String catchDisabledException(Model model) {
         model.addAttribute("error", Errors.ACCOUNT_DISABLED);
 

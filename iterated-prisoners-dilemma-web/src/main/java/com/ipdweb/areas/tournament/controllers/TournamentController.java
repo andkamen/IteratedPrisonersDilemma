@@ -41,7 +41,7 @@ public class TournamentController {
     private FacebookUserService facebookUserService;
 
     @GetMapping("")
-    public String redirectToTournamentsPage(Model model, Authentication authentication) {
+    public String redirectToTournamentsPage(Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
 
         return "redirect:/tournaments/" + loggedUser.getId();
@@ -60,7 +60,7 @@ public class TournamentController {
     }
 
     @GetMapping("/create")
-    public String redirectToCreatePage(Model model, Authentication authentication) {
+    public String redirectToCreatePage(Authentication authentication) {
 
         User loggedUser = (User) authentication.getPrincipal();
 

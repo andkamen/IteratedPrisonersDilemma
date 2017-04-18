@@ -1,9 +1,11 @@
 package com.ipdweb.areas.user.servicesImpl;
 
+import com.ipdweb.areas.common.utils.Constants;
 import com.ipdweb.areas.user.entities.BasicUser;
 import com.ipdweb.areas.user.entities.Role;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.errors.Errors;
+import com.ipdweb.areas.user.exceptions.AccountDisabledException;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
 import com.ipdweb.areas.user.repositories.BasicUserRepository;
@@ -70,7 +72,7 @@ public class BasicUserServiceImpl implements BasicUserService {
     public void disableUser(BasicUser user) {
         if (user != null) {
             for (Role role : user.getAuthorities()) {
-                if (role.getAuthority().equals("ROLE_ADMIN")) {
+                if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
                     return;
                 }
             }
@@ -83,7 +85,7 @@ public class BasicUserServiceImpl implements BasicUserService {
     public void enableUser(BasicUser user) {
         if (user != null) {
             for (Role role : user.getAuthorities()) {
-                if (role.getAuthority().equals("ROLE_ADMIN")) {
+                if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
                     return;
                 }
             }
@@ -113,7 +115,7 @@ public class BasicUserServiceImpl implements BasicUserService {
         }
 
         if (!user.isEnabled()) {
-            throw new DisabledException(Errors.ACCOUNT_DISABLED);
+            throw new AccountDisabledException(Errors.ACCOUNT_DISABLED);
         }
 
 

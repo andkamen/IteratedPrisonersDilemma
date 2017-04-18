@@ -17,4 +17,10 @@ public class Constants {
     //strategy factory
     public static final String STRATEGY_PACKAGE = "com.ipdweb.areas.strategy.entities.strategies.";
     public static final String STRATEGY_SUFFIX = "Strategy";
+
+    //Roles
+    public static final String DEFAULT_ROLE = "ROLE_USER";
+    public static final String ADMIN_ROLE = "ROLE_ADMIN";
+
+
 }

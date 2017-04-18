@@ -1,7 +1,10 @@
 package com.ipdweb.areas.user.servicesImpl;
 
+import com.ipdweb.areas.common.utils.Constants;
 import com.ipdweb.areas.user.entities.FacebookUser;
 import com.ipdweb.areas.user.entities.Role;
+import com.ipdweb.areas.user.errors.Errors;
+import com.ipdweb.areas.user.exceptions.AccountDisabledException;
 import com.ipdweb.areas.user.repositories.FacebookUserRepository;
 import com.ipdweb.areas.user.services.FacebookUserService;
 import com.ipdweb.areas.user.services.RoleService;
@@ -36,7 +39,7 @@ public class FacebookUserServiceImpl implements FacebookUserService {
     public void disableUser(FacebookUser user) {
         if (user != null) {
             for (Role role : user.getAuthorities()) {
-                if (role.getAuthority().equals("ROLE_ADMIN")) {
+                if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
                     return;
                 }
             }
@@ -49,7 +52,7 @@ public class FacebookUserServiceImpl implements FacebookUserService {
     public void enableUser(FacebookUser user) {
         if (user != null) {
             for (Role role : user.getAuthorities()) {
-                if (role.getAuthority().equals("ROLE_ADMIN")) {
+                if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
                     return;
                 }
             }
@@ -84,6 +87,10 @@ public class FacebookUserServiceImpl implements FacebookUserService {
     }
 
     private void loginUser(FacebookUser facebookUser) {
+        if (!facebookUser.isEnabled()) {
+            throw new AccountDisabledException(Errors.ACCOUNT_DISABLED);
+        }
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(facebookUser, null, facebookUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
