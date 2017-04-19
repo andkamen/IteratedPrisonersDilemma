@@ -1,9 +1,7 @@
 package com.ipdweb.controllers;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -13,4 +11,12 @@ public class GlobalExceptionHandler {
 
         return "error/error";
     }
+//
+//    @ExceptionHandler(AccountDisabledException.class)
+//    public String catchDisabledException(Model model) {
+//        model.addAttribute("error", Errors.ACCOUNT_DISABLED);
+//
+//        return "login";
+//    }
+
 }

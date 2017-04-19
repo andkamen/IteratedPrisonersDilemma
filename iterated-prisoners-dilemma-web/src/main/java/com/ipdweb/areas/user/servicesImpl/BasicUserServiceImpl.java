@@ -13,7 +13,6 @@ import com.ipdweb.areas.user.services.BasicUserService;
 import com.ipdweb.areas.user.services.RoleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -58,7 +57,7 @@ public class BasicUserServiceImpl implements BasicUserService {
         for (User user : users) {
             UserViewModel userViewModel = this.modelMapper.map(user, UserViewModel.class);
             for (Role role : user.getAuthorities()) {
-                if (role.getAuthority().equals("ROLE_ADMIN")) {
+                if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
                     userViewModel.setAdmin(true);
                 }
             }

@@ -2,6 +2,7 @@ package com.ipdweb.areas.tournament.controllers;
 
 import com.google.gson.Gson;
 import com.ipdweb.areas.common.exceptions.UnauthorizedAccessException;
+import com.ipdweb.areas.common.utils.Constants;
 import com.ipdweb.areas.strategy.services.StrategyService;
 import com.ipdweb.areas.tournament.exceptions.TournamentNotFoundException;
 import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
@@ -40,6 +41,7 @@ public class TournamentController {
     @Autowired
     private FacebookUserService facebookUserService;
 
+    //TODO make interceptor for this redirect
     @GetMapping("")
     public String redirectToTournamentsPage(Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
@@ -211,6 +213,8 @@ public class TournamentController {
         return "exceptions/unauthorized-access";
     }
 
+
+    //TODO create inteceptor
     private User getUser(long id, User loggedUser) {
         User user = this.basicUserService.getUserById(id);
 
@@ -221,10 +225,10 @@ public class TournamentController {
             }
         }
 
+        //TODO add interceptor to validate this??
         boolean isAdmin = false;
-
         for (Role role : loggedUser.getAuthorities()) {
-            if (role.getAuthority().equals("ROLE_ADMIN")) {
+            if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
                 isAdmin = true;
                 break;
             }

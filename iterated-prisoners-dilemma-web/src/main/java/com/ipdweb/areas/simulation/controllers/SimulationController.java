@@ -1,6 +1,7 @@
 package com.ipdweb.areas.simulation.controllers;
 
 import com.google.gson.Gson;
+import com.ipdweb.areas.common.utils.Constants;
 import com.ipdweb.areas.simulation.exceptions.SimulationNotFoundException;
 import com.ipdweb.areas.common.exceptions.UnauthorizedAccessException;
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
@@ -228,7 +229,7 @@ public class SimulationController {
         boolean isAdmin = false;
 
         for (Role role : loggedUser.getAuthorities()) {
-            if (role.getAuthority().equals("ROLE_ADMIN")) {
+            if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
                 isAdmin = true;
                 break;
             }

@@ -33,6 +33,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                 .and()
                     .formLogin().loginPage("/login").permitAll()
+                //TODO secutiry problem doesnt redirect to exception handeler
+//                    .failureUrl("/login?disabled")
                     .usernameParameter("username")
                     .passwordParameter("password")
                 .and()
