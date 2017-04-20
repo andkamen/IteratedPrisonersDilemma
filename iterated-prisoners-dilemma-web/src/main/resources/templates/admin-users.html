@@ -43,13 +43,13 @@
                 <td style="padding: 2px; vertical-align: middle" th:text="*{isEnabled()}">enabled</td>
                 <td style="padding: 2px; vertical-align: middle; empty-cells: show"
                     th:if="*{isEnabled() == true and isAdmin() == false}">
-                    <form method="post" th:action="@{/users/disable/{id}(id=${user.id})}">
+                    <form method="post" th:action="@{/users/changeAccess/{enable}/{id}(enable = false,id=${user.id})}">
                         <button type="submit" class="card-button btn btn-warning" name="Disable">Disable</button>
                     </form>
                 </td>
                 <td style="padding: 2px; vertical-align: middle; empty-cells: show"
                     th:if="*{isEnabled() == false and isAdmin() == false}">
-                    <form method="post" th:action="@{/users/enable/{id}(id=${user.id})}">
+                    <form method="post" th:action="@{/users/changeAccess/{enable}/{id}(enable = true,id=${user.id})}">
                         <button type="submit" class="card-button btn btn-success" name="Enable">Enable</button>
                     </form>
                 </td>

@@ -1,6 +1,7 @@
 package com.ipdweb.areas.user.services;
 
 import com.ipdweb.areas.user.entities.BasicUser;
+import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,11 +14,9 @@ public interface BasicUserService extends UserDetailsService {
 
     List<UserViewModel> findAll();
 
-    void disableUser(BasicUser user);
+    void changeAccountAccess(User user, boolean enabled);
 
-    void enableUser(BasicUser user);
-
-    BasicUser getUserById(Long id);
+    User getUserById(Long id);
 
     void deleteUserById(Long id);
 }

@@ -35,10 +35,7 @@ public class SimulationController {
     private StrategyService strategyService;
 
     @Autowired
-    private BasicUserService basicUserService;
-
-    @Autowired
-    private FacebookUserService facebookUserService;
+    private BasicUserService userService;
 
 
     @GetMapping("")
@@ -217,13 +214,10 @@ public class SimulationController {
     }
 
     private User getUser(long id, User loggedUser) {
-        User user = this.basicUserService.getUserById(id);
+        User user = this.userService.getUserById(id);
 
         if (user == null) {
-            user = this.facebookUserService.getUserById(id);
-            if (user == null) {
                 throw new UserNotFoundException();
-            }
         }
 
         boolean isAdmin = false;

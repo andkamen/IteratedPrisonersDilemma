@@ -15,7 +15,6 @@ import com.ipdweb.areas.user.entities.Role;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.exceptions.UserNotFoundException;
 import com.ipdweb.areas.user.services.BasicUserService;
-import com.ipdweb.areas.user.services.FacebookUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -36,10 +35,7 @@ public class TournamentController {
     private StrategyService strategyService;
 
     @Autowired
-    private BasicUserService basicUserService;
-
-    @Autowired
-    private FacebookUserService facebookUserService;
+    private BasicUserService userService;
 
     //TODO make interceptor for this redirect
     @GetMapping("")
@@ -214,18 +210,14 @@ public class TournamentController {
     }
 
 
-    //TODO create inteceptor
     private User getUser(long id, User loggedUser) {
-        User user = this.basicUserService.getUserById(id);
+        User user = this.userService.getUserById(id);
 
         if (user == null) {
-            user = this.facebookUserService.getUserById(id);
-            if (user == null) {
                 throw new UserNotFoundException();
-            }
         }
 
-        //TODO add interceptor to validate this??
+        //TODO add interceptor to validate this
         boolean isAdmin = false;
         for (Role role : loggedUser.getAuthorities()) {
             if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {

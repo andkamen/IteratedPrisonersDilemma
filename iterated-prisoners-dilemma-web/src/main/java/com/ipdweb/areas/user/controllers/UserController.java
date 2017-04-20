@@ -1,8 +1,6 @@
 package com.ipdweb.areas.user.controllers;
 
 import com.ipdweb.areas.tournament.services.TournamentService;
-import com.ipdweb.areas.user.entities.BasicUser;
-import com.ipdweb.areas.user.entities.FacebookUser;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.errors.Errors;
 import com.ipdweb.areas.user.exceptions.AccountDisabledException;
@@ -10,7 +8,6 @@ import com.ipdweb.areas.user.exceptions.UserNotFoundException;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
 import com.ipdweb.areas.user.services.BasicUserService;
-import com.ipdweb.areas.user.services.FacebookUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -25,10 +22,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private BasicUserService basicUserService;
-
-    @Autowired
-    private FacebookUserService facebookUserService;
+    private BasicUserService userService;
 
     @Autowired
     private TournamentService tournamentService;
@@ -44,7 +38,7 @@ public class UserController {
             return "register";
         }
 
-        this.basicUserService.register(registrationModel);
+        this.userService.register(registrationModel);
 
         return "redirect:/";
     }
@@ -62,7 +56,7 @@ public class UserController {
     @GetMapping("/users")
     public String getUsersPage(Model model, Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
-        List<UserViewModel> userViewModelList = this.basicUserService.findAll();
+        List<UserViewModel> userViewModelList = this.userService.findAll();
 
         model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("users", userViewModelList);
@@ -72,48 +66,24 @@ public class UserController {
     @GetMapping("/users/delete/{userId}")
     public String deleteUser(@PathVariable long userId, Model model) {
 
-        BasicUser basicUser = this.basicUserService.getUserById(userId);
-        if (basicUser != null) {
-            this.basicUserService.deleteUserById(userId);
-        }
-
-        FacebookUser facebookUser = this.facebookUserService.getUserById(userId);
-        if (facebookUser != null) {
-            this.facebookUserService.deleteUserById(userId);
+        User user = this.userService.getUserById(userId);
+        if (user != null) {
+            this.userService.deleteUserById(userId);
         }
 
         return "redirect:/users";
     }
 
-    //TODO code repetition. 2x for each service, and basically the same in two post methods. (enable, disable)
-    @PostMapping("/users/disable/{userId}")
-    public String disableUser(@PathVariable long userId, Model model) {
-        BasicUser basicUser = this.basicUserService.getUserById(userId);
-        if (basicUser != null) {
-            this.basicUserService.disableUser(basicUser);
-        }
-
-        FacebookUser facebookUser = this.facebookUserService.getUserById(userId);
-        if (facebookUser != null) {
-            this.facebookUserService.disableUser(facebookUser);
+    @PostMapping("/users/changeAccess/{enabled}/{userId}")
+    public String changeUserAccountAccess(@PathVariable boolean enabled, @PathVariable long userId, Model model) {
+        User user = this.userService.getUserById(userId);
+        if (user != null) {
+            this.userService.changeAccountAccess(user, enabled);
         }
 
         return "redirect:/users";
     }
 
-    @PostMapping("/users/enable/{userId}")
-    public String enableUser(@PathVariable long userId, Model model) {
-        BasicUser basicUser = this.basicUserService.getUserById(userId);
-        if (basicUser != null) {
-            this.basicUserService.enableUser(basicUser);
-        }
-
-        FacebookUser facebookUser = this.facebookUserService.getUserById(userId);
-        if (facebookUser != null) {
-            this.facebookUserService.enableUser(facebookUser);
-        }
-        return "redirect:/users";
-    }
 
     @ExceptionHandler(UserNotFoundException.class)
     public String catchUserNotFoundException() {

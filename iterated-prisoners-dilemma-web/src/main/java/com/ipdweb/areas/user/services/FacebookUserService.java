@@ -7,11 +7,6 @@ public interface FacebookUserService {
 
     void registerOrLogin(User facebookUser);
 
-    void disableUser(FacebookUser user);
+    com.ipdweb.areas.user.entities.User getUserById(Long id);
 
-    void enableUser(FacebookUser user);
-
-    FacebookUser getUserById(Long id);
-
-    void deleteUserById(Long id);
 }

@@ -8,7 +8,7 @@ import com.ipdweb.areas.user.errors.Errors;
 import com.ipdweb.areas.user.exceptions.AccountDisabledException;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
-import com.ipdweb.areas.user.repositories.BasicUserRepository;
+import com.ipdweb.areas.user.repositories.AllUserRepository;
 import com.ipdweb.areas.user.services.BasicUserService;
 import com.ipdweb.areas.user.services.RoleService;
 import org.modelmapper.ModelMapper;
@@ -28,7 +28,7 @@ public class BasicUserServiceImpl implements BasicUserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private BasicUserRepository userRepository;
+    private AllUserRepository userRepository;
 
     @Autowired
     private RoleService roleService;
@@ -53,7 +53,7 @@ public class BasicUserServiceImpl implements BasicUserService {
     @Override
     public List<UserViewModel> findAll() {
         List<UserViewModel> userViewModels = new ArrayList<>();
-        List<BasicUser> users = this.userRepository.findAll();
+        List<User> users = this.userRepository.findAll();
         for (User user : users) {
             UserViewModel userViewModel = this.modelMapper.map(user, UserViewModel.class);
             for (Role role : user.getAuthorities()) {
@@ -68,34 +68,21 @@ public class BasicUserServiceImpl implements BasicUserService {
     }
 
     @Override
-    public void disableUser(BasicUser user) {
+    public void changeAccountAccess(User user, boolean enabled) {
         if (user != null) {
             for (Role role : user.getAuthorities()) {
                 if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
                     return;
                 }
             }
-            user.setEnabled(false);
+            user.setEnabled(enabled);
             this.userRepository.save(user);
         }
     }
 
     @Override
-    public void enableUser(BasicUser user) {
-        if (user != null) {
-            for (Role role : user.getAuthorities()) {
-                if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
-                    return;
-                }
-            }
-            user.setEnabled(true);
-            this.userRepository.save(user);
-        }
-    }
-
-    @Override
-    public BasicUser getUserById(Long id) {
-        BasicUser user = this.userRepository.findById(id);
+    public User getUserById(Long id) {
+        User user = this.userRepository.findById(id);
 
         return user;
     }

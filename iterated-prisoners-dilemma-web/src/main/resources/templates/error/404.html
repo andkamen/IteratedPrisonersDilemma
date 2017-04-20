@@ -19,7 +19,7 @@
         <br/>
         <br/>
         <br/>
-        <a class="btn btn-secondary" href="/">Simulations</a>
+        <button class="btn btn-primary" onclick="goBack()">Go Back</button>
     </div>
 </main>
 
@@ -28,5 +28,10 @@
 
 <script th:src="@{/jquery/jquery.min.js}"></script>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 </body>
 </html>

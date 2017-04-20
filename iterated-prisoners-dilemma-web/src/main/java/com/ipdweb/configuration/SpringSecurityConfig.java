@@ -34,7 +34,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .formLogin().loginPage("/login").permitAll()
                 //TODO secutiry problem doesnt redirect to exception handeler
-//                    .failureUrl("/login?disabled")
+                //http://stackoverflow.com/questions/39789408/how-to-handle-spring-security-internalauthenticationserviceexception-thrown-in-s
+                //possible solution
                     .usernameParameter("username")
                     .passwordParameter("password")
                 .and()
