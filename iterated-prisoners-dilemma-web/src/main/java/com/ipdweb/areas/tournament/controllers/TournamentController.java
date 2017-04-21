@@ -2,7 +2,6 @@ package com.ipdweb.areas.tournament.controllers;
 
 import com.google.gson.Gson;
 import com.ipdweb.areas.common.exceptions.UnauthorizedAccessException;
-import com.ipdweb.areas.common.utils.Constants;
 import com.ipdweb.areas.strategy.services.StrategyService;
 import com.ipdweb.areas.tournament.exceptions.TournamentNotFoundException;
 import com.ipdweb.areas.tournament.models.bindingModels.CreateTournamentBindingModel;
@@ -11,7 +10,6 @@ import com.ipdweb.areas.tournament.models.bindingModels.SelectMatchUpResultsBind
 import com.ipdweb.areas.tournament.models.viewModels.TournamentMatchUpResultViewModel;
 import com.ipdweb.areas.tournament.models.viewModels.TournamentResultViewModel;
 import com.ipdweb.areas.tournament.services.TournamentService;
-import com.ipdweb.areas.user.entities.Role;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.exceptions.UserNotFoundException;
 import com.ipdweb.areas.user.services.BasicUserService;
@@ -47,9 +45,8 @@ public class TournamentController {
 
 
     @GetMapping("/{userId}")
-    public String getTournamentsPage(@PathVariable long userId, Model model, Authentication authentication) {
-        User loggedUser = (User) authentication.getPrincipal();
-        User user = getUser(userId, loggedUser);
+    public String getTournamentsPage(@PathVariable long userId, Model model) {
+        User user = this.userService.getUserById(userId);
 
         model.addAttribute("userId", userId);
         model.addAttribute("tournaments", this.tournamentService.getAllTournaments(user));
@@ -59,7 +56,6 @@ public class TournamentController {
 
     @GetMapping("/create")
     public String redirectToCreatePage(Authentication authentication) {
-
         User loggedUser = (User) authentication.getPrincipal();
 
         return "redirect:/tournaments/" + loggedUser.getId() + "/create";
@@ -77,8 +73,8 @@ public class TournamentController {
     }
 
     @PostMapping("/{userId}/create")
-    public String createTournament(@PathVariable long userId, @Valid @ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
-        User loggedUser = (User) authentication.getPrincipal();
+    public String createTournament(@PathVariable long userId, @Valid @ModelAttribute CreateTournamentBindingModel createTournamentBindingModel, BindingResult bindingResult, Model model) {
+        User user = this.userService.getUserById(userId);
 
         model.addAttribute("userId", userId);
 
@@ -87,7 +83,7 @@ public class TournamentController {
             return "tournaments-create";
         }
 
-        this.tournamentService.save(createTournamentBindingModel, getUser(userId, loggedUser));
+        this.tournamentService.save(createTournamentBindingModel, user);
 
         return "redirect:/tournaments/" + userId;
     }
@@ -207,29 +203,5 @@ public class TournamentController {
     public String catchUnauthorizedAccessException() {
 
         return "exceptions/unauthorized-access";
-    }
-
-
-    private User getUser(long id, User loggedUser) {
-        User user = this.userService.getUserById(id);
-
-        if (user == null) {
-                throw new UserNotFoundException();
-        }
-
-        //TODO add interceptor to validate this
-        boolean isAdmin = false;
-        for (Role role : loggedUser.getAuthorities()) {
-            if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
-                isAdmin = true;
-                break;
-            }
-        }
-
-        if ((user.getId() != loggedUser.getId()) && !isAdmin) {
-            throw new UnauthorizedAccessException();
-        }
-
-        return user;
     }
 }

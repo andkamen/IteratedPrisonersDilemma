@@ -1,6 +1,5 @@
 package com.ipdweb.areas.user.services;
 
-import com.ipdweb.areas.user.entities.BasicUser;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
@@ -19,4 +18,6 @@ public interface BasicUserService extends UserDetailsService {
     User getUserById(Long id);
 
     void deleteUserById(Long id);
+
+    User getUserByUsername(String username);
 }

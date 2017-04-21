@@ -1,5 +1,6 @@
 package com.ipdweb.areas.user.servicesImpl;
 
+import com.ipdweb.areas.user.exceptions.UserNotFoundException;
 import com.ipdweb.areas.common.utils.Constants;
 import com.ipdweb.areas.user.entities.BasicUser;
 import com.ipdweb.areas.user.entities.Role;
@@ -84,12 +85,23 @@ public class BasicUserServiceImpl implements BasicUserService {
     public User getUserById(Long id) {
         User user = this.userRepository.findById(id);
 
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+
         return user;
     }
 
     @Override
     public void deleteUserById(Long id) {
         this.userRepository.delete(id);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        User user = this.userRepository.findOneByUsername(username);
+
+        return user;
     }
 
     @Override
@@ -103,7 +115,6 @@ public class BasicUserServiceImpl implements BasicUserService {
         if (!user.isEnabled()) {
             throw new AccountDisabledException(Errors.ACCOUNT_DISABLED);
         }
-
 
         return user;
     }

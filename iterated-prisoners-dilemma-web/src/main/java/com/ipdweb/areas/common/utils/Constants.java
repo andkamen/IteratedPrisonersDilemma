@@ -22,5 +22,10 @@ public class Constants {
     public static final String DEFAULT_ROLE = "ROLE_USER";
     public static final String ADMIN_ROLE = "ROLE_ADMIN";
 
+    //ContentValidator
+    public static final String VIEW_TOURNAMENTS_URI = "/tournaments";
+    public static final String VIEW_SIMULATION_URI = "/simulations";
+    public static final int USER_ID_POSITION = 2;
+
 
 }

@@ -1,20 +1,17 @@
 package com.ipdweb.areas.simulation.controllers;
 
 import com.google.gson.Gson;
-import com.ipdweb.areas.common.utils.Constants;
-import com.ipdweb.areas.simulation.exceptions.SimulationNotFoundException;
 import com.ipdweb.areas.common.exceptions.UnauthorizedAccessException;
+import com.ipdweb.areas.simulation.exceptions.SimulationNotFoundException;
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.EditSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.RunMoreGenerationsBindingModel;
 import com.ipdweb.areas.simulation.models.viewModels.SimulationResultViewModel;
 import com.ipdweb.areas.simulation.services.SimulationService;
 import com.ipdweb.areas.strategy.services.StrategyService;
-import com.ipdweb.areas.user.entities.Role;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.exceptions.UserNotFoundException;
 import com.ipdweb.areas.user.services.BasicUserService;
-import com.ipdweb.areas.user.services.FacebookUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -46,9 +43,8 @@ public class SimulationController {
     }
 
     @GetMapping("{userId}")
-    public String getSimulationsPage(@PathVariable long userId, Model model, Authentication authentication) {
-        User loggedUser = (User) authentication.getPrincipal();
-        User user = getUser(userId, loggedUser);
+    public String getSimulationsPage(@PathVariable long userId, Model model) {
+        User user = this.userService.getUserById(userId);
 
         model.addAttribute("userId", userId);
         model.addAttribute("simulations", this.simulationService.getAllSimulations(user));
@@ -74,8 +70,8 @@ public class SimulationController {
     }
 
     @PostMapping("/{userId}/create")
-    public String createSimulation(@PathVariable long userId, @Valid @ModelAttribute CreateSimulationBindingModel createSimulationBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
-        User loggedUser = (User) authentication.getPrincipal();
+    public String createSimulation(@PathVariable long userId, @Valid @ModelAttribute CreateSimulationBindingModel createSimulationBindingModel, BindingResult bindingResult, Model model) {
+        User user = this.userService.getUserById(userId);
 
         model.addAttribute("userId", userId);
 
@@ -84,7 +80,7 @@ public class SimulationController {
             return "simulations-create";
         }
 
-        this.simulationService.save(createSimulationBindingModel, getUser(userId, loggedUser));
+        this.simulationService.save(createSimulationBindingModel, user);
 
         return "redirect:/simulations/" + userId;
     }
@@ -211,28 +207,5 @@ public class SimulationController {
     public String catchUnauthorizedAccessException() {
 
         return "exceptions/unauthorized-access";
-    }
-
-    private User getUser(long id, User loggedUser) {
-        User user = this.userService.getUserById(id);
-
-        if (user == null) {
-                throw new UserNotFoundException();
-        }
-
-        boolean isAdmin = false;
-
-        for (Role role : loggedUser.getAuthorities()) {
-            if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
-                isAdmin = true;
-                break;
-            }
-        }
-
-        if ((user.getId() != loggedUser.getId()) && !isAdmin) {
-            throw new UnauthorizedAccessException();
-        }
-
-        return user;
     }
 }
