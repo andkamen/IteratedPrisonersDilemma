@@ -1,7 +1,7 @@
 package com.ipdweb.areas.strategy.factories;
 
 import com.ipdweb.areas.strategy.entities.StrategyImpl;
-import com.ipdweb.exceptions.InvalidStrategyNameException;
+import com.ipdweb.areas.strategy.exceptions.InvalidStrategyNameException;
 import com.ipdweb.areas.common.utils.Constants;
 
 import java.lang.reflect.Constructor;

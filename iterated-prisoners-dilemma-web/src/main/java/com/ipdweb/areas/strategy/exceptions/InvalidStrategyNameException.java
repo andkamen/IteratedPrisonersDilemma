@@ -1,4 +1,4 @@
-package com.ipdweb.exceptions;
+package com.ipdweb.areas.strategy.exceptions;
 
 public class InvalidStrategyNameException extends RuntimeException {
 

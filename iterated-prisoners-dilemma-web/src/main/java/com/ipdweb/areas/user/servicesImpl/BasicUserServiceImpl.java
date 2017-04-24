@@ -105,7 +105,7 @@ public class BasicUserServiceImpl implements BasicUserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username){
         User user = this.userRepository.findOneByUsername(username);
 
         if (user == null) {

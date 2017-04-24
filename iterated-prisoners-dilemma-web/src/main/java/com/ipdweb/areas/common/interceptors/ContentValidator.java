@@ -22,7 +22,9 @@ public class ContentValidator extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         if (request.getRequestURI().equals(Constants.VIEW_SIMULATION_URI) ||
-                request.getRequestURI().equals(Constants.VIEW_TOURNAMENTS_URI)) {
+                request.getRequestURI().equals(Constants.CREATE_SIMULATION_URI) ||
+                request.getRequestURI().equals(Constants.VIEW_TOURNAMENTS_URI) ||
+                request.getRequestURI().equals(Constants.CREATE_TOURNAMENTS_URI)) {
             return true;
         }
 

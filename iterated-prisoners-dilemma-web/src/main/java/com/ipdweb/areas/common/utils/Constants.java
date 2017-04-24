@@ -24,7 +24,9 @@ public class Constants {
 
     //ContentValidator
     public static final String VIEW_TOURNAMENTS_URI = "/tournaments";
+    public static final String CREATE_TOURNAMENTS_URI = "/tournaments/create";
     public static final String VIEW_SIMULATION_URI = "/simulations";
+    public static final String CREATE_SIMULATION_URI = "/simulations/create";
     public static final int USER_ID_POSITION = 2;
 
 
