@@ -1,10 +1,10 @@
 package com.ipdweb.areas.simulation.servicesImpl;
 
 
+import com.ipdweb.areas.common.exceptions.UnauthorizedAccessException;
 import com.ipdweb.areas.simulation.entities.Generation;
 import com.ipdweb.areas.simulation.entities.Simulation;
 import com.ipdweb.areas.simulation.exceptions.SimulationNotFoundException;
-import com.ipdweb.areas.common.exceptions.UnauthorizedAccessException;
 import com.ipdweb.areas.simulation.models.bindingModels.CreateSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.EditSimulationBindingModel;
 import com.ipdweb.areas.simulation.models.bindingModels.RunMoreGenerationsBindingModel;
@@ -29,18 +29,18 @@ import java.util.*;
 @Service
 public class SimulationServiceImpl implements SimulationService {
 
-    @Autowired
     private SimulationRepository simulationRepository;
-
-    @Autowired
     private GenerationService generationService;
-
-    @Autowired
     private StrategyService strategyService;
-
-    @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    public SimulationServiceImpl(SimulationRepository simulationRepository, GenerationService generationService, StrategyService strategyService, ModelMapper modelMapper) {
+        this.simulationRepository = simulationRepository;
+        this.generationService = generationService;
+        this.strategyService = strategyService;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public void save(CreateSimulationBindingModel createSimulationBindingModel, User user) {

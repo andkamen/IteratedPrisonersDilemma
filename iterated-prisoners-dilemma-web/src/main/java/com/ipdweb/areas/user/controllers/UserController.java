@@ -1,6 +1,5 @@
 package com.ipdweb.areas.user.controllers;
 
-import com.ipdweb.areas.tournament.services.TournamentService;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.errors.Errors;
 import com.ipdweb.areas.user.exceptions.AccountDisabledException;
@@ -21,11 +20,12 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    @Autowired
     private BasicUserService userService;
 
     @Autowired
-    private TournamentService tournamentService;
+    public UserController(BasicUserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/register")
     public String getRegisterPage(@ModelAttribute RegistrationModel registrationModel) {
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @GetMapping("/users/delete/{userId}")
-    public String deleteUser(@PathVariable long userId, Model model) {
+    public String deleteUser(@PathVariable long userId) {
 
         User user = this.userService.getUserById(userId);
         if (user != null) {
@@ -75,7 +75,7 @@ public class UserController {
     }
 
     @PostMapping("/users/changeAccess/{enabled}/{userId}")
-    public String changeUserAccountAccess(@PathVariable boolean enabled, @PathVariable long userId, Model model) {
+    public String changeUserAccountAccess(@PathVariable boolean enabled, @PathVariable long userId) {
         User user = this.userService.getUserById(userId);
         if (user != null) {
             this.userService.changeAccountAccess(user, enabled);

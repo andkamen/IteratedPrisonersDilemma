@@ -2,12 +2,15 @@ package com.ipdweb.areas.user.models.bindingModels;
 
 
 import com.ipdweb.areas.user.customValidations.IsPasswordsMatching;
+import com.ipdweb.areas.user.customValidations.IsUsernameUnique;
 
 import javax.validation.constraints.Size;
+
 
 @IsPasswordsMatching
 public class RegistrationModel {
 
+    @IsUsernameUnique
     @Size(min = 5, message = "Username too short")
     private String username;
 

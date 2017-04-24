@@ -17,11 +17,14 @@ import java.util.Set;
 @Service
 public class StrategyServiceImpl implements StrategyService {
 
-    @Autowired
     private StrategyRepository strategyRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public StrategyServiceImpl(StrategyRepository strategyRepository, ModelMapper modelMapper) {
+        this.strategyRepository = strategyRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public StrategyImpl getStrategyById(Long id) {

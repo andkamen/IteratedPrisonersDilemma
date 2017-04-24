@@ -3,7 +3,6 @@ package com.ipdweb.areas.user.controllers;
 import com.ipdweb.areas.user.errors.Errors;
 import com.ipdweb.areas.user.exceptions.AccountDisabledException;
 import com.ipdweb.areas.user.services.FacebookUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
@@ -18,14 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/register")
 public class FacebookLoginController {
 
-    @Autowired
     private FacebookUserService facebookUserService;
-
     private Facebook facebook;
-
     private ConnectionRepository connectionRepository;
 
-    public FacebookLoginController(Facebook facebook, ConnectionRepository connectionRepository) {
+    public FacebookLoginController(FacebookUserService facebookUserService,Facebook facebook, ConnectionRepository connectionRepository) {
+        this.facebookUserService = facebookUserService;
         this.facebook = facebook;
         this.connectionRepository = connectionRepository;
     }

@@ -1,8 +1,6 @@
 package com.ipdweb.areas.user.servicesImpl;
 
-import com.ipdweb.areas.common.utils.Constants;
 import com.ipdweb.areas.user.entities.FacebookUser;
-import com.ipdweb.areas.user.entities.Role;
 import com.ipdweb.areas.user.errors.Errors;
 import com.ipdweb.areas.user.exceptions.AccountDisabledException;
 import com.ipdweb.areas.user.repositories.AllUserRepository;
@@ -18,11 +16,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class FacebookUserServiceImpl implements FacebookUserService {
 
-    @Autowired
     private AllUserRepository userRepository;
+    private RoleService roleService;
 
     @Autowired
-    private RoleService roleService;
+    public FacebookUserServiceImpl(AllUserRepository userRepository, RoleService roleService) {
+        this.userRepository = userRepository;
+        this.roleService = roleService;
+    }
 
     @Override
     public void registerOrLogin(User fbUser) {

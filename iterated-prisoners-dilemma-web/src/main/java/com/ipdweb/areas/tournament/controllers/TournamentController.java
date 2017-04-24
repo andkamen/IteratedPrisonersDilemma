@@ -26,14 +26,16 @@ import javax.validation.Valid;
 @RequestMapping("/tournaments")
 public class TournamentController {
 
-    @Autowired
     private TournamentService tournamentService;
-
-    @Autowired
     private StrategyService strategyService;
+    private BasicUserService userService;
 
     @Autowired
-    private BasicUserService userService;
+    public TournamentController(TournamentService tournamentService, StrategyService strategyService, BasicUserService userService) {
+        this.tournamentService = tournamentService;
+        this.strategyService = strategyService;
+        this.userService = userService;
+    }
 
     //TODO make interceptor for this redirect
     @GetMapping("")

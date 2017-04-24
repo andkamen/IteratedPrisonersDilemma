@@ -17,9 +17,12 @@ import java.util.Set;
 @RequestMapping("/strategies")
 public class StrategyController {
 
+    private StrategyService strategyService;
 
     @Autowired
-    private StrategyService strategyService;
+    public StrategyController(StrategyService strategyService) {
+        this.strategyService = strategyService;
+    }
 
     @ModelAttribute("strategies")
     public Set<StrategyViewModel> getAllStrategies() {

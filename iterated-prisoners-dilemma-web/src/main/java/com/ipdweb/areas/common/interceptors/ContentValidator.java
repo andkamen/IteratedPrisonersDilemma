@@ -15,8 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class ContentValidator extends HandlerInterceptorAdapter {
 
-    @Autowired
     private BasicUserService userService;
+
+    @Autowired
+    public ContentValidator(BasicUserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

@@ -25,15 +25,16 @@ import javax.validation.Valid;
 @RequestMapping("/simulations")
 public class SimulationController {
 
-    @Autowired
     private SimulationService simulationService;
-
-    @Autowired
     private StrategyService strategyService;
-
-    @Autowired
     private BasicUserService userService;
 
+    @Autowired
+    public SimulationController(SimulationService simulationService, StrategyService strategyService, BasicUserService userService) {
+        this.simulationService = simulationService;
+        this.strategyService = strategyService;
+        this.userService = userService;
+    }
 
     @GetMapping("")
     public String redirectToSimulationsPage(Authentication authentication) {

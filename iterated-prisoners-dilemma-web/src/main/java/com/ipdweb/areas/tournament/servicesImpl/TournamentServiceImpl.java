@@ -31,14 +31,16 @@ import java.util.stream.Collectors;
 @Service
 public class TournamentServiceImpl implements TournamentService {
 
-    @Autowired
     private TournamentRepository tournamentRepository;
-
-    @Autowired
     private StrategyService strategyService;
+    private ModelMapper modelMapper;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public TournamentServiceImpl(TournamentRepository tournamentRepository, StrategyService strategyService, ModelMapper modelMapper) {
+        this.tournamentRepository = tournamentRepository;
+        this.strategyService = strategyService;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public void save(CreateTournamentBindingModel createTournamentBindingModel, User user) {

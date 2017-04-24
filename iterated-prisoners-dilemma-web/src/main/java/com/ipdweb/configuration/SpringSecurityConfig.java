@@ -16,8 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private BasicUserService basicUserService;
+
+    @Autowired
+    public SpringSecurityConfig(BasicUserService basicUserService) {
+        this.basicUserService = basicUserService;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -28,36 +32,36 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/register/**", "/strategies/**", "/bootstrap/**", "/jquery/**", "/connect/**", "/tether/**").permitAll()
-                    .antMatchers("/users/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
+                .antMatchers("/", "/register/**", "/strategies/**", "/bootstrap/**", "/jquery/**", "/connect/**", "/tether/**").permitAll()
+                .antMatchers("/users/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
-                    .formLogin().loginPage("/login").permitAll()
+                .formLogin().loginPage("/login").permitAll()
                 //TODO secutiry problem doesnt redirect to exception handeler
                 //http://stackoverflow.com/questions/39789408/how-to-handle-spring-security-internalauthenticationserviceexception-thrown-in-s
                 //possible solution
-                    .usernameParameter("username")
-                    .passwordParameter("password")
+                .usernameParameter("username")
+                .passwordParameter("password")
                 .and()
-                    .rememberMe()
-                    .rememberMeCookieName("RememberMe")
-                    .rememberMeParameter("rememberMe")
-                    .key("HashThisShit")
-                    .tokenValiditySeconds(100000)
+                .rememberMe()
+                .rememberMeCookieName("RememberMe")
+                .rememberMeParameter("rememberMe")
+                .key("HashThisShit")
+                .tokenValiditySeconds(100000)
                 .and()
-                    .logout()
-                    .deleteCookies("JSESSIONID")
-                    .clearAuthentication(true)
-                    .logoutSuccessUrl("/login?logout")
-                    .permitAll()
+                .logout()
+                .deleteCookies("JSESSIONID")
+                .clearAuthentication(true)
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
                 .and()
-                    .exceptionHandling().accessDeniedPage("/unauthorized")
+                .exceptionHandling().accessDeniedPage("/unauthorized")
                 .and()
-                    .csrf().disable();
+                .csrf().disable();
     }
 
     @Bean
-    public BCryptPasswordEncoder getBCryptPasswordEncoder(){
+    public BCryptPasswordEncoder getBCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

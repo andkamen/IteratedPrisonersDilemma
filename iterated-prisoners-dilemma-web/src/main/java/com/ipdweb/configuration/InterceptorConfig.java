@@ -9,8 +9,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
-    @Autowired
     private ContentValidator contentValidator;
+
+    @Autowired
+    public InterceptorConfig(ContentValidator contentValidator) {
+        this.contentValidator = contentValidator;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

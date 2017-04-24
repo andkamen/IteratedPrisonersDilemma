@@ -20,4 +20,6 @@ public interface BasicUserService extends UserDetailsService {
     void deleteUserById(Long id);
 
     User getUserByUsername(String username);
+
+    boolean isUsernameAvailable(String username);
 }

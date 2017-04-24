@@ -1,12 +1,12 @@
 package com.ipdweb.areas.user.servicesImpl;
 
-import com.ipdweb.areas.user.exceptions.UserNotFoundException;
 import com.ipdweb.areas.common.utils.Constants;
 import com.ipdweb.areas.user.entities.BasicUser;
 import com.ipdweb.areas.user.entities.Role;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.errors.Errors;
 import com.ipdweb.areas.user.exceptions.AccountDisabledException;
+import com.ipdweb.areas.user.exceptions.UserNotFoundException;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
 import com.ipdweb.areas.user.repositories.AllUserRepository;
@@ -25,22 +25,23 @@ import java.util.List;
 @Service
 public class BasicUserServiceImpl implements BasicUserService {
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
     private AllUserRepository userRepository;
-
-    @Autowired
     private RoleService roleService;
+    private ModelMapper modelMapper;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public BasicUserServiceImpl(AllUserRepository userRepository, RoleService roleService, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.roleService = roleService;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public void register(RegistrationModel registrationModel) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
         BasicUser user = this.modelMapper.map(registrationModel, BasicUser.class);
-        String encryptedPassword = this.bCryptPasswordEncoder.encode(registrationModel.getPassword());
+        String encryptedPassword = bCryptPasswordEncoder.encode(registrationModel.getPassword());
         user.setPassword(encryptedPassword);
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
@@ -105,7 +106,14 @@ public class BasicUserServiceImpl implements BasicUserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username){
+    public boolean isUsernameAvailable(String username) {
+        User user = this.userRepository.findOneByUsername(username);
+
+        return user == null;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
         User user = this.userRepository.findOneByUsername(username);
 
         if (user == null) {

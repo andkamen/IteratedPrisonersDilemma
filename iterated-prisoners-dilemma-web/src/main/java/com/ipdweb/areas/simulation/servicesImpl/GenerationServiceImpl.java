@@ -2,7 +2,6 @@ package com.ipdweb.areas.simulation.servicesImpl;
 
 import com.ipdweb.areas.simulation.repositories.GenerationRepository;
 import com.ipdweb.areas.simulation.services.GenerationService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +11,12 @@ import java.util.Map;
 @Service
 public class GenerationServiceImpl implements GenerationService {
 
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
     private GenerationRepository generationRepository;
 
+    @Autowired
+    public GenerationServiceImpl(GenerationRepository generationRepository) {
+        this.generationRepository = generationRepository;
+    }
 
     @Override
     public Map<String, Integer> getGenerationScoreMapByGenerationId(Long id) {
