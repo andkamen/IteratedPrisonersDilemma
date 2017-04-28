@@ -1,6 +1,5 @@
 package com.ipdweb.areas.user.controllers;
 
-import com.ipdweb.areas.common.utils.Constants;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.errors.Errors;
 import com.ipdweb.areas.user.exceptions.AccountDisabledException;
@@ -9,9 +8,6 @@ import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
 import com.ipdweb.areas.user.services.BasicUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,6 +43,7 @@ public class UserController {
         return "redirect:/";
     }
 
+    //TODO precise error message? disabled/invalid login etc
     @GetMapping("/login")
     public String getLoginPage(@RequestParam(required = false) String error, Model model) {
         if (error != null) {
@@ -57,9 +54,11 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String getUsersPage(Model model, @PageableDefault(size = Constants.USERS_PER_PAGE) Pageable pageable) {
-        Page<UserViewModel> userViewModelList = this.userService.findAll(pageable);
+    public String getUsersPage(Model model, Authentication authentication) {
+        User loggedUser = (User) authentication.getPrincipal();
+        List<UserViewModel> userViewModelList = this.userService.findAll();
 
+        model.addAttribute("loggedUserId", loggedUser.getId());
         model.addAttribute("users", userViewModelList);
         return "admin-users";
     }
