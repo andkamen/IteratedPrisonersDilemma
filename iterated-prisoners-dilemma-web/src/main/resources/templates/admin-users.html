@@ -61,6 +61,15 @@
             </tr>
             </tbody>
         </table>
+        <nav aria-label="Page navigation" th:if="!${#lists.isEmpty(users)}">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="!${users.hasPrevious()}? 'disabled'"><a class="page-link" href="#" th:href="${users.hasPrevious()} ? '/users?page=' + ${users.previousPageable().getPageNumber()}" >Previous</a></li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, users.getTotalPages() - 1)}">
+                    <a class="page-link" href="#" th:href="|/users?page=${i}|" th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="!${users.hasNext()}? 'disabled'"><a class="page-link" href="#" th:href="${users.hasNext()} ? '/users?page=' + ${users.nextPageable().getPageNumber()}">Next</a></li>
+            </ul>
+        </nav>
     </div>
 </main>
 

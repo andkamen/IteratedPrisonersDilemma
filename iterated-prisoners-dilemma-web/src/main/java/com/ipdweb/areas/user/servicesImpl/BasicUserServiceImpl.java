@@ -14,6 +14,9 @@ import com.ipdweb.areas.user.services.BasicUserService;
 import com.ipdweb.areas.user.services.RoleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -53,9 +56,9 @@ public class BasicUserServiceImpl implements BasicUserService {
     }
 
     @Override
-    public List<UserViewModel> findAll() {
+    public Page<UserViewModel> findAll(Pageable pageable) {
+        Page<User> users = this.userRepository.findAll(pageable);
         List<UserViewModel> userViewModels = new ArrayList<>();
-        List<User> users = this.userRepository.findAll();
         for (User user : users) {
             UserViewModel userViewModel = this.modelMapper.map(user, UserViewModel.class);
             for (Role role : user.getAuthorities()) {
@@ -66,7 +69,8 @@ public class BasicUserServiceImpl implements BasicUserService {
             userViewModels.add(userViewModel);
         }
 
-        return userViewModels;
+        Page<UserViewModel> userModels = new PageImpl<UserViewModel>(userViewModels,pageable,users.getTotalElements());
+        return userModels;
     }
 
     @Override

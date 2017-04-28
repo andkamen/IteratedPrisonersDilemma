@@ -30,4 +30,6 @@ public class Constants {
     public static final int USER_ID_POSITION = 2;
 
 
+    // /users pagination
+    public static final int USERS_PER_PAGE = 10;
 }
