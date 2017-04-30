@@ -12,7 +12,15 @@
 <main>
     <div class="container">
         <br/>
-        <div class="h1">All Users</div>
+        <h1>Users</h1>
+        <div class="input-group">
+            <input id="searchBox" class="form-control col-4" placeholder="Search" type="text"/>
+            <span class="input-group-btn">
+                <button class="btn btn-default" id="searchButton" type="button" th:value="Search">Search</button>
+            </span>
+        </div>
+    </div>
+    <div class="container" id="users">
         <br/>
         <table class="table" style="border-collapse: separate">
             <thead>
@@ -26,11 +34,8 @@
                 <th>Delete</th>
             </tr>
             </thead>
-            <!--//TODO watch web api intro -->
             <tbody>
-            <!--TODO partial view $(selector).load(/usersSearch)-->
             <tr th:each="user : ${users}" th:object="${user}">
-
                 <td style="padding: 2px; vertical-align: middle" th:text="*{id}">id</td>
                 <td style="padding: 2px; vertical-align: middle" th:text="*{username}">username</td>
                 <td style="padding: 2px; vertical-align: middle">
@@ -64,11 +69,15 @@
         </table>
         <nav aria-label="Page navigation" th:if="!${#lists.isEmpty(users)}">
             <ul class="pagination">
-                <li class="page-item" th:classappend="!${users.hasPrevious()}? 'disabled'"><a class="page-link" href="#" th:href="${users.hasPrevious()} ? '/users?page=' + ${users.previousPageable().getPageNumber()}" >Previous</a></li>
+                <li class="page-item" th:classappend="!${users.hasPrevious()}? 'disabled'"><a class="page-link" href="#"
+                                                                                              th:href="${users.hasPrevious()} ? '/users?page=' + ${users.previousPageable().getPageNumber()}">Previous</a>
+                </li>
                 <li class="page-item" th:each="i : ${#numbers.sequence(0, users.getTotalPages() - 1)}">
                     <a class="page-link" href="#" th:href="|/users?page=${i}|" th:text="${i + 1}">1</a>
                 </li>
-                <li class="page-item" th:classappend="!${users.hasNext()}? 'disabled'"><a class="page-link" href="#" th:href="${users.hasNext()} ? '/users?page=' + ${users.nextPageable().getPageNumber()}">Next</a></li>
+                <li class="page-item" th:classappend="!${users.hasNext()}? 'disabled'"><a class="page-link" href="#"
+                                                                                          th:href="${users.hasNext()} ? '/users?page=' + ${users.nextPageable().getPageNumber()}">Next</a>
+                </li>
             </ul>
         </nav>
     </div>
@@ -79,5 +88,7 @@
 
 <script th:src="@{/jquery/jquery.min.js}"></script>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/scripts/usersSearch.js}"></script>
+
 </body>
 </html>
