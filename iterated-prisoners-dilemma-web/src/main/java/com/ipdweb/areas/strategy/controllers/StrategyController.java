@@ -39,7 +39,7 @@ public class StrategyController {
             model.addAttribute("loggedUserId", loggedUser.getId());
         }
 
-        return "strategies";
+        return "strategies/strategies";
     }
 
 }

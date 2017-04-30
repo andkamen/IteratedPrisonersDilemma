@@ -9,10 +9,10 @@ public class HomeController {
     @GetMapping("/")
     public String getHomePage() {
 
-        return "home";
+        return "home/home";
     }
 
-    //TODO not entered when generic /error is called. Where can I fill this form from then.
+    //TODO not entered when generic /error is called?
     @GetMapping("/error")
     public String getErrorPage() {
         return "error/error";

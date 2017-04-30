@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Users</title>
-    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css"
+    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css"
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
@@ -26,8 +26,9 @@
                 <th>Delete</th>
             </tr>
             </thead>
+            <!--//TODO watch web api intro -->
             <tbody>
-            <!--TODO add css file-->
+            <!--TODO partial view $(selector).load(/usersSearch)-->
             <tr th:each="user : ${users}" th:object="${user}">
 
                 <td style="padding: 2px; vertical-align: middle" th:text="*{id}">id</td>

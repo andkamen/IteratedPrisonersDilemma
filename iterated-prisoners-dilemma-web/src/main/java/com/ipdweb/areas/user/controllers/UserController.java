@@ -3,7 +3,6 @@ package com.ipdweb.areas.user.controllers;
 import com.ipdweb.areas.common.utils.Constants;
 import com.ipdweb.areas.user.entities.User;
 import com.ipdweb.areas.user.errors.Errors;
-import com.ipdweb.areas.user.exceptions.AccountDisabledException;
 import com.ipdweb.areas.user.exceptions.UserNotFoundException;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.models.viewModels.UserViewModel;
@@ -12,14 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -33,13 +30,13 @@ public class UserController {
 
     @GetMapping("/register")
     public String getRegisterPage(@ModelAttribute RegistrationModel registrationModel) {
-        return "register";
+        return "user/register";
     }
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute RegistrationModel registrationModel, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "register";
+            return "user/register";
         }
 
         this.userService.register(registrationModel);
@@ -53,7 +50,7 @@ public class UserController {
             model.addAttribute("error", Errors.INVALID_CREDENTIALS);
         }
 
-        return "login";
+        return "user/login";
     }
 
     @GetMapping("/users")
@@ -61,7 +58,7 @@ public class UserController {
         Page<UserViewModel> userViewModelList = this.userService.findAll(pageable);
 
         model.addAttribute("users", userViewModelList);
-        return "admin-users";
+        return "admin/admin-users";
     }
 
     @GetMapping("/users/delete/{userId}")
@@ -90,14 +87,5 @@ public class UserController {
     public String catchUserNotFoundException() {
 
         return "exceptions/user-not-found";
-    }
-
-    //TODO this error because Spring. read documentation
-    //Doesnt work with Disabled access exception either
-    @ExceptionHandler(AccountDisabledException.class)
-    public String catchDisabledException(Model model) {
-        model.addAttribute("error", Errors.ACCOUNT_DISABLED);
-
-        return "login";
     }
 }
