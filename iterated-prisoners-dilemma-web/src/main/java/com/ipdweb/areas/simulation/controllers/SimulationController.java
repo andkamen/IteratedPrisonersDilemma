@@ -101,8 +101,6 @@ public class SimulationController {
         String matrix = new Gson().toJson(simulationResultViewModel.getStrategyCounts());
         String genCount = new Gson().toJson(simulationResultViewModel.getGenerationCount());
 
-
-        //TODO check if ok or should be split so model gets entire view and not it's fields
         model.addAttribute("genCount", genCount);
         model.addAttribute("matrix", matrix);
         model.addAttribute("strats", strats);
@@ -128,7 +126,6 @@ public class SimulationController {
         String matrix = new Gson().toJson(simulationResultViewModel.getStrategyCounts());
         String genCount = new Gson().toJson(simulationResultViewModel.getGenerationCount());
 
-        //TODO check if ok or should be split so model gets entire view and not it's fields
         model.addAttribute("genCount", genCount);
         model.addAttribute("matrix", matrix);
         model.addAttribute("strats", strats);

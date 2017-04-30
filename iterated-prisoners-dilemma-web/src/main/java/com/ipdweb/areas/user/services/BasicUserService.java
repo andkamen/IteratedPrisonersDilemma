@@ -13,6 +13,8 @@ public interface BasicUserService extends UserDetailsService {
 
     Page<UserViewModel> findAll(Pageable pageable);
 
+    Page<UserViewModel> searchUsersByUsername( String searchWord,Pageable pageable);
+
     void changeAccountAccess(User user, boolean enabled);
 
     User getUserById(Long id);

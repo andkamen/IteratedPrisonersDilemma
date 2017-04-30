@@ -82,6 +82,14 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @PostMapping("/users/search")
+    public String searchUsersByUsername(@RequestParam String searchWord, Model model,@PageableDefault(size = Constants.USERS_PER_PAGE) Pageable pageable) {
+
+        Page<UserViewModel> userViewModelList = this.userService.searchUsersByUsername(searchWord,pageable);
+        model.addAttribute("users",userViewModelList);
+
+        return "admin/admin-users-partial-view";
+    }
 
     @ExceptionHandler(UserNotFoundException.class)
     public String catchUserNotFoundException() {

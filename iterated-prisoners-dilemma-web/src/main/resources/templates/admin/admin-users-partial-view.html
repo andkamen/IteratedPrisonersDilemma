@@ -1,0 +1,62 @@
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <br/>
+    <table class="table" style="border-collapse: separate">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Tournaments</th>
+            <th>Simulations</th>
+            <th>Is Enabled?</th>
+            <th>Enable/Disable</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}" th:object="${user}">
+
+            <td style="padding: 2px; vertical-align: middle" th:text="*{id}">id</td>
+            <td style="padding: 2px; vertical-align: middle" th:text="*{username}">username</td>
+            <td style="padding: 2px; vertical-align: middle">
+                <a class="card-button btn btn-success" name="tournaments"
+                   th:href="@{/tournaments/{id}(id=${user.id})}">Tournaments</a>
+            </td>
+            <td style="padding: 2px; vertical-align: middle">
+                <a class="card-button btn btn-success" name="simulations"
+                   th:href="@{/simulations/{id}(id=${user.id})}">Simulations</a>
+            </td>
+            <td style="padding: 2px; vertical-align: middle" th:text="*{isEnabled()}">enabled</td>
+            <td style="padding: 2px; vertical-align: middle; empty-cells: show"
+                th:if="*{isEnabled() == true and isAdmin() == false}">
+                <form method="post" th:action="@{/users/changeAccess/{enable}/{id}(enable = false,id=${user.id})}">
+                    <button type="submit" class="card-button btn btn-warning" name="Disable">Disable</button>
+                </form>
+            </td>
+            <td style="padding: 2px; vertical-align: middle; empty-cells: show"
+                th:if="*{isEnabled() == false and isAdmin() == false}">
+                <form method="post" th:action="@{/users/changeAccess/{enable}/{id}(enable = true,id=${user.id})}">
+                    <button type="submit" class="card-button btn btn-success" name="Enable">Enable</button>
+                </form>
+            </td>
+            <td style="padding: 2px; vertical-align: middle"
+                th:if="*{admin == false}">
+                <a class="card-button btn btn-danger" name="simulations"
+                   th:href="@{/users/delete/{id}(id=${user.id})}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation" th:if="!${#lists.isEmpty(users)}">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="!${users.hasPrevious()}? 'disabled'"><a class="page-link" href="#"
+                                                                                          th:href="${users.hasPrevious()} ? '/users?page=' + ${users.previousPageable().getPageNumber()}">Previous</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, users.getTotalPages() - 1)}">
+                <a class="page-link" href="#" th:href="|/users?page=${i}|" th:text="${i + 1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="!${users.hasNext()}? 'disabled'"><a class="page-link" href="#"
+                                                                                      th:href="${users.hasNext()} ? '/users?page=' + ${users.nextPageable().getPageNumber()}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>

@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Constraint(validatedBy = ValidateStrategyMapInputValidator.class)
+@Constraint(validatedBy = StrategyMapInputValidator.class)
 public @interface ValidateStrategyMapInput {
 
     String message() default "No null or negative values allowed. Must have at least 2 strategies total";

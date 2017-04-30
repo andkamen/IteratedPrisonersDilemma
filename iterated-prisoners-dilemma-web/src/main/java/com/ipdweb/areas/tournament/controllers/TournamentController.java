@@ -37,7 +37,6 @@ public class TournamentController {
         this.userService = userService;
     }
 
-    //TODO make interceptor for this redirect
     @GetMapping("")
     public String redirectToTournamentsPage(Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
@@ -110,7 +109,6 @@ public class TournamentController {
         return "tournaments/tournaments-show-result";
     }
 
-    //TODO code repetition? check if redirect is possible
     @PostMapping("/{userId}/show/{tourId}")
     public String enhanceTournamentResultsPage(@PathVariable long userId, @PathVariable long tourId, @Valid @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
 

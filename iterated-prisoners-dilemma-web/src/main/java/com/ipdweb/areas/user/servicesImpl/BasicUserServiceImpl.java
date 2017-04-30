@@ -64,12 +64,32 @@ public class BasicUserServiceImpl implements BasicUserService {
             for (Role role : user.getAuthorities()) {
                 if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
                     userViewModel.setAdmin(true);
+                    break;
                 }
             }
             userViewModels.add(userViewModel);
         }
 
-        Page<UserViewModel> userModels = new PageImpl<UserViewModel>(userViewModels,pageable,users.getTotalElements());
+        Page<UserViewModel> userModels = new PageImpl<UserViewModel>(userViewModels, pageable, users.getTotalElements());
+        return userModels;
+    }
+
+    @Override
+    public Page<UserViewModel> searchUsersByUsername( String searchWord,Pageable pageable) {
+        Page<User> users = this.userRepository.findAllByUsername(searchWord, pageable);
+        List<UserViewModel> userViewModels = new ArrayList<>();
+        for (User user : users) {
+            UserViewModel userViewModel = this.modelMapper.map(user, UserViewModel.class);
+            for (Role role : user.getAuthorities()) {
+                if (role.getAuthority().equals(Constants.ADMIN_ROLE)) {
+                    userViewModel.setAdmin(true);
+                    break;
+                }
+            }
+            userViewModels.add(userViewModel);
+        }
+
+        Page<UserViewModel> userModels = new PageImpl<UserViewModel>(userViewModels, pageable, users.getTotalElements());
         return userModels;
     }
 
