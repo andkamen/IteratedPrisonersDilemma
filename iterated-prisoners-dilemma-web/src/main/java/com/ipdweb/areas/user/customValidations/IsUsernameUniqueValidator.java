@@ -21,7 +21,9 @@ public class IsUsernameUniqueValidator implements ConstraintValidator<IsUsername
     public boolean isValid(Object username, ConstraintValidatorContext context) {
 
         if (username instanceof String) {
-            return this.userService.isUsernameAvailable(((String) username));
+            boolean result = this.userService.isUsernameAvailable(((String) username));
+
+            return result;
         }
 
         return false;
