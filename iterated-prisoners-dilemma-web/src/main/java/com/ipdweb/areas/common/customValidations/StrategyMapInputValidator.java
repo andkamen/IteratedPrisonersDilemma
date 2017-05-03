@@ -1,14 +1,12 @@
 package com.ipdweb.areas.common.customValidations;
 
-
 import com.ipdweb.areas.common.interfaces.StrategyMapModel;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Map;
 
-//TODO dumb name
-public class ValidateStrategyMapInputValidator implements ConstraintValidator<ValidateStrategyMapInput, Object> {
+public class StrategyMapInputValidator implements ConstraintValidator<ValidateStrategyMapInput, Object> {
     @Override
     public void initialize(ValidateStrategyMapInput validateStrategyMapInput) {
 

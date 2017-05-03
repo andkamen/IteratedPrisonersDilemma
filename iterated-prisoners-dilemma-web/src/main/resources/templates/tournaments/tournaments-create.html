@@ -2,8 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Create Simulation</title>
-    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css"
+    <title>Create Tournament</title>
+    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css"
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
@@ -12,8 +12,7 @@
 <main>
 
     <div class="container text-center">
-
-        <form method="post" th:object="${createSimulationBindingModel}">
+        <form method="post" th:object="${createTournamentBindingModel}">
 
             <div class="form-group col-6 offset-3" th:classappend="${#fields.hasErrors('name')}? 'has-danger'">
                 <label for="nameId">Name</label>
@@ -24,20 +23,7 @@
                 </small>
             </div>
 
-            <div class="form-group col-6 offset-3"
-                 th:classappend="${#fields.hasErrors('generationCount')}? 'has-danger'">
-                <label for="generationCountId">Generation Count</label>
-                <input type="number" min="0" class="form-control" id="generationCountId"
-                       aria-describedby="generationCountHelp"
-                       name="generationCount" th:field="*{generationCount}"/>
-                <small id="generationCountHelp" class="form-control-feedback"
-                       th:each="error : ${#fields.errors('generationCount')}"
-                       th:text="${error}">Error Message
-                </small>
-            </div>
-
-
-            <div class="form-group col-6 offset-3" th:classappend="${#fields.hasErrors('global')}? 'has-danger'">
+            <div class="form-group" th:classappend="${#fields.hasErrors('global')}? 'has-danger'">
                 <small id="strategiesHelp" class="form-control-feedback"
                        th:each="error : ${#fields.errors('global')}"
                        th:text="${error}">Error Message
@@ -54,7 +40,7 @@
                 <tbody>
                 <div th:each="el :  ${strategyMap.strategies}">
                     <tr>
-                        <td class="d-inline-block">
+                        <td class="d-inline-block ">
                             <input type="text" class="form-control" name="key" th:value="${el.key}"
                                    readonly="true"/>
                         </td>
@@ -69,7 +55,7 @@
 
             <button type="submit" class="btn btn-success">Create</button>
             <button type="reset" class="btn btn-warning">Reset</button>
-            <a class="btn btn-secondary" th:href="@{/simulations/{id}(id=${userId})}">Back</a>
+            <a class="btn btn-secondary" th:href="@{/tournaments/{id}(id=${userId})}">Back</a>
         </form>
     </div>
 </main>

@@ -37,7 +37,6 @@ public class TournamentController {
         this.userService = userService;
     }
 
-    //TODO make interceptor for this redirect
     @GetMapping("")
     public String redirectToTournamentsPage(Authentication authentication) {
         User loggedUser = (User) authentication.getPrincipal();
@@ -53,7 +52,7 @@ public class TournamentController {
         model.addAttribute("userId", userId);
         model.addAttribute("tournaments", this.tournamentService.getAllTournaments(user));
 
-        return "tournaments-preview";
+        return "tournaments/tournaments-preview";
     }
 
     @GetMapping("/create")
@@ -71,7 +70,7 @@ public class TournamentController {
 
         model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
 
-        return "tournaments-create";
+        return "tournaments/tournaments-create";
     }
 
     @PostMapping("/{userId}/create")
@@ -82,7 +81,7 @@ public class TournamentController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
-            return "tournaments-create";
+            return "tournaments/tournaments-create";
         }
 
         this.tournamentService.save(createTournamentBindingModel, user);
@@ -107,10 +106,9 @@ public class TournamentController {
         model.addAttribute("data", data);
         model.addAttribute("strategies", tournamentResultViewModel.getStrategies());
 
-        return "tournaments-show-result";
+        return "tournaments/tournaments-show-result";
     }
 
-    //TODO code repetition? check if redirect is possible
     @PostMapping("/{userId}/show/{tourId}")
     public String enhanceTournamentResultsPage(@PathVariable long userId, @PathVariable long tourId, @Valid @ModelAttribute SelectMatchUpResultsBindingModel selectMatchUpResultsBindingModel, BindingResult bindingResult, Model model, Authentication authentication) {
 
@@ -130,7 +128,7 @@ public class TournamentController {
         model.addAttribute("strategies", tournamentResultViewModel.getStrategies());
 
         if (bindingResult.hasErrors()) {
-            return "tournaments-show-result";
+            return "tournaments/tournaments-show-result";
         }
 
         selectMatchUpResultsBindingModel.setId(tourId);
@@ -138,7 +136,7 @@ public class TournamentController {
 
         model.addAttribute("tournamentMatchUpResultViewModel", tournamentMatchUpResultViewModel);
 
-        return "tournaments-show-result";
+        return "tournaments/tournaments-show-result";
     }
 
     @GetMapping("/{userId}/edit/{tourId}")
@@ -151,7 +149,7 @@ public class TournamentController {
         this.tournamentService.ownsTournament(loggedUser, tourId);
 
         model.addAttribute("editTournamentBindingModel", this.tournamentService.getEditTournamentById(tourId));
-        return "tournaments-edit";
+        return "tournaments/tournaments-edit";
     }
 
     @PostMapping("/{userId}/edit/{tourId}")
@@ -166,7 +164,7 @@ public class TournamentController {
         editTournamentBindingModel.setId(tourId);
 
         if (bindingResult.hasErrors()) {
-            return "tournaments-edit";
+            return "tournaments/tournaments-edit";
         }
 
         this.tournamentService.edit(editTournamentBindingModel);

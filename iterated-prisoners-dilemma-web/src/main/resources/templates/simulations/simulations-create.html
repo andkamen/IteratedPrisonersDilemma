@@ -2,16 +2,18 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Edit Simulation</title>
-    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css"
+    <title>Create Simulation</title>
+    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css"
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
 <header th:replace="fragments/parts::menu"></header>
 
 <main>
+
     <div class="container text-center">
-        <form method="post" th:object="${editSimulationBindingModel}">
+
+        <form method="post" th:object="${createSimulationBindingModel}">
 
             <div class="form-group col-6 offset-3" th:classappend="${#fields.hasErrors('name')}? 'has-danger'">
                 <label for="nameId">Name</label>
@@ -36,12 +38,13 @@
 
 
             <div class="form-group col-6 offset-3" th:classappend="${#fields.hasErrors('global')}? 'has-danger'">
-                <small id="strategiesHelp" class="form-control-feedback" th:each="error : ${#fields.errors('global')}"
+                <small id="strategiesHelp" class="form-control-feedback"
+                       th:each="error : ${#fields.errors('global')}"
                        th:text="${error}">Error Message
                 </small>
             </div>
-            <table class="table">
 
+            <table class="table">
                 <thead>
                 <tr>
                     <th class="d-inline-block ">Strategy</th>
@@ -49,21 +52,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                <div th:each="el :  ${editSimulationBindingModel.strategies}">
+                <div th:each="el :  ${strategyMap.strategies}">
                     <tr>
-                        <td class="d-inline-block ">
-                            <input type="text" class="form-control" name="key" th:value="${el.key}" readonly="true"/>
+                        <td class="d-inline-block">
+                            <input type="text" class="form-control" name="key" th:value="${el.key}"
+                                   readonly="true"/>
                         </td>
                         <td class="d-inline-block ">
                             <input type="number" min="0" class="form-control" name="value" value="0"
-                                   th:field="${editSimulationBindingModel.strategies[__${el.key}__]}"/>
+                                   th:field="${strategyMap.strategies[__${el.key}__]}"/>
                         </td>
                     </tr>
                 </div>
                 </tbody>
             </table>
 
-            <button type="submit" class="btn btn-success">Save Changes</button>
+            <button type="submit" class="btn btn-success">Create</button>
             <button type="reset" class="btn btn-warning">Reset</button>
             <a class="btn btn-secondary" th:href="@{/simulations/{id}(id=${userId})}">Back</a>
         </form>

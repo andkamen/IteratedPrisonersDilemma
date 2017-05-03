@@ -50,7 +50,7 @@ public class SimulationController {
         model.addAttribute("userId", userId);
         model.addAttribute("simulations", this.simulationService.getAllSimulations(user));
 
-        return "simulations-preview";
+        return "simulations/simulations-preview";
     }
 
     @GetMapping("/create")
@@ -67,7 +67,7 @@ public class SimulationController {
         model.addAttribute("userId", userId);
         model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
 
-        return "simulations-create";
+        return "simulations/simulations-create";
     }
 
     @PostMapping("/{userId}/create")
@@ -78,7 +78,7 @@ public class SimulationController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("strategyMap", this.strategyService.getStrategyMap());
-            return "simulations-create";
+            return "simulations/simulations-create";
         }
 
         this.simulationService.save(createSimulationBindingModel, user);
@@ -101,15 +101,13 @@ public class SimulationController {
         String matrix = new Gson().toJson(simulationResultViewModel.getStrategyCounts());
         String genCount = new Gson().toJson(simulationResultViewModel.getGenerationCount());
 
-
-        //TODO check if ok or should be split so model gets entire view and not it's fields
         model.addAttribute("genCount", genCount);
         model.addAttribute("matrix", matrix);
         model.addAttribute("strats", strats);
         model.addAttribute("simId", simulationResultViewModel.getId());
         model.addAttribute("name", simulationResultViewModel.getName());
 
-        return "simulations-show-result";
+        return "simulations/simulations-show-result";
     }
 
     @PostMapping("/{userId}/show/{simId}")
@@ -128,7 +126,6 @@ public class SimulationController {
         String matrix = new Gson().toJson(simulationResultViewModel.getStrategyCounts());
         String genCount = new Gson().toJson(simulationResultViewModel.getGenerationCount());
 
-        //TODO check if ok or should be split so model gets entire view and not it's fields
         model.addAttribute("genCount", genCount);
         model.addAttribute("matrix", matrix);
         model.addAttribute("strats", strats);
@@ -136,7 +133,7 @@ public class SimulationController {
         model.addAttribute("name", simulationResultViewModel.getName());
 
         if (bindingResult.hasErrors()) {
-            return "simulations-show-result";
+            return "simulations/simulations-show-result";
         }
 
         runMoreGenerationsBindingModel.setId(simId);
@@ -155,7 +152,7 @@ public class SimulationController {
         this.simulationService.ownsSimulation(loggedUser, simId);
 
         model.addAttribute("editSimulationBindingModel", this.simulationService.getEditSimulationById(simId));
-        return "simulations-edit";
+        return "simulations/simulations-edit";
     }
 
     @PostMapping("/{userId}/edit/{simId}")
@@ -169,7 +166,7 @@ public class SimulationController {
         this.simulationService.ownsSimulation(loggedUser, simId);
 
         if (bindingResult.hasErrors()) {
-            return "simulations-edit";
+            return "simulations/simulations-edit";
         }
         editSimulationBindingModel.setId(simId);
 
