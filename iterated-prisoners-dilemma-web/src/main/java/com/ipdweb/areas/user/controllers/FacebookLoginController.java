@@ -27,6 +27,7 @@ public class FacebookLoginController {
         this.connectionRepository = connectionRepository;
     }
 
+    //TODO check if email/username is unique? If taken by another user might clash
     @GetMapping("/facebook")
     public String registerOrLogin() {
         if (connectionRepository.findPrimaryConnection(Facebook.class) == null) {

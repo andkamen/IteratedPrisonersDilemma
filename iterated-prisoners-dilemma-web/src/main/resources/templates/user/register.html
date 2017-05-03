@@ -16,7 +16,7 @@
 
             <div class="form-group" th:classappend="${#fields.hasErrors('username')} ? 'has-danger'">
                 <label class="form-control-label" for="inputUsername">Username</label>
-                <input type="text" class="form-control form-control-danger" id="inputUsername" th:field="*{username}"/>
+                <input type="text" class="form-control form-control-danger" id="inputUsername" placeholder="someUsername" th:field="*{username}"/>
                 <div class="form-control-feedback" th:each="error : ${#fields.errors('username')}" th:text="${error}">
                     Sorry, that username's taken. Try another?
                 </div>
@@ -24,7 +24,7 @@
 
             <div class="form-group" th:classappend="${#fields.hasErrors('password')}? 'has-danger'">
                 <label class="form-control-label" for="inputPassword">Password</label>
-                <input type="password" class="form-control form-control-danger" id="inputPassword"
+                <input type="password" class="form-control form-control-danger" id="inputPassword" placeholder="password"
                        th:field="*{password}"/>
                 <div class="form-control-feedback" th:each="error : ${#fields.errors('password')}" th:text="${error}">
                     Sorry, that password is incorrect?
@@ -33,7 +33,7 @@
 
             <div class="form-group" th:classappend="${#fields.hasErrors('global')} ? 'has-danger'">
                 <label class="form-control-label" for="inputConfirmPassword">Confirm Password</label>
-                <input type="password" class="form-control form-control-danger" id="inputConfirmPassword"
+                <input type="password" class="form-control form-control-danger" id="inputConfirmPassword" placeholder="password"
                        th:field="*{confirmPassword}"/>
                 <div class="form-control-feedback" th:each="error : ${#fields.errors('global')}" th:text="${error}">
                     Sorry, passwords are not matching?
