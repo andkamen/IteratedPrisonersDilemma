@@ -9,9 +9,6 @@ import java.util.List;
 
 @Repository
 public interface StrategyRepository extends JpaRepository<StrategyImpl, Long> {
-    StrategyImpl getById(Long id);
-
-    StrategyImpl getByName(String name);
 
     @Query(value = "select s from StrategyImpl as s order by s.id")
     List<StrategyImpl> getAllStrategies();

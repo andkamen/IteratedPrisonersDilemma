@@ -9,10 +9,6 @@ import java.util.Set;
 
 public interface StrategyService {
 
-    StrategyImpl getStrategyById(Long id);
-
-    StrategyImpl getStrategyByName(String name);
-
     Set<StrategyViewModel> getAllStrategies();
 
     List<StrategyImpl> getAllStrategyImpls();

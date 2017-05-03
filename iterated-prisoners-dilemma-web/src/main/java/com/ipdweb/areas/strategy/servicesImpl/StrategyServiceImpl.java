@@ -27,16 +27,6 @@ public class StrategyServiceImpl implements StrategyService {
     }
 
     @Override
-    public StrategyImpl getStrategyById(Long id) {
-        return this.strategyRepository.getById(id);
-    }
-
-    @Override
-    public StrategyImpl getStrategyByName(String name) {
-        return this.strategyRepository.getByName(name);
-    }
-
-    @Override
     public Set<StrategyViewModel> getAllStrategies() {
         List<StrategyImpl> strategyImpls = this.strategyRepository.getAllStrategies();
         Set<StrategyViewModel> strategies = new LinkedHashSet<>();

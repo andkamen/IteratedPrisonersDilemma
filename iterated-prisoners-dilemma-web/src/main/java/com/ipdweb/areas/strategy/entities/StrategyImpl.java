@@ -18,7 +18,6 @@ public abstract class StrategyImpl implements Strategy {
     @Basic
     private String name;
 
-
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 

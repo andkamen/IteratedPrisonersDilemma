@@ -3,6 +3,7 @@ package com.ipdweb.areas.user.controllers;
 import com.ipdweb.areas.common.interceptors.ContentValidator;
 import com.ipdweb.areas.user.models.bindingModels.RegistrationModel;
 import com.ipdweb.areas.user.services.BasicUserService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -14,7 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -32,6 +35,13 @@ public class UserControllerTest {
     @MockBean
     private ContentValidator contentValidator;
 
+    @Before
+    public void setUp() throws Exception {
+        //Arrange
+        when(userService.isUsernameAvailable(isA(String.class))).thenReturn(true);
+    }
+
+
     @Test
     public void registerUser() throws Exception {
         mockMvc
@@ -40,7 +50,6 @@ public class UserControllerTest {
                         .param("password", "1234")
                         .param("confirmPassword", "1234")
                 )
-                //TODO custom validator throws false for name being valid
                 .andExpect(model().hasNoErrors())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"))
